@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Варианты футера</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #e8eaed; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+  a { color: inherit; text-decoration: none; }
+</style>
+</helmet>
+<div style="width: 1560px; height: 3350px; box-sizing: border-box; padding: 56px; background: #e8eaed; display: flex; flex-direction: column; gap: 26px;">
+
+  <div>
+    <div style="font-size: 22px; font-weight: 700; color: #232a33;">Варианты футера</div>
+    <div style="font-size: 13px; color: #666; margin-top: 6px; max-width: 1200px; line-height: 1.5;">Сегодня футер — плоский список из ~17 ссылок в одну строку без группировки (footer.htm). Ниже — три способа его организовать, на реальных ссылках и контактах.</div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">A · Эволюция — тёмный брендовый блок, 3 колонки</div>
+    <div style="background: oklch(0.38 0.05 240); border-radius: 8px; padding: 32px 36px; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 32px;">
+      <div>
+        <div style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 10px;">Метотехника</div>
+        <div style="font-size: 12px; color: oklch(0.8 0.02 240); line-height: 1.9;">
+          info@metotech.ru<br>
+          +7 (495) 504-95-54<br>
+          +7 (495) 642-41-95<br>
+          Москва, ул. Кирпичная, 32
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: oklch(0.7 0.02 240); margin-bottom: 10px;">Материалы</div>
+        <sc-for list="{{materialsA}}" as="m" hint-placeholder-count="8">
+          <div style="font-size: 12.5px; color: oklch(0.86 0.02 240); padding: 3px 0;">{{m}}</div>
+        </sc-for>
+      </div>
+      <div>
+        <div style="font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: oklch(0.7 0.02 240); margin-bottom: 10px;">Ресурсы</div>
+        <sc-for list="{{resources}}" as="r" hint-placeholder-count="3">
+          <div style="font-size: 12.5px; color: oklch(0.86 0.02 240); padding: 3px 0;">{{r}}</div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">B · Минимум — светлая слим-полоса</div>
+    <div style="border-top: 1px solid #e1e5ea; padding-top: 20px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+        <div style="font-weight: 700; font-size: 14px; color: #232a33;">МЕТОТЕХНИКА</div>
+        <div style="display: flex; gap: 20px; font-size: 12px; color: #5b6572;">
+          <span>Продукция</span><span>ГОСТы и ТУ</span><span>Статьи</span><span>Контакты</span>
+        </div>
+        <div style="font-size: 12px; color: #5b6572;">info@metotech.ru · +7 (495) 504-95-54</div>
+      </div>
+      <div style="font-size: 11px; color: #b0b5bd;">© ООО «НПК «Метотехника». Москва, ул. Кирпичная, 32, корп. 24.</div>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">C · Harald Pihl — полный сайтмап + форма подписки</div>
+    <div style="background: oklch(0.16 0.01 240); border-radius: 8px; overflow: hidden;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; background: oklch(0.22 0.015 240);">
+        <div style="font-size: 13px; color: #fff; font-weight: 600;">Подписаться на обновления цен и новинки ассортимента</div>
+        <div style="display: flex; gap: 8px;">
+          <div style="width: 220px; border-radius: 4px; padding: 8px 12px; background: rgba(255,255,255,.08); font-size: 12px; color: rgba(255,255,255,.5);">Ваш e-mail</div>
+          <div style="padding: 8px 16px; border-radius: 4px; background: oklch(0.68 0.11 185); color: #fff; font-size: 12px; font-weight: 600;">Подписаться</div>
+        </div>
+      </div>
+      <div style="padding: 32px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;">
+        <sc-for list="{{sitemapCols}}" as="col" hint-placeholder-count="4">
+          <div>
+            <div style="font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: oklch(0.55 0.02 240); margin-bottom: 10px;">{{col.title}}</div>
+            <sc-for list="{{col.items}}" as="ci" hint-placeholder-count="5">
+              <div style="font-size: 12px; color: oklch(0.75 0.03 240); padding: 3px 0;">{{ci}}</div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding: 16px 32px; border-top: 1px solid oklch(0.28 0.015 240); font-size: 11px; color: oklch(0.46 0.05 240);">© ООО «НПК «Метотехника» · info@metotech.ru · +7 (495) 504-95-54</div>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">D · Визуальный мега-футер — фото-иконка на колонку</div>
+    <div style="background: #f7f8fa; border-radius: 8px; padding: 32px 36px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;">
+      <sc-for list="{{photoCols}}" as="pc" hint-placeholder-count="4">
+        <div>
+          <div style="width: 100%; height: 64px; border-radius: 6px; overflow: hidden; margin-bottom: 10px;">
+            <img src="{{pc.img}}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+          </div>
+          <div style="font-size: 12px; font-weight: 700; color: #232a33; margin-bottom: 8px;">{{pc.title}}</div>
+          <sc-for list="{{pc.items}}" as="pci" hint-placeholder-count="4">
+            <div style="font-size: 11.5px; color: #5b6572; padding: 2px 0;">{{pci}}</div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">E · Аккордеон (мобильный) — показано раскрытым, по умолчанию свёрнут в строку-заголовок</div>
+    <div style="max-width: 420px; border: 1px solid #e1e5ea; border-radius: 8px; overflow: hidden;">
+      <sc-for list="{{sitemapCols}}" as="acc" hint-placeholder-count="4">
+        <div style="border-top: 1px solid #eceef1;">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; font-size: 12.5px; font-weight: 700; color: #232a33;">
+            {{acc.title}}
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" style="transform: rotate(90deg);"><path d="M6 4l4 4-4 4" stroke="#9aa1ab" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <sc-for list="{{acc.items}}" as="acci" hint-placeholder-count="5">
+            <div style="font-size: 12px; color: #5b6572; padding: 5px 16px 5px 16px;">{{acci}}</div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">F · Полоса доверия/сертификатов</div>
+    <div style="border-top: 1px solid #e1e5ea; padding-top: 20px;">
+      <div style="display: flex; align-items: center; gap: 32px; padding-bottom: 18px; border-bottom: 1px solid #eceef1; margin-bottom: 14px;">
+        <sc-for list="{{trustBadges}}" as="tb" hint-placeholder-count="4">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 30px; height: 30px; border-radius: 50%; background: #f2f4f6; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: oklch(0.6 0.11 185); flex-shrink: 0;">✓</div>
+            <div style="font-size: 11.5px; color: #5b6572; line-height: 1.35;">{{tb}}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="font-size: 12px; color: #5b6572;">Продукция · ГОСТы и ТУ · Контакты</div>
+        <div style="font-size: 11px; color: #b0b5bd;">© ООО «НПК «Метотехника». info@metotech.ru · +7 (495) 504-95-54</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1560,"height":3350}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const materialsA = ['Нихром', 'Фехраль', 'Титан', 'Вольфрам', 'Молибден', 'Никель', 'Нержавеющая сталь', 'Жаропрочные сплавы'];
+    const resources = ['Фотографии', 'Карта сайта', 'Обзор цен на металлы'];
+
+    const sitemapCols = [
+      { title: 'Прецизионные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции', 'Медно-никелевые сплавы'] },
+      { title: 'Тугоплавкие и прочие', items: ['Вольфрам', 'Молибден', 'Титан', 'Кобальтовый порошок', 'Ферросплавы'] },
+      { title: 'Никель и стали', items: ['Никель', 'Нержавеющая сталь', 'Жаропрочные сплавы', 'Термопары'] },
+      { title: 'Компания', items: ['О компании', 'ГОСТы и ТУ', 'Статьи', 'Фотографии', 'Карта сайта'] }
+    ];
+
+    const photoCols = [
+      { title: 'Прецизионные сплавы', img: '/_blob/92aacf2587b596348aa64382541fe9ef', items: ['Нихром', 'Фехраль', 'Нихром в изоляции', 'Термопары'] },
+      { title: 'Тугоплавкие металлы', img: '/_blob/600bb01bd31b86796871a5d42e4a5838', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий'] },
+      { title: 'Никелевые сплавы', img: '/_blob/df28d2818d6e6ba8b4206307da078207', items: ['Никель', 'Монель', 'Мельхиор', 'Кобальт'] },
+      { title: 'Прочие материалы', img: '/_blob/fa47428423878f96c8377f64cac95a10', items: ['Титан', 'Олово', 'Ванадий', 'Ферросплавы'] }
+    ];
+
+    const trustBadges = [
+      'Собственное производство с 1998 года',
+      'Сертификаты соответствия ГОСТ Р',
+      'Отгрузка по РФ и СНГ',
+      'Оплата по счету для юрлиц'
+    ];
+
+    return { materialsA, resources, sitemapCols, photoCols, trustBadges };
+  }
+}
+</script>
+</body>
+</html>

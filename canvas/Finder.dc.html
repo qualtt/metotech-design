@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Виджет — найти материал</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #e8eaed; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+</style>
+</helmet>
+<div style="width: 420px; height: 420px; box-sizing: border-box; padding: 20px; background: #e8eaed; display: flex; align-items: flex-start;">
+  <div style="width: 100%; background: #fff; border: 1px solid #e1e5ea; border-radius: 8px; padding: 20px; box-shadow: 0 8px 24px -12px rgba(15,23,42,.14);">
+
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Найти материал быстро</div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <sc-for list="{{fields}}" as="f" hint-placeholder-count="3">
+        <div>
+          <div style="font-size: 11px; color: #5b6572; margin-bottom: 5px;">{{f.label}}</div>
+          <div style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #c7ced7; border-radius: 4px; padding: 9px 12px;">
+            <span style="font-size: 12.5px; color: {{f.valueColor}};">{{f.value}}</span>
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#9aa1ab" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 16px;">
+      <div style="padding: 10px 22px; border-radius: 4px; background: oklch(0.68 0.11 185); color: #fff; font-size: 12.5px; font-weight: 600;">Найти</div>
+      <div style="font-size: 10.5px; color: #9aa1ab;">* обязательно</div>
+      <div style="font-size: 11.5px; color: oklch(0.6 0.11 185); font-weight: 600; text-decoration: underline; text-underline-offset: 2px;">Сбросить</div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":420,"height":420}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const fields = [
+      { label: 'Материал *', value: 'Нихром', valueColor: '#232a33' },
+      { label: 'Форма *', value: 'Проволока и нить', valueColor: '#232a33' },
+      { label: 'Марка (опционально)', value: 'Любая', valueColor: '#8b93a0' }
+    ];
+    return { fields };
+  }
+}
+</script>
+</body>
+</html>

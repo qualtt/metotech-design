@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Комбинация 2 — OnlineMetals-шапка, мега-меню, полный футер</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #fefeff; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  .wordmark { font-weight: 700; font-size: 17px; color: #232a33; white-space: nowrap; }
+  .wordmark span { color: oklch(0.68 0.11 185); }
+</style>
+</helmet>
+<div style="width: 1560px; height: 2500px; box-sizing: border-box; background: #fefeff; display: flex; flex-direction: column;">
+
+  <div style="border-bottom: 1px solid #e1e5ea;">
+    <div style="display: flex; gap: 20px; padding: 6px 40px; background: #f2f4f6; font-size: 11px; color: #8b93a0;">
+      <span>+7 (495) 504-95-54</span><span>info@metotech.ru</span>
+      <span style="margin-left: auto;">Сделать заказ</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px; padding: 14px 40px;">
+      <div style="display: flex; align-items: center; gap: 8px;"><img src="/_blob/98fc7573f7e4a52e1e541a32d744e5b4" style="width: 26px; height: 23px;"><div class="wordmark"><span>МЕТО</span>ТЕХНИКА</div></div>
+      <div style="flex-grow: 1; display: flex; align-items: center; gap: 8px; border: 1px solid #c7ced7; border-radius: 999px; padding: 9px 16px; max-width: 480px;">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#9aa1ab" stroke-width="1.6"/><path d="M11 11l3 3" stroke="#9aa1ab" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size: 12px; color: #9aa1ab;">Поиск. Найти. Заказать.</span>
+      </div>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#232a33" stroke-width="1.6"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6" stroke="#232a33" stroke-width="1.6"/></svg>
+        <div style="position: relative;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 7h16l-1.5 10a2 2 0 0 1-2 1.7H7.5a2 2 0 0 1-2-1.7L4 7Z" stroke="#232a33" stroke-width="1.6"/><path d="M8 7V5a4 4 0 0 1 8 0v2" stroke="#232a33" stroke-width="1.6"/></svg>
+          <span style="position: absolute; top: -6px; right: -8px; width: 15px; height: 15px; border-radius: 50%; background: oklch(0.68 0.11 185); color: #fff; font-size: 9px; display: flex; align-items: center; justify-content: center;">2</span>
+        </div>
+        <div style="padding: 9px 18px; border-radius: 4px; background: oklch(0.68 0.11 185); color: #fff; font-size: 12.5px; font-weight: 600;">Быстрый расчёт</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 22px; background: #f2f4f6; padding: 0 40px;">
+      <sc-for list="{{topDropdowns}}" as="td" hint-placeholder-count="4">
+        <div style="padding: 11px 0; font-size: 12.5px; font-weight: 600; color: {{td.color}}; border-bottom: 2px solid {{td.underline}}; display: flex; align-items: center; gap: 5px;">
+          {{td.label}}
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid #e1e5ea; padding: 0 40px;">
+      <sc-for list="{{groups}}" as="mg" hint-placeholder-count="4">
+        <div style="padding: 0 0 12px; border-right: 1px solid #eceef1;">
+          <div style="padding: 8px 14px; background: oklch(0.68 0.11 185); color: #fff; font-size: 11px; font-weight: 700; margin: 10px 14px 6px 0;">{{mg.name}}</div>
+          <sc-for list="{{mg.items}}" as="mgi" hint-placeholder-count="5">
+            <div style="padding: 4px 14px; font-size: 12px; color: #232a33;">{{mgi}}</div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="padding: 28px 40px 48px;">
+
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #8b93a0;">ГЛАВНАЯ</span>
+      <span style="color: #c7ced7;">•</span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #8b93a0;">НИХРОМ</span>
+      <span style="color: #c7ced7;">•</span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: oklch(0.6 0.11 185);">СТОИМОСТЬ</span>
+    </div>
+
+    <h1 style="font-size: 28px; font-weight: 700; color: #232a33; margin: 0 0 8px;">Нихром</h1>
+    <div style="font-size: 13.5px; color: #5b6572; line-height: 1.6; max-width: 760px; margin-bottom: 18px;">Сплав никеля и хрома (Ni 55–78%, Cr 15–23%, Mn 1,5%, остальное Fe). Удельное сопротивление 1,0–1,1·10⁻⁶ Ом·м, плотность 8200–8500 кг/м³, температура плавления 1100–1400 °C.</div>
+
+    <div style="display: flex; gap: 22px; border-bottom: 1px solid #e1e5ea; margin-bottom: 22px; overflow-x: auto;">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="7">
+        <div style="white-space: nowrap; padding-bottom: 10px; font-size: 12.5px; font-weight: 600; color: {{t.color}}; border-bottom: 2px solid {{t.underline}}; flex-shrink: 0;">{{t.label}}</div>
+      </sc-for>
+    </div>
+
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 10px;">Прайс-лист</div>
+    <div style="border: 1px solid #e1e5ea; border-radius: 6px; overflow: hidden; margin-bottom: 30px;">
+      <div style="display: grid; grid-template-columns: 32px 1.6fr 1.3fr 1.3fr 1.4fr 60px; background: #f2f4f6; padding: 8px 12px; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #8b93a0;">
+        <div>№</div><div>Продукция / марка</div><div>Размер</div><div>Цена*, р/кг</div><div></div><div></div>
+      </div>
+      <sc-for list="{{priceRows}}" as="r" hint-placeholder-count="6">
+        <div style="display: grid; grid-template-columns: 32px 1.6fr 1.3fr 1.3fr 1.4fr 60px; padding: 10px 12px; border-top: 1px solid #eceef1; align-items: center;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #b0b5bd;">{{r.n}}</div>
+          <div style="font-size: 12.5px; color: #232a33;">{{r.prod}} <span style="color: #8b93a0;">{{r.mark}}</span></div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #232a33;">{{r.size}}</div>
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; color: {{r.priceColor}};">{{r.price}}</div>
+          <div></div>
+          <div style="font-size: 11.5px; font-weight: 600; color: oklch(0.6 0.11 185); white-space: nowrap;">Купить →</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 10px;">ГОСТы и ТУ</div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 30px;">
+      <sc-for list="{{gosts}}" as="gd" hint-placeholder-count="3">
+        <div style="border: 1px solid #e1e5ea; border-radius: 6px; padding: 14px;">
+          <div style="font-size: 13px; font-weight: 700; color: #232a33; margin-bottom: 6px;">{{gd.num}}</div>
+          <div style="font-size: 11.5px; color: #5b6572; line-height: 1.4; margin-bottom: 12px; min-height: 48px;">{{gd.desc}}</div>
+          <div style="display: flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: oklch(0.6 0.11 185);">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Скачать PDF
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="border: 1px solid #e1e5ea; border-radius: 8px; padding: 24px; display: flex; align-items: center; justify-content: space-between; background: #f7f8fa;">
+      <div>
+        <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 4px;">Нужна точная цена под объём?</div>
+        <div style="font-size: 12.5px; color: #5b6572;">Пришлём расчёт с учётом партии и формы поставки в течение рабочего дня.</div>
+      </div>
+      <div style="display: flex; gap: 10px; flex-shrink: 0;">
+        <div style="padding: 10px 18px; border-radius: 4px; border: 1px solid #c7ced7; color: #232a33; font-size: 12.5px; font-weight: 600;">Скачать прайс PDF</div>
+        <div style="padding: 10px 18px; border-radius: 4px; background: oklch(0.68 0.11 185); color: #fff; font-size: 12.5px; font-weight: 600;">Отправить заявку</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background: oklch(0.16 0.01 240); margin-top: auto;">
+    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: oklch(0.22 0.015 240);">
+      <div style="font-size: 13px; color: #fff; font-weight: 600;">Подписаться на обновления цен и новинки ассортимента</div>
+      <div style="display: flex; gap: 8px;">
+        <div style="width: 220px; border-radius: 4px; padding: 8px 12px; background: rgba(255,255,255,.08); font-size: 12px; color: rgba(255,255,255,.5);">Ваш e-mail</div>
+        <div style="padding: 8px 16px; border-radius: 4px; background: oklch(0.68 0.11 185); color: #fff; font-size: 12px; font-weight: 600;">Подписаться</div>
+      </div>
+    </div>
+    <div style="padding: 32px 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;">
+      <sc-for list="{{sitemapCols}}" as="col" hint-placeholder-count="4">
+        <div>
+          <div style="font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: oklch(0.55 0.02 240); margin-bottom: 10px;">{{col.title}}</div>
+          <sc-for list="{{col.items}}" as="ci" hint-placeholder-count="5">
+            <div style="font-size: 12px; color: oklch(0.75 0.03 240); padding: 3px 0;">{{ci}}</div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding: 16px 40px; border-top: 1px solid oklch(0.28 0.015 240); font-size: 11px; color: oklch(0.46 0.05 240);">© ООО «НПК «Метотехника» · info@metotech.ru · +7 (495) 504-95-54</div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1560,"height":2500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accentDeep = 'oklch(0.6 0.11 185)';
+
+    const topDropdownsRaw = ['По материалу', 'По форме', 'Отрасли', 'База знаний'];
+    const topDropdowns = topDropdownsRaw.map(function (label, i) {
+      const active = i === 0;
+      return { label: label, color: active ? accentDeep : '#5b6572', underline: active ? accentDeep : 'transparent' };
+    });
+
+    const groupsRaw = [
+      { name: 'Прецизионные сплавы', items: ['Нихром', 'Фехраль', 'Термоэлектродные сплавы', 'Термопровода', 'Константан'] },
+      { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений', 'Хром'] },
+      { name: 'Никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор', 'Кобальт'] },
+      { name: 'Прочие материалы', items: ['Титан', 'Олово', 'Ванадий', 'Твёрдые сплавы', 'Ферросплавы'] }
+    ];
+    const groups = groupsRaw;
+
+    const tabLabels = ['Ассортимент', 'Описание', 'Изготовление', 'Стоимость', 'ГОСТы, ТУ', 'Фото', 'Публикации'];
+    const tabs = tabLabels.map(function (label, i) {
+      const active = i === 3;
+      return { label: label, color: active ? accentDeep : '#5b6572', underline: active ? accentDeep : 'transparent' };
+    });
+
+    const priceRowsRaw = [
+      { n: 1, prod: 'Нить', mark: 'Х20Н80-ВИ', size: 'Ø 0,012', price: 'По согласованию', neg: true },
+      { n: 2, prod: 'Нить', mark: 'Х20Н80-ВИ', size: 'Ø 0,014', price: 'По согласованию', neg: true },
+      { n: 9, prod: 'Проволока', mark: 'Х20Н80', size: 'Ø 0,1', price: 'от 12000 р/кг', neg: false },
+      { n: 10, prod: 'Проволока', mark: 'Х20Н80', size: 'Ø 0,12', price: 'от 9000 р/кг', neg: false },
+      { n: 11, prod: 'Проволока', mark: 'Х20Н80', size: 'Ø 0,14', price: 'от 9000 р/кг', neg: false },
+      { n: 12, prod: 'Проволока', mark: 'Х20Н80', size: 'Ø 0,16', price: 'от 8000 р/кг', neg: false }
+    ];
+    const priceRows = priceRowsRaw.map(function (r) {
+      return { n: r.n, prod: r.prod, mark: r.mark, size: r.size, price: r.price, priceColor: r.neg ? '#3f7fb0' : '#232a33' };
+    });
+
+    const gosts = [
+      { num: 'ГОСТ 10994-74', desc: 'Сплавы прецизионные. Марки.' },
+      { num: 'ГОСТ 12766.1-90', desc: 'Проволока из прецизионных сплавов с высоким электрическим сопротивлением. ТУ.' },
+      { num: 'ГОСТ 12766.2-90', desc: 'Лента из прецизионных сплавов с высоким электрическим сопротивлением. ТУ.' }
+    ];
+
+    const sitemapCols = [
+      { title: 'Прецизионные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции', 'Медно-никелевые сплавы'] },
+      { title: 'Тугоплавкие и прочие', items: ['Вольфрам', 'Молибден', 'Титан', 'Кобальтовый порошок', 'Ферросплавы'] },
+      { title: 'Никель и стали', items: ['Никель', 'Нержавеющая сталь', 'Жаропрочные сплавы', 'Термопары'] },
+      { title: 'Компания', items: ['О компании', 'ГОСТы и ТУ', 'Статьи', 'Фотографии', 'Карта сайта'] }
+    ];
+
+    return { topDropdowns, groups, tabs, priceRows, gosts, sitemapCols };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Токены — 3 варианта</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #e8eaed; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+</style>
+</helmet>
+<div style="width: 1700px; height: 2700px; box-sizing: border-box; padding: 56px; background: #e8eaed; display: flex; flex-direction: column; gap: 28px;">
+
+  <div>
+    <div style="font-size: 22px; font-weight: 700; color: #1a1a1a;">Токены дизайн-системы — 3 варианта</div>
+    <div style="font-size: 13px; color: #666; margin-top: 6px; max-width: 1100px; line-height: 1.5;">Сравнение цвета, типографики, отступов, скруглений, теней и числовых данных по трём направлениям. Разметка внутри колонок одинаковая — отличаются только значения.</div>
+  </div>
+
+  <div style="padding: 16px 20px; background: #fff; border: 1px solid #d8dbe0; border-radius: 8px; font-size: 12px; color: #555; line-height: 1.6;">
+    <b>Контекст из аудита:</b> сегодня отступы заданы вразнобой — 5, 6, 7, 9, 11, 13, 17, 22, 26px — без единой сетки. Ниже каждое направление снэпает их на свою сетку.
+    Формат числа тоже не решён: <span style="font-family: monospace;">12000</span> против <span style="font-family: monospace;">12&#8201;000</span> (узкий пробел-разрядность) — вопрос отдельный от выбора шрифта, показан в блоке «Числа» для каждого направления.
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; align-items: start;">
+    <sc-for list="{{columns}}" as="col" hint-placeholder-count="3">
+      <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 22px;">
+
+        <div>
+          <div style="display: inline-block; padding: 5px 12px; border-radius: 999px; background: {{col.accent}}; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.04em;">{{col.title}}</div>
+          <div style="font-size: 12.5px; color: #666; margin-top: 8px; line-height: 1.4;">{{col.subtitle}}</div>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Цвет</div>
+          <sc-for list="{{col.colors}}" as="c" hint-placeholder-count="6">
+            <div style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+              <div style="width: 44px; height: 28px; border-radius: {{col.radiusSm}}px; background: {{c.value}}; flex-shrink: 0; border: 1px solid rgba(0,0,0,.08);"></div>
+              <div style="font-size: 12px; color: #2a2a2a; flex-grow: 1;">{{c.name}}</div>
+              <div style="font-size: 10.5px; color: #a3a9b2; font-family: monospace;">{{c.value}}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Семантика (новое)</div>
+          <sc-for list="{{col.semantic}}" as="s" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+              <div style="width: 12px; height: 12px; border-radius: 50%; background: {{s.value}}; flex-shrink: 0;"></div>
+              <div style="font-size: 12px; color: #2a2a2a;">{{s.name}}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Типографика — {{col.fontName}}</div>
+          <sc-for list="{{col.typeScale}}" as="t" hint-placeholder-count="8">
+            <div style="padding: 6px 0; border-bottom: 1px solid #f2f3f5;">
+              <div style="font-family: {{col.fontBody}}; font-size: {{t.px}}px; font-weight: {{t.weight}}; line-height: {{t.lh}}; color: #1c1c1c;">Нихром Х20Н80</div>
+              <div style="font-size: 9.5px; color: #b0b5bd; margin-top: 2px;">{{t.role}} · {{t.px}}px / {{t.weight}} / LH {{t.lh}}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Лестница начертаний</div>
+          <sc-for list="{{col.weights}}" as="w" hint-placeholder-count="4">
+            <div style="display: flex; align-items: baseline; gap: 12px; padding: 5px 0;">
+              <div style="font-family: {{col.fontBody}}; font-weight: {{w.w}}; font-size: 18px; color: #1c1c1c; width: 32px; flex-shrink: 0;">Aa</div>
+              <div style="font-size: 11px; color: #6b7078;">{{w.w}} — {{w.role}}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Отступы — сетка {{col.spacingUnit}}pt</div>
+          <sc-for list="{{col.spacing}}" as="sp" hint-placeholder-count="7">
+            <div style="display: flex; align-items: center; gap: 10px; padding: 3px 0;">
+              <div style="width: {{sp}}px; height: 12px; background: {{col.accent}}; border-radius: 2px; flex-shrink: 0;"></div>
+              <div style="font-size: 10.5px; color: #8a8f98;">{{sp}}px</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Скругления</div>
+          <div style="display: flex; gap: 14px;">
+            <sc-for list="{{col.radiusSteps}}" as="r" hint-placeholder-count="3">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                <div style="width: 60px; height: 48px; background: #f4f5f7; border: 1px solid #dcdfe4; border-radius: {{r.px}}px;"></div>
+                <div style="font-size: 10px; color: #8a8f98;">{{r.label}} {{r.px}}px</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Тени / подъём</div>
+          <sc-for list="{{col.shadows}}" as="sh" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 5px 0;">
+              <div style="width: 64px; height: 36px; background: #fff; border-radius: {{col.radiusMd}}px; box-shadow: {{sh.shadow}}; border: {{sh.border}}; flex-shrink: 0;"></div>
+              <div style="font-size: 10.5px; color: #8a8f98;">{{sh.label}}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Числа — прайс, размеры, ГОСТ</div>
+          <div style="font-size: 9.5px; color: #b0b5bd; margin-bottom: 6px;">{{col.fontBody}} · tabular-nums</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; margin-bottom: 14px;">
+            <sc-for list="{{col.numbers}}" as="n" hint-placeholder-count="4">
+              <div style="font-family: {{col.fontBody}}; font-variant-numeric: tabular-nums; font-size: 13px; color: #1c1c1c; background: #f7f8fa; border-radius: 4px; padding: 6px 8px;">{{n}}</div>
+            </sc-for>
+          </div>
+          <div style="font-size: 9.5px; color: #b0b5bd; margin-bottom: 6px;">{{col.monoLabel}}</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px;">
+            <sc-for list="{{col.numbers}}" as="n2" hint-placeholder-count="4">
+              <div style="font-family: {{col.fontMono}}; font-size: 13px; color: #1c1c1c; background: #f7f8fa; border-radius: 4px; padding: 6px 8px;">{{n2}}</div>
+            </sc-for>
+          </div>
+        </div>
+
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1700,"height":2700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const numbers = ["Ø 0,012", "от 12 000 р/кг", "Х20Н80-ВИ", "1,0-1,1·10⁻⁶ Ом·м"];
+    const numbersFixed = ["Ø 0,012", "от 12 000 р/кг", "Х20Н80-ВИ", "1,0-1,1·10⁻⁶ Ом·м"];
+
+    const columns = [
+      {
+        id: 'steel',
+        title: 'A · Сталь',
+        subtitle: 'Эволюция текущей идентичности: тот же акцент и шрифт, но формализованные шкалы.',
+        fontName: 'IBM Plex Sans',
+        fontBody: "'IBM Plex Sans', system-ui, sans-serif",
+        fontMono: "'IBM Plex Sans', system-ui, sans-serif",
+        monoLabel: 'Моно нет — тот же шрифт, только tabular-nums',
+        accent: 'oklch(0.68 0.11 185)',
+        radiusSm: 2, radiusMd: 4,
+        spacingUnit: 4,
+        spacing: [4, 8, 12, 16, 24, 32, 48],
+        colors: [
+          { name: 'Ink', value: '#232a33' },
+          { name: 'Paper', value: '#fefeff' },
+          { name: 'Line', value: '#e1e5ea' },
+          { name: 'Accent', value: 'oklch(0.68 0.11 185)' },
+          { name: 'Brand (dark)', value: 'oklch(0.38 0.05 240)' }
+        ],
+        semantic: [
+          { name: 'Успех · В наличии', value: '#3f8f5f' },
+          { name: 'Внимание · Под заказ', value: '#c98a2e' },
+          { name: 'Инфо · По согласованию', value: '#3f7fb0' },
+          { name: 'Ошибка · Снято с производства', value: '#b74a42' }
+        ],
+        typeScale: [
+          { role: 'H1', px: 28, weight: 700, lh: 1.2 },
+          { role: 'H2', px: 22, weight: 700, lh: 1.25 },
+          { role: 'H3', px: 18, weight: 600, lh: 1.3 },
+          { role: 'Body L', px: 16, weight: 400, lh: 1.55 },
+          { role: 'Body M', px: 14, weight: 400, lh: 1.55 },
+          { role: 'Body S', px: 12.5, weight: 400, lh: 1.5 },
+          { role: 'Label', px: 11, weight: 600, lh: 1.3 },
+          { role: 'Caption', px: 10, weight: 500, lh: 1.3 }
+        ],
+        weights: [
+          { w: 400, role: 'Текст, подписи' },
+          { w: 500, role: 'Второстепенный акцент' },
+          { w: 600, role: 'H3, кнопки, метки' },
+          { w: 700, role: 'H1/H2, бренд' }
+        ],
+        radiusSteps: [
+          { label: 'sm', px: 2 }, { label: 'md', px: 4 }, { label: 'lg', px: 4 }
+        ],
+        shadows: [
+          { label: '0 — база', shadow: 'none', border: 'none' },
+          { label: '1 — карточка', shadow: 'none', border: '1px solid #e1e5ea' },
+          { label: '2 — панель', shadow: 'none', border: '1px solid #c7ced7' },
+          { label: '3 — всплывающее', shadow: '0 18px 40px -14px rgba(20,30,50,.3)', border: 'none' }
+        ],
+        numbers: numbers
+      },
+      {
+        id: 'corporate',
+        title: 'B · Корпоратив',
+        subtitle: 'Синий #3B82F6, Open Sans, просторнее и мягче — реальная трёхуровневая шкала теней.',
+        fontName: 'Open Sans',
+        fontBody: "'Open Sans', sans-serif",
+        fontMono: "'Open Sans', sans-serif",
+        monoLabel: 'Моно нет — тот же шрифт, только tabular-nums',
+        accent: '#3B82F6',
+        radiusSm: 6, radiusMd: 8,
+        spacingUnit: 8,
+        spacing: [8, 16, 24, 32, 48, 64, 96],
+        colors: [
+          { name: 'Ink', value: '#1e293b' },
+          { name: 'Paper', value: '#ffffff' },
+          { name: 'Line', value: '#e2e8f0' },
+          { name: 'Accent', value: '#3B82F6' },
+          { name: 'Brand (dark)', value: '#1e293b' }
+        ],
+        semantic: [
+          { name: 'Успех · В наличии', value: '#16a34a' },
+          { name: 'Внимание · Под заказ', value: '#d97706' },
+          { name: 'Инфо · По согласованию', value: '#0ea5e9' },
+          { name: 'Ошибка · Снято с производства', value: '#dc2626' }
+        ],
+        typeScale: [
+          { role: 'H1', px: 36, weight: 700, lh: 1.2 },
+          { role: 'H2', px: 28, weight: 700, lh: 1.25 },
+          { role: 'H3', px: 22, weight: 600, lh: 1.3 },
+          { role: 'Body L', px: 18, weight: 400, lh: 1.6 },
+          { role: 'Body M', px: 16, weight: 400, lh: 1.6 },
+          { role: 'Body S', px: 14, weight: 400, lh: 1.55 },
+          { role: 'Label', px: 13, weight: 600, lh: 1.4 },
+          { role: 'Caption', px: 12, weight: 500, lh: 1.4 }
+        ],
+        weights: [
+          { w: 400, role: 'Текст' },
+          { w: 500, role: 'Вторичный текст' },
+          { w: 600, role: 'Кнопки, подзаголовки' },
+          { w: 700, role: 'Заголовки, бренд' }
+        ],
+        radiusSteps: [
+          { label: 'sm', px: 6 }, { label: 'md', px: 8 }, { label: 'lg', px: 12 }
+        ],
+        shadows: [
+          { label: '0 — база', shadow: 'none', border: '1px solid #e2e8f0' },
+          { label: '1 — карточка', shadow: '0 1px 3px rgba(15,23,42,.08)', border: 'none' },
+          { label: '2 — панель', shadow: '0 8px 24px -8px rgba(15,23,42,.14)', border: 'none' },
+          { label: '3 — всплывающее', shadow: '0 24px 48px -16px rgba(15,23,42,.22)', border: 'none' }
+        ],
+        numbers: numbers
+      },
+      {
+        id: 'geo',
+        title: 'C · Геометрия',
+        subtitle: 'Синий + фиолетовый, Inter + JetBrains Mono для чисел — плотнее и резче, почти без теней.',
+        fontName: 'Inter',
+        fontBody: "'Inter', sans-serif",
+        fontMono: "'JetBrains Mono', monospace",
+        monoLabel: 'JetBrains Mono — моноширинный для чисел и марок',
+        accent: '#3B82F6',
+        radiusSm: 0, radiusMd: 2,
+        spacingUnit: 4,
+        spacing: [4, 8, 12, 16, 24, 32, 48],
+        colors: [
+          { name: 'Ink', value: '#0f172a' },
+          { name: 'Paper', value: '#ffffff' },
+          { name: 'Line', value: '#e4e4e7' },
+          { name: 'Accent', value: '#3B82F6' },
+          { name: 'Accent 2', value: '#7C3AED' },
+          { name: 'Brand (dark)', value: '#0f172a' }
+        ],
+        semantic: [
+          { name: 'Успех · В наличии', value: '#15803d' },
+          { name: 'Внимание · Под заказ', value: '#b45309' },
+          { name: 'Инфо · По согласованию', value: '#0369a1' },
+          { name: 'Ошибка · Снято с производства', value: '#b91c1c' }
+        ],
+        typeScale: [
+          { role: 'H1', px: 30, weight: 600, lh: 1.15 },
+          { role: 'H2', px: 23, weight: 600, lh: 1.2 },
+          { role: 'H3', px: 18, weight: 600, lh: 1.25 },
+          { role: 'Body L', px: 16, weight: 400, lh: 1.4 },
+          { role: 'Body M', px: 14, weight: 400, lh: 1.45 },
+          { role: 'Body S', px: 12, weight: 400, lh: 1.4 },
+          { role: 'Label', px: 11, weight: 500, lh: 1.2 },
+          { role: 'Caption', px: 10, weight: 500, lh: 1.2 }
+        ],
+        weights: [
+          { w: 400, role: 'Текст' },
+          { w: 500, role: 'Метки, лейблы' },
+          { w: 600, role: 'Кнопки, активные состояния, все заголовки' },
+          { w: 700, role: 'Не используется — шкала намеренно плоская' }
+        ],
+        radiusSteps: [
+          { label: 'sm', px: 0 }, { label: 'md', px: 2 }, { label: 'lg', px: 2 }
+        ],
+        shadows: [
+          { label: '0 — база', shadow: 'none', border: 'none' },
+          { label: '1 — карточка', shadow: 'none', border: '1px solid #e4e4e7' },
+          { label: '2 — панель', shadow: 'none', border: '1px solid #d4d4d8' },
+          { label: '3 — всплывающее (граница, не тень)', shadow: 'none', border: '1px solid #a1a1aa' }
+        ],
+        numbers: numbersFixed
+      }
+    ];
+
+    return { columns };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Элементы по референсам — evek, Precision Metals, Harald Pihl</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #e8eaed; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+</style>
+</helmet>
+<div style="width: 1700px; height: 2550px; box-sizing: border-box; padding: 56px; background: #e8eaed; display: flex; flex-direction: column; gap: 28px;">
+
+  <div>
+    <div style="font-size: 22px; font-weight: 700; color: #232a33;">Элементы по референсам — evek, Precision Metals, Harald Pihl</div>
+    <div style="font-size: 13px; color: #666; margin-top: 6px; max-width: 1200px; line-height: 1.5;">На гибридных токенах (Сталь + тени Корпоратива + JetBrains&nbsp;Mono) везде, включая блок Plansee ниже — заимствуется структура/идея, не палитра источника. Сортировка в духе Harald Pihl (Spec / Dimension / Warehouse / Sort) уже отражена в варианте A листа «Спорные компоненты» — здесь не дублирую. Блок по мотивам Goodfellow убран: при проверке по ссылке подтвердилось, что там та же большая таблица с фильтрами, а не отдельный от неё паттерн — отличия не нашлось.</div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 14px;">Хлебные крошки — в стиле evek (капслок, точки-разделители, текущая — акцентом)</div>
+    <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eceef1;">
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #8b93a0;">ГЛАВНАЯ</span>
+      <span style="color: #c7ced7;">•</span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #8b93a0;">НИХРОМ</span>
+      <span style="color: #c7ced7;">•</span>
+      <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: oklch(0.6 0.11 185);">НИХРОМОВАЯ ПРОВОЛОКА</span>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Таблица свойств — в стиле evek (заливка-шапка акцентом)</div>
+    <div style="border-radius: 8px; overflow: hidden; border: 1px solid #e1e5ea;">
+      <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; background: oklch(0.68 0.11 185); color: #fff; padding: 10px 16px; font-size: 12px; font-weight: 700;">
+        <div>Свойство</div><div>Х20Н80</div><div>Х15Н60</div>
+      </div>
+      <sc-for list="{{specRows}}" as="s" hint-placeholder-count="6">
+        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; padding: 9px 16px; font-size: 12.5px; color: #232a33; background: {{s.bg}};">
+          <div>{{s.label}}</div>
+          <div style="font-family: 'JetBrains Mono', monospace;">{{s.a}}</div>
+          <div style="font-family: 'JetBrains Mono', monospace;">{{s.b}}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Прайс-таблица с фото по группам продукции — вариант на обсуждение</div>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+
+      <div style="display: flex; gap: 16px; align-items: stretch;">
+        <div style="width: 96px; flex-shrink: 0; border-radius: 6px; overflow: hidden; border: 1px solid #e1e5ea;">
+          <img src="/_blob/d0d8bcdc0ed805b06291932e8154afa9" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        </div>
+        <div style="flex-grow: 1;">
+          <div style="font-size: 12.5px; font-weight: 700; color: #232a33; margin-bottom: 6px;">Нить</div>
+          <sc-for list="{{threadRows}}" as="tr1" hint-placeholder-count="2">
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr 1.3fr 30px; padding: 6px 0; border-top: 1px solid #eceef1; align-items: center;">
+              <div style="font-size: 12px; color: #8b93a0;">{{tr1.mark}}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #232a33;">{{tr1.size}}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: #3f7fb0;">{{tr1.price}}</div>
+              <div style="font-size: 11px; font-weight: 600; color: oklch(0.6 0.11 185); text-align: right;">→</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 16px; align-items: stretch;">
+        <div style="width: 96px; flex-shrink: 0; border-radius: 6px; overflow: hidden; border: 1px solid #e1e5ea;">
+          <img src="/_blob/98e3af814f4f8d1d4d03d22d6cd8de71" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        </div>
+        <div style="flex-grow: 1;">
+          <div style="font-size: 12.5px; font-weight: 700; color: #232a33; margin-bottom: 6px;">Проволока</div>
+          <sc-for list="{{wireRows}}" as="wr1" hint-placeholder-count="4">
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr 1.3fr 30px; padding: 6px 0; border-top: 1px solid #eceef1; align-items: center;">
+              <div style="font-size: 12px; color: #8b93a0;">{{wr1.mark}}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #232a33;">{{wr1.size}}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: #232a33;">{{wr1.price}}</div>
+              <div style="font-size: 11px; font-weight: 600; color: oklch(0.6 0.11 185); text-align: right;">→</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Плитки-категории с фото — в стиле Precision Metals</div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+      <sc-for list="{{tiles}}" as="tile" hint-placeholder-count="3">
+        <div style="position: relative; height: 180px; border-radius: 6px; overflow: hidden;">
+          <img src="{{tile.img}}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+          <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.65) 100%);"></div>
+          <div style="position: absolute; left: 16px; bottom: 14px; color: #fff; font-size: 15px; font-weight: 700;">{{tile.name}}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Sticky-анкор-навигация по разделам материала (по мотивам Plansee)</div>
+    <div style="font-size: 11.5px; color: #9aa1ab; margin-bottom: 14px; max-width: 900px; line-height: 1.5;">Структура — реальная: у Plansee раздел материала это один длинный файл с якорными переходами по разделам, а не отдельные страницы. У Метотехники сейчас 7 отдельных .htm-файлов на материал (nihrom-price/opisanie/cena/gost/foto/article/proizvodstvo) — здесь показано, как выглядела бы шапка той же семёрки разделов, если свести их в одну прокручиваемую страницу. Цвета — гибридные токены проекта, не палитра Plansee.</div>
+    <div style="border-radius: 6px; overflow: hidden; box-shadow: 0 7px 8px rgba(0,0,0,.09);">
+      <div style="display: flex; align-items: stretch;">
+        <div style="background: oklch(0.68 0.11 185); color: #fff; font-size: 12.5px; font-weight: 600; padding: 12px 20px; white-space: nowrap; display: flex; align-items: center; flex-shrink: 0;">Нихром</div>
+        <div style="flex-grow: 1; display: flex; align-items: center; overflow-x: auto; padding: 0 16px; background: #fff;">
+          <sc-for list="{{anchorTabs}}" as="at" hint-placeholder-count="7">
+            <div style="display: flex; align-items: center; flex-shrink: 0;">
+              <div style="font-size: 12.5px; font-weight: 500; color: #5b6572; padding: 12px 10px; white-space: nowrap;">{{at.label}}</div>
+              <sc-if value="{{at.sep}}" hint-placeholder-val="true">
+                <span style="color: #c7ced7;">|</span>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 10px; font-size: 11px; color: #b0b5bd;">Активный якорь при скролле в реализации подсвечивается акцентом проекта — сама идея sticky-навигации с якорями взята у Plansee, оформление уже наше.</div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1700,"height":2550}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const specRowsRaw = [
+      { label: 'Плотность, г/см³', a: '8,4', b: '8,2' },
+      { label: 'Температура плавления, °С', a: '1400', b: '1390' },
+      { label: 'Удельное сопротивление, Ом·м', a: '1,0-1,1·10⁻⁶', b: '1,0-1,1·10⁻⁶' },
+      { label: 'Магнитность', a: 'не магнитен', b: 'не магнитен' },
+      { label: 'Твёрдость, НВ', a: '140-150', b: '140-150' },
+      { label: 'Уд. теплоёмкость, кДж/кг·К при 25°С', a: '0,44', b: '0,46' }
+    ];
+    const specRows = specRowsRaw.map(function (r, i) {
+      return { label: r.label, a: r.a, b: r.b, bg: i % 2 === 1 ? '#f7f8fa' : '#fff' };
+    });
+
+    const threadRows = [
+      { mark: 'Х20Н80-ВИ', size: 'Ø 0,012', price: 'По согласованию' },
+      { mark: 'Х20Н80-ВИ', size: 'Ø 0,014', price: 'По согласованию' }
+    ];
+    const wireRows = [
+      { mark: 'Х20Н80', size: 'Ø 0,1', price: 'от 12000 р/кг' },
+      { mark: 'Х20Н80', size: 'Ø 0,12', price: 'от 9000 р/кг' },
+      { mark: 'Х20Н80', size: 'Ø 0,14', price: 'от 9000 р/кг' },
+      { mark: 'Х20Н80', size: 'Ø 0,16', price: 'от 8000 р/кг' }
+    ];
+
+    const tiles = [
+      { name: 'Нихром', img: '/_blob/92aacf2587b596348aa64382541fe9ef' },
+      { name: 'Фехраль', img: '/_blob/b4bda96b26f74842459325375f2fad6d' },
+      { name: 'Вольфрам', img: '/_blob/600bb01bd31b86796871a5d42e4a5838' }
+    ];
+
+    const anchorLabels = ['Ассортимент', 'Описание', 'Изготовление', 'Стоимость', 'ГОСТы, ТУ', 'Фото', 'Публикации'];
+    const anchorTabs = anchorLabels.map(function (label, i) {
+      return { label: label, sep: i < anchorLabels.length - 1 };
+    });
+
+    return { specRows, threadRows, wireRows, tiles, anchorTabs };
+  }
+}
+</script>
+</body>
+</html>

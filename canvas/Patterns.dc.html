@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Спорные компоненты — табы, фильтры, прайс-таблица</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #e8eaed; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+</style>
+</helmet>
+<div style="width: 1700px; height: 4650px; box-sizing: border-box; padding: 56px; background: #e8eaed; display: flex; flex-direction: column; gap: 30px;">
+
+  <div>
+    <div style="font-size: 22px; font-weight: 700; color: #232a33;">Спорные компоненты — одно решение на гибридном направлении</div>
+    <div style="font-size: 13px; color: #666; margin-top: 6px; max-width: 1200px; line-height: 1.5;">Токены — «Сталь» (цвет, шрифт, отступы, скругления) + тени «Корпоратива» + JetBrains&nbsp;Mono для чисел. Ниже — сегодня эти три компонента по-разному выглядят на десктопе и мобиле; варианты структуры на реальных данных страницы «Нихром → Стоимость», чтобы выбрать одно решение на все ширины.</div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Табы раздела — 7 реальных вкладок</div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">A · подчёркнутые + горизонтальный скролл</div>
+        <div style="display: flex; gap: 18px; overflow-x: hidden; border-bottom: 1px solid #e1e5ea; padding-bottom: 0;">
+          <sc-for list="{{tabs}}" as="t" hint-placeholder-count="7">
+            <div style="white-space: nowrap; padding-bottom: 9px; font-size: 12px; font-weight: 600; color: {{t.color}}; border-bottom: 2px solid {{t.underline}}; flex-shrink: 0;">{{t.label}}</div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">B · пилюли, перенос на 2 строки</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <sc-for list="{{tabs}}" as="t2" hint-placeholder-count="7">
+            <div style="padding: 6px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 600; background: {{t2.pillBg}}; color: {{t2.pillColor}};">{{t2.label}}</div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">C · сегмент + переполнение «Ещё»</div>
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <sc-for list="{{tabsVisible}}" as="t3" hint-placeholder-count="4">
+            <div style="padding: 7px 12px; border-radius: 4px; font-size: 11.5px; font-weight: 600; background: {{t3.pillBg}}; color: {{t3.pillColor}};">{{t3.label}}</div>
+          </sc-for>
+          <div style="padding: 7px 10px; border-radius: 4px; font-size: 11.5px; font-weight: 600; color: #8b93a0; border: 1px solid #c7ced7;">Ещё +3 ▾</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">D · отзывчивый переключатель — показано мобильное состояние</div>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; border: 1px solid #c7ced7; border-radius: 4px; max-width: 220px;">
+          <span style="font-size: 12px; font-weight: 600; color: oklch(0.6 0.11 185);">Стоимость</span>
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#8b93a0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">E · иконка + подпись</div>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+          <sc-for list="{{tabsIconed}}" as="ti" hint-placeholder-count="7">
+            <div style="display: flex; align-items: center; gap: 5px; padding-bottom: 9px; font-size: 11.5px; font-weight: 600; color: {{ti.color}}; border-bottom: 2px solid {{ti.underline}};">
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/></svg>
+              {{ti.label}}
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">F · липкие под шапкой — состояние при скролле</div>
+        <div style="box-shadow: 0 4px 10px -6px rgba(15,23,42,.18); border-bottom: 1px solid #e1e5ea;">
+          <div style="display: flex; gap: 18px;">
+            <sc-for list="{{tabs}}" as="tf" hint-placeholder-count="7">
+              <div style="white-space: nowrap; font-size: 12px; font-weight: 600; color: {{tf.color}}; border-bottom: 2px solid {{tf.underline}}; padding-bottom: 9px;">{{tf.label}}</div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Фильтры — реальные поля страницы (filter_form.htm)</div>
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">A · та же строка, просто переодетая</div>
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <sc-for list="{{filterSelects}}" as="f" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid #c7ced7; border-radius: 4px; font-size: 12px; color: #232a33; background: #fff;">
+              <span style="color: #8b93a0;">{{f.label}}:</span> {{f.value}}
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#8b93a0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </sc-for>
+          <div style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid #c7ced7; border-radius: 4px; font-size: 12px; color: #232a33; background: #fff;">Ø, мм: <input style="width: 34px; border: none; border-bottom: 1px solid #c7ced7; font-size: 12px; font-family: 'JetBrains Mono', monospace;" value="0,1"> — <input style="width: 34px; border: none; border-bottom: 1px solid #c7ced7; font-size: 12px; font-family: 'JetBrains Mono', monospace;" value="5,0"></div>
+          <div style="font-size: 12px; color: #8b93a0; text-decoration: underline; cursor: pointer;">Сбросить фильтр</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">B · свёрнуто в одну кнопку-триггер</div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 4px; background: oklch(0.68 0.11 185); color: #fff; font-size: 12px; font-weight: 600;">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Фильтры
+            <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: rgba(255,255,255,.3); font-size: 10px;">2</span>
+          </div>
+          <div style="font-size: 11px; color: #b0b5bd;">→ открывает панель с теми же 3 select + диапазоном Ø, здесь свёрнуто</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">C · категориальные — чипами, диаметр — полями (без &lt;select&gt;)</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+            <span style="font-size: 10.5px; color: #8b93a0; margin-right: 4px;">Продукция:</span>
+            <sc-for list="{{filterChips}}" as="c" hint-placeholder-count="5">
+              <span style="padding: 5px 11px; border-radius: 999px; font-size: 11px; font-weight: 600; background: {{c.bg}}; color: {{c.color}};">{{c.label}}</span>
+            </sc-for>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 10.5px; color: #8b93a0;">Ø, мм:</span>
+            <input style="width: 44px; padding: 4px 6px; border: 1px solid #c7ced7; border-radius: 4px; font-size: 11.5px; font-family: 'JetBrains Mono', monospace;" value="0,1">
+            <span style="color: #b0b5bd;">—</span>
+            <input style="width: 44px; padding: 4px 6px; border: 1px solid #c7ced7; border-radius: 4px; font-size: 11.5px; font-family: 'JetBrains Mono', monospace;" value="5,0">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">D · постоянная боковая панель</div>
+        <div style="width: 220px; border: 1px solid #e1e5ea; border-radius: 6px; padding: 14px;">
+          <sc-for list="{{filterSelects}}" as="fd" hint-placeholder-count="3">
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 10.5px; font-weight: 700; color: #8b93a0; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px;">{{fd.label}}</div>
+              <div style="font-size: 12px; color: #232a33;">{{fd.value}}</div>
+            </div>
+          </sc-for>
+          <div style="font-size: 10.5px; font-weight: 700; color: #8b93a0; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px;">Ø, мм</div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <input style="width: 40px; padding: 4px 6px; border: 1px solid #c7ced7; border-radius: 4px; font-size: 11.5px; font-family: 'JetBrains Mono', monospace;" value="0,1">
+            <span style="color: #b0b5bd;">—</span>
+            <input style="width: 40px; padding: 4px 6px; border: 1px solid #c7ced7; border-radius: 4px; font-size: 11.5px; font-family: 'JetBrains Mono', monospace;" value="5,0">
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">E · bottom-sheet — открытое состояние</div>
+        <div style="max-width: 320px; border: 1px solid #e1e5ea; border-radius: 10px 10px 0 0; box-shadow: 0 -8px 24px -10px rgba(15,23,42,.2); overflow: hidden;">
+          <div style="display: flex; align-items: center; justify-content: center; padding: 8px;"><div style="width: 36px; height: 4px; border-radius: 2px; background: #dcdfe4;"></div></div>
+          <div style="padding: 0 16px 16px;">
+            <div style="font-size: 13px; font-weight: 700; color: #232a33; margin-bottom: 12px;">Фильтры</div>
+            <sc-for list="{{filterSelects}}" as="fe" hint-placeholder-count="3">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-top: 1px solid #eceef1; font-size: 12.5px;">
+                <span style="color: #8b93a0;">{{fe.label}}</span><span style="color: #232a33;">{{fe.value}}</span>
+              </div>
+            </sc-for>
+            <div style="margin-top: 12px; padding: 10px; border-radius: 4px; background: oklch(0.68 0.11 185); color: #fff; text-align: center; font-size: 12px; font-weight: 600;">Показать 6 позиций</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">F · фильтры встроены в шапку таблицы</div>
+        <div style="border: 1px solid #e1e5ea; border-radius: 6px; overflow: hidden; max-width: 480px;">
+          <div style="display: grid; grid-template-columns: 1.6fr 1fr 1fr; background: #f2f4f6; padding: 8px 12px; gap: 8px;">
+            <div style="font-size: 11px; color: #232a33; font-weight: 600; display: flex; align-items: center; gap: 4px;">Продукция <svg width="8" height="8" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#8b93a0" stroke-width="1.8"/></svg></div>
+            <div style="font-size: 11px; color: #232a33; font-weight: 600; display: flex; align-items: center; gap: 4px;">Марка <svg width="8" height="8" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#8b93a0" stroke-width="1.8"/></svg></div>
+            <div style="font-size: 11px; color: #232a33; font-weight: 600; display: flex; align-items: center; gap: 4px;">Ø, мм <svg width="8" height="8" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#8b93a0" stroke-width="1.8"/></svg></div>
+          </div>
+          <div style="padding: 9px 12px; font-size: 11.5px; color: #b0b5bd;">строки таблицы ниже фильтруются по этим значениям</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Прайс-таблица — 6 реальных строк (nihrom-cena.htm)</div>
+    <div style="display: flex; flex-direction: column; gap: 22px;">
+    <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 24px; align-items: start;">
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">A · таблица (десктоп)</div>
+        <div style="border: 1px solid #e1e5ea; border-radius: 8px; overflow: hidden;">
+          <div style="display: grid; grid-template-columns: 32px 1.6fr 1.3fr 1.3fr 1.4fr 30px; gap: 0; background: #f2f4f6; padding: 8px 10px; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #8b93a0;">
+            <div>№</div><div>Продукция / марка</div><div>Размер</div><div>Цена*, р/кг</div><div></div><div></div>
+          </div>
+          <sc-for list="{{priceRows}}" as="r" hint-placeholder-count="6">
+            <div style="display: grid; grid-template-columns: 32px 1.6fr 1.3fr 1.3fr 1.4fr 30px; gap: 0; padding: 9px 10px; border-top: 1px solid #eceef1; align-items: center;">
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #b0b5bd;">{{r.n}}</div>
+              <div style="font-size: 12px; color: #232a33;">{{r.prod}} <span style="color: #8b93a0;">{{r.mark}}</span></div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #232a33;">{{r.size}}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: {{r.priceColor}};">{{r.price}}</div>
+              <div></div>
+              <div style="font-size: 11.5px; font-weight: 600; color: oklch(0.6 0.11 185); white-space: nowrap;">Купить →</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">B · карточки (мобиле, те же данные)</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <sc-for list="{{priceRows}}" as="rc" hint-placeholder-count="6">
+            <div style="border: 1px solid #e1e5ea; border-radius: 6px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div>
+                <div style="font-size: 12.5px; font-weight: 600; color: #232a33;">{{rc.prod}} <span style="font-weight: 400; color: #8b93a0;">{{rc.mark}}</span></div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #8b93a0; margin-top: 2px;">{{rc.size}}</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; color: {{rc.priceColor}};">{{rc.price}}</div>
+                <div style="font-size: 11px; font-weight: 600; color: oklch(0.6 0.11 185); margin-top: 2px;">Купить →</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+    </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">C · группировка по типу продукции, сворачиваемо</div>
+        <div style="border: 1px solid #e1e5ea; border-radius: 8px; overflow: hidden; max-width: 720px;">
+          <sc-for list="{{priceGroups}}" as="pg" hint-placeholder-count="2">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; background: #f2f4f6; font-size: 11.5px; font-weight: 700; color: #232a33;">
+              {{pg.name}} <span style="font-weight: 400; color: #9aa1ab;">{{pg.count}} позиций</span>
+            </div>
+            <sc-for list="{{pg.rows}}" as="pgr" hint-placeholder-count="4">
+              <div style="display: grid; grid-template-columns: 1.6fr 1.3fr 1.3fr 30px; padding: 8px 14px; border-top: 1px solid #eceef1; align-items: center;">
+                <div style="font-size: 12px; color: #232a33;">{{pgr.mark}}</div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #232a33;">{{pgr.size}}</div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: {{pgr.priceColor}};">{{pgr.price}}</div>
+                <div style="font-size: 11px; font-weight: 600; color: oklch(0.6 0.11 185); text-align: right;">→</div>
+              </div>
+            </sc-for>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">D · плотная таблица со sticky-шапкой, «Купить» проявляется по hover</div>
+        <div style="border: 1px solid #e1e5ea; border-radius: 8px; overflow: hidden; max-width: 900px;">
+          <div style="display: grid; grid-template-columns: 1.6fr 1.3fr 1.3fr 1.4fr; padding: 8px 10px; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #8b93a0; box-shadow: 0 4px 10px -6px rgba(15,23,42,.16);">
+            <div>Продукция / марка</div><div>Размер</div><div>Цена*, р/кг</div><div></div>
+          </div>
+          <sc-for list="{{priceRows}}" as="rd" hint-placeholder-count="6">
+            <div style="display: grid; grid-template-columns: 1.6fr 1.3fr 1.3fr 1.4fr; padding: 7px 10px; align-items: center;">
+              <div style="font-size: 12px; color: #232a33;">{{rd.prod}} <span style="color: #8b93a0;">{{rd.mark}}</span></div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #232a33;">{{rd.size}}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: {{rd.priceColor}};">{{rd.price}}</div>
+              <div style="font-size: 11.5px; font-weight: 600; color: {{rd.hoverColor}};">Купить →</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">E · таблица цена + характеристики (без перехода на вкладку «Описание»)</div>
+        <div style="border: 1px solid #e1e5ea; border-radius: 8px; overflow: hidden; max-width: 980px;">
+          <div style="display: grid; grid-template-columns: 1.4fr 1fr 1.1fr 1.2fr 1.3fr; background: #f2f4f6; padding: 8px 10px; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #8b93a0;">
+            <div>Продукция / марка</div><div>Ø, мм</div><div>Плотность</div><div>Т. плавления</div><div>Цена*, р/кг</div>
+          </div>
+          <sc-for list="{{specPriceRows}}" as="sp" hint-placeholder-count="6">
+            <div style="display: grid; grid-template-columns: 1.4fr 1fr 1.1fr 1.2fr 1.3fr; padding: 8px 10px; border-top: 1px solid #eceef1; align-items: center;">
+              <div style="font-size: 12px; color: #232a33;">{{sp.prod}} <span style="color: #8b93a0;">{{sp.mark}}</span></div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #232a33;">{{sp.size}}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5b6572;">{{sp.density}}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #5b6572;">{{sp.melt}}</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: {{sp.priceColor}};">{{sp.price}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 10.5px; color: #b0b5bd; margin-bottom: 8px;">F · сгруппировано по типу, с маленьким фото на группу (с листа «Референсы»)</div>
+        <div style="display: flex; gap: 16px; max-width: 640px;">
+          <div style="width: 88px; flex-shrink: 0; border-radius: 6px; overflow: hidden; border: 1px solid #e1e5ea;">
+            <img src="/_blob/d0d8bcdc0ed805b06291932e8154afa9" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+          </div>
+          <div style="flex-grow: 1;">
+            <div style="font-size: 12px; font-weight: 700; color: #232a33; margin-bottom: 6px;">Нить</div>
+            <sc-for list="{{threadRowsPatterns}}" as="tp" hint-placeholder-count="2">
+              <div style="display: grid; grid-template-columns: 1.3fr 1fr 1.2fr; padding: 5px 0; border-top: 1px solid #eceef1; align-items: center;">
+                <div style="font-size: 11.5px; color: #8b93a0;">{{tp.mark}}</div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #232a33;">{{tp.size}}</div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 600; color: #3f7fb0;">{{tp.price}}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1700,"height":4650}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const activeColor = 'oklch(0.6 0.11 185)';
+    const idleColor = '#5b6572';
+    const tabLabels = ["Ассортимент", "Описание", "Изготовление", "Стоимость", "ГОСТы, ТУ", "Фото", "Публикации"];
+    const activeIdx = 3;
+
+    const tabs = tabLabels.map(function (label, i) {
+      const isActive = i === activeIdx;
+      return {
+        label: label,
+        color: isActive ? activeColor : idleColor,
+        underline: isActive ? activeColor : 'transparent',
+        pillBg: isActive ? activeColor : '#f2f4f6',
+        pillColor: isActive ? '#fff' : '#5b6572'
+      };
+    });
+    const tabsVisible = tabs.slice(0, 4);
+
+    const filterSelects = [
+      { label: 'Материал', value: 'Нихром' },
+      { label: 'Продукция', value: 'Проволока' },
+      { label: 'Марка', value: 'Все марки' }
+    ];
+    const prodLabels = ['Нить', 'Проволока', 'Лента', 'Круг', 'Фольга'];
+    const filterChips = prodLabels.map(function (label) {
+      const isActive = label === 'Проволока';
+      return { label: label, bg: isActive ? 'oklch(0.38 0.05 240)' : '#f2f4f6', color: isActive ? '#fff' : '#5b6572' };
+    });
+
+    const priceRowsRaw = [
+      { n: 1, prod: 'Нить', mark: 'Х20Н80-ВИ', size: 'Ø 0,012', price: 'По согласованию', neg: true },
+      { n: 2, prod: 'Нить', mark: 'Х20Н80-ВИ', size: 'Ø 0,014', price: 'По согласованию', neg: true },
+      { n: 9, prod: 'Проволока', mark: 'Х20Н80', size: 'Ø 0,1', price: 'от 12000 р/кг', neg: false },
+      { n: 10, prod: 'Проволока', mark: 'Х20Н80', size: 'Ø 0,12', price: 'от 9000 р/кг', neg: false },
+      { n: 11, prod: 'Проволока', mark: 'Х20Н80', size: 'Ø 0,14', price: 'от 9000 р/кг', neg: false },
+      { n: 12, prod: 'Проволока', mark: 'Х20Н80', size: 'Ø 0,16', price: 'от 8000 р/кг', neg: false }
+    ];
+    const priceRows = priceRowsRaw.map(function (r, i) {
+      return {
+        n: r.n, prod: r.prod, mark: r.mark, size: r.size, price: r.price,
+        priceColor: r.neg ? '#3f7fb0' : '#232a33',
+        hoverColor: i === priceRowsRaw.length - 1 ? activeColor : '#d5d9de'
+      };
+    });
+
+    const tabsIconed = tabs;
+
+    const groupNames = priceRowsRaw.reduce(function (names, r) {
+      if (names.indexOf(r.prod) === -1) names.push(r.prod);
+      return names;
+    }, []);
+    const priceGroups = groupNames.map(function (name) {
+      const rows = priceRowsRaw.filter(function (r) { return r.prod === name; }).map(function (r) {
+        return { mark: r.mark, size: r.size, price: r.price, priceColor: r.neg ? '#3f7fb0' : '#232a33' };
+      });
+      return { name: name, count: rows.length, rows: rows };
+    });
+
+    const specPriceRows = priceRowsRaw.map(function (r) {
+      return {
+        prod: r.prod, mark: r.mark, size: r.size, price: r.price,
+        priceColor: r.neg ? '#3f7fb0' : '#232a33',
+        density: '8,4 г/см³', melt: '1400 °С'
+      };
+    });
+
+    const threadRowsPatterns = priceRowsRaw.filter(function (r) { return r.prod === 'Нить'; }).map(function (r) {
+      return { mark: r.mark, size: r.size, price: r.price };
+    });
+
+    return { tabs, tabsVisible, tabsIconed, filterSelects, filterChips, priceRows, priceGroups, specPriceRows, threadRowsPatterns };
+  }
+}
+</script>
+</body>
+</html>

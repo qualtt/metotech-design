@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Главная страница — моб.</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --blue:#3E5D88;
+    --blue-deep:#2f4a6b;
+    --blue-tint:#EAF1F8;
+    --orange:#EC9D47;
+    --orange-deep:#C5873F;
+    --ink:#232a33;
+    --ink-soft:#5b6572;
+    --ink-faint:#9aa1ab;
+    --line:#e1e5ea;
+    --paper:#fefeff;
+    --paper-dim:#f7f8fa;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;}
+  .page{font-family:'IBM Plex Sans',system-ui,sans-serif;color:var(--ink);background:var(--paper);width:390px;position:relative;}
+  h1,h2,h3{margin:0;font-weight:600;}
+  p{margin:0;}
+  a{color:inherit;text-decoration:none;}
+  img{display:block;}
+  .btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;border-radius:4px;font-weight:600;font-size:12.5px;white-space:nowrap;}
+  .btn-accent{background:var(--orange);color:#fff;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:8px;}
+  .photo-ph{background:linear-gradient(135deg,#eef0f2,#dfe2e6);display:flex;align-items:center;justify-content:center;color:#a3a9b2;}
+  .field-label{font-size:10.5px;color:var(--ink-faint);margin-bottom:3px;}
+  .field-box{border:1px solid #dde1e7;border-radius:4px;padding:7px 9px;font-size:12px;color:#b0b5bd;}
+
+  .phone-shell{width:100%;min-height:970px;display:flex;align-items:center;justify-content:center;background:#e9ebee;padding:20px 0;box-sizing:border-box;}
+  .phone-frame{box-sizing:border-box;position:relative;width:426px;height:880px;padding:18px;background:#292929;border-radius:54px;box-shadow:0 30px 70px -24px rgba(0,0,0,.4), inset 0 0 0 2px #525252;flex-shrink:0;}
+  .phone-screen{box-sizing:border-box;position:relative;width:100%;height:100%;background:var(--paper);border-radius:36px;overflow:hidden;transform:translateZ(0);}
+  .phone-scroll{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+  .phone-notch{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:100px;height:28px;background:#292929;border-radius:16px;z-index:200;pointer-events:none;}
+  .phone-home{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:#bfc4ca;z-index:250;pointer-events:none;}
+
+  .mheader{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--paper);}
+  .mheader-burger{display:flex;align-items:center;justify-content:center;width:30px;height:30px;color:var(--ink);flex-shrink:0;}
+  .mheader-logo{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
+  .mheader-logo img{width:24px;height:21px;flex-shrink:0;}
+  .mheader-logo span{font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap;}
+  .mheader-logo span b{color:var(--orange);font-weight:700;}
+  .mheader-actions{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+  .mheader-icon{display:flex;align-items:center;justify-content:center;width:32px;height:32px;color:var(--blue);border-radius:4px;flex-shrink:0;}
+
+  .accent-strip{height:6px;background:var(--blue);background-image:repeating-linear-gradient(135deg, rgba(255,255,255,.08) 0px, rgba(255,255,255,.08) 2px, transparent 2px, transparent 7px);}
+
+  .mtabs{display:flex;gap:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:9px 16px;background:var(--paper-dim);border-bottom:1px solid #eceef1;font-size:11.5px;font-weight:600;color:#8b93a0;white-space:nowrap;}
+
+  .finder{margin:16px;padding:0;border:2px solid var(--blue);border-radius:10px;overflow:hidden;}
+  .finder-head{background:var(--blue);padding:12px 14px;font-size:14px;font-weight:700;color:#fff;}
+  .finder-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:#fff;}
+  .finder-select{display:flex;align-items:center;justify-content:space-between;gap:6px;border:2px solid var(--blue);border-radius:6px;padding:8px 10px;font-size:12.5px;font-weight:700;color:var(--blue);}
+
+  .quick{margin:0 16px 16px;padding:0;border:2px solid var(--orange);border-radius:10px;overflow:hidden;}
+  .quick-head{background:var(--orange);padding:12px 14px;font-size:14px;font-weight:700;color:#fff;}
+  .quick-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:#fff;}
+
+  .cat-toggle{position:absolute;opacity:0;width:0;height:0;margin:0;pointer-events:none;}
+  .mobnav-overlay{position:fixed;inset:0;background:#fff;z-index:100;opacity:0;visibility:hidden;transition:opacity .15s ease;}
+  #menu-open:checked ~ .mobnav-overlay{opacity:1;visibility:visible;}
+  .cat-panel-head{display:flex;align-items:center;gap:10px;padding:15px 16px;border-bottom:1px solid var(--line);}
+  .cat-panel-title{flex:1;font-size:16px;font-weight:700;color:var(--blue-deep);}
+  .cat-close{display:flex;align-items:center;justify-content:center;width:28px;height:28px;color:var(--ink-soft);flex-shrink:0;}
+  .cat-body{overflow-y:auto;height:calc(100% - 58px);-webkit-overflow-scrolling:touch;}
+  .cat-grp{padding:16px 16px 6px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);}
+  .cat-row{display:block;padding:12px 16px;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink);}
+</style>
+</helmet>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h2.7l1.6 4-2 1.6a11 11 0 0 0 5.1 5.1l1.6-2 4 1.6v2.7a2 2 0 0 1-2.1 2C10.8 18 6 13.2 4.5 6.6a2 2 0 0 1 2-3.1z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="8.3" cy="9.3" r="1.6" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 17l5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevron-r" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-burger" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="phone-shell">
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<div class="phone-screen">
+<div class="phone-scroll">
+<div class="page">
+
+  <input type="checkbox" id="menu-open" class="cat-toggle">
+
+  <!-- header: бургер открывает каталог (вход №1), это и есть мобильный эквивалент бокового меню -->
+  <div class="accent-strip"></div>
+  <div class="mheader">
+    <label for="menu-open" class="mheader-burger"><svg width="21" height="21"><use href="#i-burger"/></svg></label>
+    <div class="mheader-logo"><img src="/_blob/96e9b23974d107fe87ac804cb22b9a02"><span><b>МЕТО</b>ТЕХНИКА</span></div>
+    <div class="mheader-actions">
+      <a href="tel:+74955049554" class="mheader-icon"><svg width="17" height="17"><use href="#i-phone"/></svg></a>
+    </div>
+  </div>
+
+  <!-- слой 2: служебные вкладки, горизонтальный скролл -->
+  <div class="mtabs">
+    <span>Калькулятор</span><span>Фото</span><span>Статьи</span><span>ГОСТы и ТУ</span><span>Справочные таблицы</span><span>Контакты</span>
+  </div>
+
+  <!-- поисковик — вход №2 в каталог -->
+  <div class="finder">
+    <div class="finder-head">Найти материал быстро</div>
+    <div class="finder-body">
+      <sc-for list="{{finderFields}}" as="ff" hint-placeholder-count="3">
+        <div class="finder-select"><span>{{ff}}</span><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </sc-for>
+      <div class="btn" style="background:#e4e7eb;color:#9aa1ab;margin-top:2px;">Найти</div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <div style="padding:4px 16px 20px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue);">НПК «Метотехника»</div>
+    <h1 style="font-size:21px;line-height:1.3;color:var(--ink);margin:8px 0 10px;">Цветные металлы и сплавы со склада в Москве</h1>
+    <p style="font-size:13px;color:var(--ink-soft);line-height:1.55;">25+ материалов в наличии на складе. Отгрузка за 1–2 рабочих дня, сертификация по ГОСТ Р ИСО 9001-2015.</p>
+  </div>
+
+  <!-- быстрая заявка — то же оформление, что у поисковика, но оранжевая (действие, а не навигация) -->
+  <div class="quick">
+    <div class="quick-head">Быстрая заявка</div>
+    <div class="quick-body">
+      <div><div class="field-label">Ваше имя</div><div class="field-box">Иван Петров</div></div>
+      <div><div class="field-label">Телефон</div><div class="field-box">+7 (___) ___-__-__</div></div>
+      <div><div class="field-label">Что нужно (необязательно)</div><div class="field-box">Нихром, проволока…</div></div>
+      <div class="btn btn-accent" style="margin-top:2px;">Отправить</div>
+    </div>
+  </div>
+
+  <!-- о компании — дословно с index.htm -->
+  <div style="padding:0 16px 20px;">
+    <p style="font-size:12.5px;color:var(--ink-soft);line-height:1.6;">«НПК «Метотехника» специализируется на продаже цветных металлов и сплавов, производстве изделий из них. Поставляет как стандартный металлопрокат, так и технологичные товары под заказ, в том числе по чертежам заказчика. Клиентами являются как крупные российские заводы, так и небольшие производственные фирмы — существенную долю составляют научные организации.</p>
+  </div>
+
+  <!-- доверие — объединённый блок, как на десктопе -->
+  <div style="display:flex;flex-direction:column;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <sc-for list="{{trustBadges}}" as="tb" hint-placeholder-count="6">
+      <div style="background:#fff;display:flex;align-items:center;gap:12px;padding:12px 16px;">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--paper-dim);border:1px solid #dde3ea;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--blue);flex-shrink:0;">✓</div>
+        <div style="font-size:12.5px;color:#414954;font-weight:500;">{{tb}}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- популярные материалы: 2 колонки, 7 реальных фото + «все материалы» -->
+  <div style="padding:20px 16px;">
+    <h2 style="font-size:15px;margin-bottom:12px;">Популярные материалы</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <sc-for list="{{featured}}" as="m" hint-placeholder-count="7">
+        <div class="card" style="overflow:hidden;">
+          <img src="{{m.img}}" style="width:100%;height:110px;object-fit:cover;">
+          <div style="padding:10px;">
+            <h3 style="font-size:13px;margin-bottom:3px;">{{m.name}}</h3>
+            <p style="font-size:10.5px;color:var(--ink-soft);margin-bottom:6px;">{{m.desc}}</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;color:var(--orange-deep);">{{m.price}}</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+      <div style="border-radius:8px;background:var(--blue);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:172px;text-align:center;padding:14px;">
+        <div style="font-size:12.5px;font-weight:700;color:#fff;">Все материалы</div>
+        <div style="font-size:10.5px;color:rgba(255,255,255,.75);">25 позиций</div>
+        <svg width="16" height="16"><use href="#i-arrow" style="color:#fff;"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- футер: категории стопкой, как в старом мобильном прототипе -->
+  <div style="background:var(--paper-dim);padding:22px 16px 28px;">
+    <sc-for list="{{photoCols}}" as="pc" hint-placeholder-count="4">
+      <div style="display:flex; align-items:center; gap:12px; padding:12px 0; border-top:1px solid #e1e5ea;">
+        <img src="{{pc.img}}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;flex-shrink:0;">
+        <div>
+          <div style="font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:2px;">{{pc.title}}</div>
+          <div style="font-size:11px;color:var(--ink-soft);">{{pc.itemsLine}}</div>
+        </div>
+      </div>
+    </sc-for>
+    <div style="border-top:1px solid #e1e5ea;padding-top:16px;margin-top:6px;font-size:11px;color:var(--ink-faint);line-height:1.6;">
+      <div>© ООО «НПК «Метотехника». Москва, ул. Кирпичная, 32.</div>
+      <div style="margin-top:3px;">info@metotech.ru · +7 (495) 504-95-54</div>
+    </div>
+  </div>
+
+  <!-- каталог — вход №1, оверлей на весь экран по тапу на бургер -->
+  <div class="mobnav-overlay">
+    <div class="cat-panel-head">
+      <span class="cat-panel-title">Каталог</span>
+      <label for="menu-open" class="cat-close"><svg width="18" height="18"><use href="#i-close"/></svg></label>
+    </div>
+    <div class="cat-body">
+      <sc-for list="{{sidebarGroups}}" as="sg" hint-placeholder-count="4">
+        <div class="cat-grp">{{sg.name}}</div>
+        <sc-for list="{{sg.items}}" as="sgi" hint-placeholder-count="5">
+          <a href="#" class="cat-row">{{sgi}}</a>
+        </sc-for>
+      </sc-for>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+<div class="phone-home"></div>
+</div>
+</div>
+<script>
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (!a) return;
+    e.preventDefault();
+  }, true);
+</script>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":470,"height":970}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const featured = [
+      { name: 'Титан', desc: 'ВТ1-0, ОТ4', img: '/_blob/f4f70cdc5a350b1e307f21545b4c91ae', price: 'от 4200 ₽/кг' },
+      { name: 'Вольфрам', desc: 'ВА, ВЛ, СВИ', img: '/_blob/18004f41f537b19714551c56f5642daf', price: 'По согласованию' },
+      { name: 'Нихром', desc: 'Х20Н80, Х15Н60', img: '/_blob/64d182656ae5ad8c8f7835a93e958612', price: 'от 8000 ₽/кг' },
+      { name: 'Никель', desc: 'НП2, Н-1у', img: '/_blob/7ae7ba8401389a3782f708fabcf27bd9', price: 'от 6100 ₽/кг' },
+      { name: 'Молибден', desc: 'МЧ, ЦМ2А', img: '/_blob/eb3c7a53e21557ea47dacf034ec814fa', price: 'По согласованию' },
+      { name: 'Фехраль', desc: 'Х23Ю5Т, Х27Ю5Т', img: '/_blob/e2e59819cc336eeeb15d4956f55eada5', price: 'от 3500 ₽/кг' },
+      { name: 'Тантал', desc: 'Т, ТВЧ', img: '/_blob/677fc23f55598318570f19069c1d0bae', price: 'По согласованию' }
+    ];
+
+    const sidebarGroups = [
+      { name: 'Прецизионные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции', 'Термоэлектродные сплавы', 'Термопровода', 'Константан'] },
+      { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений', 'Хром'] },
+      { name: 'Никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор', 'Кобальт'] },
+      { name: 'Прочие материалы', items: ['Титан', 'Олово', 'Ванадий', 'Твёрдые сплавы', 'Ферросплавы'] }
+    ];
+
+    const trustBadges = [
+      'Отгрузка 1–2 дня со склада',
+      'ГОСТ Р ИСО 9001-2015',
+      'По чертежам заказчика',
+      'Собственное производство с 1998 года',
+      'Отгрузка по РФ и СНГ',
+      'Оплата по счету для юрлиц'
+    ];
+
+    const finderFields = ['Материал *', 'Форма *', 'Марка (опционально)'];
+
+    const photoColsRaw = [
+      { title: 'Прецизионные сплавы', img: '/_blob/92aacf2587b596348aa64382541fe9ef', items: ['Нихром', 'Фехраль', 'Нихром в изоляции', 'Термопары'] },
+      { title: 'Тугоплавкие металлы', img: '/_blob/600bb01bd31b86796871a5d42e4a5838', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий'] },
+      { title: 'Никелевые сплавы', img: '/_blob/df28d2818d6e6ba8b4206307da078207', items: ['Никель', 'Монель', 'Мельхиор', 'Кобальт'] },
+      { title: 'Прочие материалы', img: '/_blob/fa47428423878f96c8377f64cac95a10', items: ['Титан', 'Олово', 'Ванадий', 'Ферросплавы'] }
+    ];
+    const photoCols = photoColsRaw.map(function (c) {
+      return { title: c.title, img: c.img, itemsLine: c.items.join(' · ') };
+    });
+
+    return { featured, sidebarGroups, trustBadges, finderFields, photoCols };
+  }
+}
+</script>
+</body>
+</html>

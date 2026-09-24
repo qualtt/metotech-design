@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Наследственность — оранжевый и синий</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #e8eaed; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+</style>
+</helmet>
+<div style="width: 1700px; height: 2150px; box-sizing: border-box; padding: 56px; background: #e8eaed; display: flex; flex-direction: column; gap: 26px;">
+
+  <div>
+    <div style="font-size: 22px; font-weight: 700; color: #232a33;">Наследственность — оранжевый и синий</div>
+    <div style="font-size: 13px; color: #666; margin-top: 6px; max-width: 1200px; line-height: 1.5;">Запрос руководителя: сохранить преемственность со старым сайтом через исторические цвета логотипа. Живой сайт сам по себе не образец для копирования — ниже не попытка воссоздать его, а разные варианты распределения ровно двух цветов (оранжевый/синий) по интерфейсу: где какой должен работать акцентом, а где — фоном.</div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Оригинальный логотип и снятые с него цвета</div>
+    <div style="display: flex; align-items: center; gap: 28px; margin-top: 14px; flex-wrap: wrap;">
+      <img src="/_blob/a94248aafc4bf4e085d313991103b38d" style="height: 60px; border-radius: 6px; border: 1px solid #e1e5ea; flex-shrink: 0;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 52px; height: 52px; border-radius: 8px; background: #EC9D47; border: 1px solid rgba(0,0,0,.08); flex-shrink: 0;"></div>
+        <div>
+          <div style="font-size: 13px; font-weight: 700; color: #232a33;">#EC9D47 — оранжевый лого</div>
+          <div style="font-size: 11px; color: #8b93a0; margin-top: 2px; max-width: 220px; line-height: 1.4;">снято пипеткой с граней куба; тёмная грань — #C5873F</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 52px; height: 52px; border-radius: 8px; background: #3E5D88; border: 1px solid rgba(0,0,0,.08); flex-shrink: 0;"></div>
+        <div>
+          <div style="font-size: 13px; font-weight: 700; color: #232a33;">#3E5D88 — синий лого</div>
+          <div style="font-size: 11px; color: #8b93a0; margin-top: 2px; max-width: 220px; line-height: 1.4;">совпадает с #3E5D88 из style.css сайдбара — независимое подтверждение</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 52px; height: 52px; border-radius: 8px; background: #2BAEA1; border: 1px solid rgba(0,0,0,.08); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+          <img src="/_blob/98fc7573f7e4a52e1e541a32d744e5b4" style="width: 26px; height: 23px;">
+        </div>
+        <div>
+          <div style="font-size: 13px; font-weight: 700; color: #232a33;">#2BAEA1 — тил, вне игры</div>
+          <div style="font-size: 11px; color: #8b93a0; margin-top: 2px; max-width: 220px; line-height: 1.4;">перекраска логотипа из этого проекта — в вариантах ниже больше не используется</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start;">
+    <sc-for list="{{columns}}" as="col" hint-placeholder-count="4">
+      <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 18px;">
+
+        <div>
+          <div style="display: inline-block; padding: 5px 12px; border-radius: 999px; background: {{col.accent}}; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.04em;">{{col.title}}</div>
+          <div style="font-size: 11.5px; color: #666; margin-top: 8px; line-height: 1.45;">{{col.subtitle}}</div>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Токены цвета</div>
+          <sc-for list="{{col.colors}}" as="c" hint-placeholder-count="4">
+            <div style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+              <div style="width: 36px; height: 24px; border-radius: 4px; background: {{c.value}}; flex-shrink: 0; border: 1px solid rgba(0,0,0,.08);"></div>
+              <div style="font-size: 11.5px; color: #2a2a2a; flex-grow: 1;">{{c.name}}</div>
+              <div style="font-size: 10px; color: #a3a9b2; font-family: 'JetBrains Mono', monospace;">{{c.value}}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Кнопки</div>
+          <div style="display: flex; gap: 8px;">
+            <span style="padding: 9px 16px; border-radius: 4px; background: {{col.accent}}; color: #fff; font-size: 12.5px; font-weight: 600;">Оставить заявку</span>
+            <span style="padding: 9px 16px; border-radius: 4px; background: transparent; color: {{col.secondaryColor}}; border: 1px solid {{col.secondaryBorder}}; font-size: 12.5px; font-weight: 600;">Запросить КП</span>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Состояния (primary)</div>
+          <div style="display: flex; gap: 10px;">
+            <sc-for list="{{col.states}}" as="st" hint-placeholder-count="3">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                <span style="display: inline-flex; align-items: center; padding: 8px 14px; border-radius: 4px; background: {{st.bg}}; color: #fff; font-size: 12px; font-weight: 600;">Заявка</span>
+                <span style="font-size: 9.5px; color: #a3a9b2;">{{st.name}}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">В контексте — меню и прайс</div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <sc-if value="{{col.showSectionBar}}" hint-placeholder-val="false">
+              <div style="display: inline-block; padding: 7px 16px; border-radius: 4px; background: #EC9D47; color: #fff; font-size: 11.5px; font-weight: 700; letter-spacing: .03em; width: fit-content;">ПРОДУКЦИЯ <span style="font-size: 9px; font-weight: 400; opacity: .85;">· оранжевый как отделка бара-заголовка, а не кнопки</span></div>
+            </sc-if>
+            <div style="display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 4px; background: {{col.navBg}}; color: {{col.navColor}}; font-size: 12px; font-weight: 600; width: fit-content;">Нихром <span style="font-size: 9.5px; font-weight: 400; opacity: .85;">· активный пункт меню</span></div>
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border: 1px solid #e1e5ea; border-radius: 4px;">
+              <div style="font-size: 11.5px; color: #232a33;">Х20Н80 <span style="color: #8b93a0;">Ø 0,12</span></div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: {{col.priceColor}};">от 9000 р/кг</div>
+                <div style="font-size: 11px; font-weight: 600; color: {{col.accent}};">Купить →</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">Примеры на других элементах — C · Роли пополам</div>
+    <div style="font-size: 11.5px; color: #9aa1ab; margin-bottom: 16px; max-width: 900px; line-height: 1.5;">Тот же принцип (синий — навигация/ориентация, оранжевый — действие/цена) применён к шапке, футеру, карточке, табу, фильтру и чекбоксу — чтобы увидеть, держится ли правило за пределами кнопок и меню.</div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+      <div style="font-size: 10px; color: #b0b5bd;">Шапка сайта</div>
+      <div style="display: flex; align-items: center; gap: 20px; padding: 12px 18px; background: #3E5D88; border-radius: 6px;">
+        <div style="display: flex; align-items: center; gap: 8px;"><img src="/_blob/98fc7573f7e4a52e1e541a32d744e5b4" style="width: 22px; height: 19px;"><div style="font-size: 13px; font-weight: 700; color: #fff;">Метотехника</div></div>
+        <div style="display: flex; gap: 18px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.85);">
+          <span>Продукция</span><span>ГОСТы и ТУ</span><span>Контакты</span>
+        </div>
+        <div style="margin-left: auto; padding: 8px 16px; border-radius: 4px; background: #EC9D47; color: #fff; font-size: 12px; font-weight: 600;">Оставить заявку</div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;">
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 10px; color: #b0b5bd;">Футер (фрагмент)</div>
+        <div style="background: #3E5D88; border-radius: 6px; overflow: hidden;">
+          <div style="height: 4px; background: #EC9D47;"></div>
+          <div style="padding: 14px 16px; font-size: 11.5px; color: rgba(255,255,255,.85); line-height: 1.7;">
+            info@metotech.ru<br>+7 (495) 504-95-54
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 10px; color: #b0b5bd;">Карточка материала</div>
+        <div style="border: 1px solid #e1e5ea; border-radius: 6px; overflow: hidden;">
+          <img src="/_blob/92aacf2587b596348aa64382541fe9ef" style="width: 100%; height: 64px; object-fit: cover; display: block;">
+          <div style="padding: 10px 12px;">
+            <div style="font-size: 12px; font-weight: 700; color: #232a33;">Нихром</div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 700; color: #EC9D47;">от 8000 р/кг</span>
+              <span style="font-size: 10.5px; font-weight: 600; color: #EC9D47;">Купить →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 10px; color: #b0b5bd;">Таб раздела</div>
+        <div style="display: flex; gap: 16px; border-bottom: 1px solid #e1e5ea; padding-bottom: 0;">
+          <span style="font-size: 12px; font-weight: 600; color: #3E5D88; border-bottom: 2px solid #3E5D88; padding-bottom: 8px;">Стоимость</span>
+          <span style="font-size: 12px; font-weight: 500; color: #8b93a0; padding-bottom: 8px;">ГОСТы, ТУ</span>
+          <span style="font-size: 12px; font-weight: 500; color: #8b93a0; padding-bottom: 8px;">Фото</span>
+        </div>
+        <div style="font-size: 9.5px; color: #a3a9b2; margin-top: 4px;">синий — та же роль «навигация», что и в меню</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 10px; color: #b0b5bd;">Фильтр-чип</div>
+        <div style="display: flex; gap: 8px;">
+          <span style="padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #3E5D88; color: #fff;">Проволока</span>
+          <span style="padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; background: #f2f4f6; color: #5b6572;">Лента</span>
+        </div>
+        <div style="font-size: 9.5px; color: #a3a9b2; margin-top: 4px;">выбор фильтра — тоже ориентация, не действие</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 10px; color: #b0b5bd;">Чекбокс (в заявке)</div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 4px; background: #EC9D47; color: #fff;">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span style="font-size: 12px; color: #232a33;">Добавить в заявку</span>
+        </div>
+        <div style="font-size: 9.5px; color: #a3a9b2; margin-top: 4px;">отметка — действие, как кнопка</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 10px; color: #b0b5bd;">Бар-заголовок раздела</div>
+        <div style="display: inline-block; padding: 8px 16px; border-radius: 4px; background: #EC9D47; color: #fff; font-size: 11.5px; font-weight: 700; letter-spacing: .03em; width: fit-content;">ПРОДУКЦИЯ</div>
+        <div style="font-size: 9.5px; color: #a3a9b2; margin-top: 4px;">отделка секции — тоже оранжевый, как в оригинале</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1700,"height":2150}}'>
+class Component extends DCLogic {
+  renderVals() {
+    function buildStates(accent, accentDeep, accentDeepest) {
+      return [
+        { name: 'default', bg: accent },
+        { name: 'hover', bg: accentDeep },
+        { name: 'active', bg: accentDeepest }
+      ];
+    }
+
+    const orange = '#EC9D47';
+    const orangeDeep = '#C5873F';
+    const orangeDeepest = '#A37034';
+    const blue = '#3E5D88';
+    const blueDeep = '#344F73';
+    const blueDeepest = '#2C4261';
+    const ink = '#232a33';
+    const lineStrong = '#c7ced7';
+
+    const columns = [
+      {
+        id: 'orange-accent',
+        title: 'A · Оранжевый — акцент',
+        subtitle: 'Оранжевый красит всё интерактивное: кнопки, hover/active, активный пункт меню, значение цены. Синий остаётся только фоном структуры (в этом мокапе не показан отдельно — он живёт в шапке/футере/сайдбаре, а не здесь). Самый «тёплый» и заметный вариант.',
+        showSectionBar: false,
+        accent: orange,
+        navBg: orange,
+        navColor: '#fff',
+        priceColor: orangeDeep,
+        secondaryColor: ink,
+        secondaryBorder: lineStrong,
+        colors: [
+          { name: 'Accent · кнопки, меню, цена', value: orange },
+          { name: 'Accent hover', value: orangeDeep },
+          { name: 'Accent active', value: orangeDeepest },
+          { name: 'Синий · только фон структуры', value: blue }
+        ],
+        states: buildStates(orange, orangeDeep, orangeDeepest)
+      },
+      {
+        id: 'blue-accent',
+        title: 'B · Синий — акцент',
+        subtitle: 'Наоборот: синий красит кнопки, активные состояния, меню. Оранжевый — не заливка, а отделка: бар-заголовок раздела и значение цены выделены им, чтобы цена всё равно бросалась в глаза на фоне спокойного синего интерфейса.',
+        showSectionBar: true,
+        accent: blue,
+        navBg: blue,
+        navColor: '#fff',
+        priceColor: orange,
+        secondaryColor: ink,
+        secondaryBorder: lineStrong,
+        colors: [
+          { name: 'Accent · кнопки, меню', value: blue },
+          { name: 'Accent hover', value: blueDeep },
+          { name: 'Accent active', value: blueDeepest },
+          { name: 'Оранжевый · отделка и цена', value: orange }
+        ],
+        states: buildStates(blue, blueDeep, blueDeepest)
+      },
+      {
+        id: 'role-split',
+        title: 'C · Роли пополам',
+        subtitle: 'Чёткое разделение по смыслу: синий отвечает за навигацию (меню, вкладки, «где я нахожусь»), оранжевый — за действие (кнопки, цена, «что нажать»). Пользователю проще: один цвет — «ориентируйся», другой — «действуй».',
+        showSectionBar: false,
+        accent: orange,
+        navBg: blue,
+        navColor: '#fff',
+        priceColor: orangeDeep,
+        secondaryColor: blueDeep,
+        secondaryBorder: blue,
+        colors: [
+          { name: 'Синий · навигация', value: blue },
+          { name: 'Оранжевый · действие, цена', value: orange },
+          { name: 'Оранжевый hover', value: orangeDeep },
+          { name: 'Ink', value: ink }
+        ],
+        states: buildStates(orange, orangeDeep, orangeDeepest)
+      },
+      {
+        id: 'contrast-blocks',
+        title: 'D · Контраст блоками',
+        subtitle: 'Самое смелое сочетание: primary-кнопка оранжевая, secondary — с синей обводкой (не нейтрально-серой), меню — синее, бар раздела — оранжевый, цена — оранжевая. Оба цвета работают одновременно и подчёркивают друг друга, а не делят зоны ответственности.',
+        showSectionBar: true,
+        accent: orange,
+        navBg: blue,
+        navColor: '#fff',
+        priceColor: orange,
+        secondaryColor: blueDeep,
+        secondaryBorder: blue,
+        colors: [
+          { name: 'Оранжевый · primary-кнопка, цена', value: orange },
+          { name: 'Синий · secondary-кнопка, меню', value: blue },
+          { name: 'Оранжевый hover', value: orangeDeep },
+          { name: 'Синий hover', value: blueDeep }
+        ],
+        states: buildStates(orange, orangeDeep, orangeDeepest)
+      }
+    ];
+
+    return { columns };
+  }
+}
+</script>
+</body>
+</html>

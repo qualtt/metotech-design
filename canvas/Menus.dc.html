@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Варианты меню — OnlineMetals, TWMetals, evek</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #e8eaed; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+  .chev { flex-shrink: 0; }
+</style>
+</helmet>
+<div style="width: 1700px; height: 4000px; box-sizing: border-box; padding: 56px; background: #e8eaed; display: flex; flex-direction: column; gap: 30px;">
+
+  <div>
+    <div style="font-size: 22px; font-weight: 700; color: #232a33;">Варианты меню каталога</div>
+    <div style="font-size: 13px; color: #666; margin-top: 6px; max-width: 1200px; line-height: 1.5;">Реальные группы и позиции с текущего сайдбара, реальные формы поставки и марки нихрома. Гибридные токены — везде, кроме варианта C (умышленно оставлен на «сырых» текущих стилях как буквальный baseline для сравнения).</div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">A · OnlineMetals — мега-меню + drill-in каталог</div>
+
+    <div style="border: 1px solid #e1e5ea; border-radius: 6px; overflow: hidden; margin-bottom: 16px;">
+      <div style="display: flex; gap: 22px; background: #f2f4f6; padding: 0 16px;">
+        <sc-for list="{{topDropdowns}}" as="td" hint-placeholder-count="4">
+          <div style="padding: 12px 0; font-size: 12.5px; font-weight: 600; color: {{td.color}}; border-bottom: 2px solid {{td.underline}}; display: flex; align-items: center; gap: 5px;">
+            {{td.label}}
+            <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid #e1e5ea;">
+        <sc-for list="{{groups}}" as="mg" hint-placeholder-count="4">
+          <div style="padding: 0 0 12px; border-right: 1px solid #eceef1;">
+            <div style="padding: 8px 14px; background: oklch(0.68 0.11 185); color: #fff; font-size: 11px; font-weight: 700; margin-bottom: 6px;">{{mg.name}}</div>
+            <sc-for list="{{mg.items}}" as="mgi" hint-placeholder-count="5">
+              <div style="padding: 4px 14px; font-size: 12px; color: #232a33;">{{mgi.label}}</div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="width: 300px; border: 1px solid #e1e5ea; border-radius: 6px; overflow: hidden;">
+      <div style="padding: 10px 14px; background: #f2f4f6; font-size: 12px; font-weight: 700; color: #232a33;">Весь каталог</div>
+      <div style="display: flex; align-items: center; gap: 6px; padding: 8px 14px; font-size: 10.5px; color: oklch(0.6 0.11 185); font-weight: 600; border-bottom: 1px solid #eceef1;">
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Главное меню <span style="color: #c7ced7;">/</span> <span style="color: #232a33;">Нихром</span>
+      </div>
+      <sc-for list="{{nihromForms}}" as="ff" hint-placeholder-count="5">
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; font-size: 12.5px; color: #232a33; border-bottom: 1px solid #f2f4f6;">
+          {{ff.name}}
+          <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="#9aa1ab" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">B · TWMetals — каскад слева, на гибридных токенах</div>
+    <div style="position: relative; display: flex;">
+      <div style="width: 260px; border: 1px solid #e1e5ea; border-radius: 6px 0 0 6px; background: #fff; flex-shrink: 0;">
+        <sc-for list="{{groups}}" as="g" hint-placeholder-count="4">
+          <div style="padding: 12px 16px 4px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #9aa1ab;">{{g.name}}</div>
+          <sc-for list="{{g.items}}" as="it" hint-placeholder-count="5">
+            <div style="padding: 7px 16px; font-size: 12.5px; font-weight: 500; color: {{it.color}}; background: {{it.bg}}; border-left: 3px solid {{it.border}};">{{it.label}}</div>
+          </sc-for>
+        </sc-for>
+      </div>
+      <div style="width: 260px; border-top: 1px solid #e1e5ea; border-bottom: 1px solid #e1e5ea; border-right: 1px solid #e1e5ea; border-radius: 0 6px 6px 0; background: #fff; box-shadow: 8px 0 24px -12px rgba(15,23,42,.14); flex-shrink: 0;">
+        <div style="padding: 14px 16px 10px; border-bottom: 1px solid #eceef1;">
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #9aa1ab;">Нихром</div>
+          <div style="font-size: 14px; font-weight: 700; color: #232a33; margin-top: 2px;">Форма поставки</div>
+        </div>
+        <sc-for list="{{nihromForms}}" as="f2" hint-placeholder-count="5">
+          <div style="padding: 9px 16px; border-bottom: 1px solid #f2f4f6;">
+            <div style="font-size: 12.5px; font-weight: 600; color: #232a33;">{{f2.name}}</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #9aa1ab; margin-top: 2px;">{{f2.meta}}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="width: 260px; margin-left: -1px; border-radius: 6px; background: #fff; box-shadow: 8px 0 24px -12px rgba(15,23,42,.14); border: 1px solid #e1e5ea; flex-shrink: 0;">
+        <div style="padding: 14px 16px 10px; border-bottom: 1px solid #eceef1;">
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #9aa1ab;">Проволока и нить</div>
+          <div style="font-size: 14px; font-weight: 700; color: #232a33; margin-top: 2px;">Марка</div>
+        </div>
+        <sc-for list="{{nihromGrades}}" as="g2" hint-placeholder-count="2">
+          <div style="padding: 9px 16px; border-bottom: 1px solid #f2f4f6; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; color: #232a33;">{{g2.name}}</div>
+            <div style="font-size: 10.5px; color: #9aa1ab;">{{g2.std}}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">C · evek — вертикальный аккордеон (раскрытие на месте, без флайаутов)</div>
+    <div style="width: 300px; border: 1px solid #e1e5ea; border-radius: 6px; overflow: hidden;">
+      <sc-for list="{{groups}}" as="gd" hint-placeholder-count="4">
+        <div style="padding: 12px 16px 4px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #9aa1ab;">{{gd.name}}</div>
+        <sc-for list="{{gd.items}}" as="itd" hint-placeholder-count="5">
+          <div style="padding: 7px 16px; font-size: 12.5px; font-weight: 500; color: {{itd.color}}; background: {{itd.bg}}; display: flex; align-items: center; justify-content: space-between;">
+            {{itd.label}}
+            <sc-if value="{{itd.hasChildren}}" hint-placeholder-val="true">
+              <svg class="chev" width="11" height="11" viewBox="0 0 16 16" fill="none" style="transform: rotate(90deg);"><path d="M6 4l4 4-4 4" stroke="oklch(0.6 0.11 185)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </sc-if>
+          </div>
+          <sc-if value="{{itd.hasChildren}}" hint-placeholder-val="true">
+            <sc-for list="{{nihromForms}}" as="fd" hint-placeholder-count="5">
+              <div style="padding: 6px 16px 6px 30px; font-size: 12px; color: {{fd.dColor}}; background: {{fd.dBg}}; display: flex; align-items: center; justify-content: space-between;">
+                {{fd.name}}
+                <sc-if value="{{fd.expand}}" hint-placeholder-val="true">
+                  <svg class="chev" width="10" height="10" viewBox="0 0 16 16" fill="none" style="transform: rotate(90deg);"><path d="M6 4l4 4-4 4" stroke="oklch(0.6 0.11 185)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </sc-if>
+              </div>
+              <sc-if value="{{fd.expand}}" hint-placeholder-val="true">
+                <sc-for list="{{nihromGrades}}" as="gr" hint-placeholder-count="2">
+                  <div style="padding: 5px 16px 5px 46px; font-size: 11.5px; color: #8b93a0; font-family: 'JetBrains Mono', monospace;">{{gr.name}} <span style="font-family: 'IBM Plex Sans', sans-serif; color: #b0b5bd;">{{gr.std}}</span></div>
+                </sc-for>
+              </sc-if>
+            </sc-for>
+          </sc-if>
+        </sc-for>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">D · Alloy Wire International — плоская строка + мега-лента</div>
+    <div style="border: 1px solid #e1e5ea; border-radius: 6px; overflow: hidden;">
+      <div style="display: flex; gap: 28px; padding: 0 18px; background: #fff; border-bottom: 1px solid #e1e5ea;">
+        <sc-for list="{{groupsTop}}" as="tg" hint-placeholder-count="4">
+          <div style="padding: 13px 0; font-size: 12.5px; font-weight: 600; color: {{tg.headColor}}; border-bottom: 2px solid {{tg.headUnderline}};">{{tg.name}}</div>
+        </sc-for>
+      </div>
+      <div style="display: flex; align-items: center; gap: 28px; padding: 14px 18px; background: #f7f8fa; flex-wrap: wrap;">
+        <sc-for list="{{activeGroupItems}}" as="ai" hint-placeholder-count="5">
+          <div style="font-size: 12.5px; font-weight: 500; color: {{ai.color}};">{{ai.label}}</div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">E · Постоянное дерево — всё раскрыто, без флайаутов</div>
+    <div style="width: 300px; border: 1px solid #e1e5ea; border-radius: 6px; overflow: hidden;">
+      <sc-for list="{{groups}}" as="ge" hint-placeholder-count="4">
+        <div style="padding: 12px 16px 4px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #9aa1ab;">{{ge.name}}</div>
+        <sc-for list="{{ge.items}}" as="ite" hint-placeholder-count="5">
+          <div style="padding: 7px 16px; font-size: 12.5px; font-weight: 500; color: {{ite.color}}; background: {{ite.bg}}; border-left: 3px solid {{ite.border}};">{{ite.label}}</div>
+          <sc-if value="{{ite.hasChildren}}" hint-placeholder-val="true">
+            <sc-for list="{{nihromForms}}" as="fe" hint-placeholder-count="5">
+              <div style="padding: 6px 16px 6px 30px; font-size: 11.5px; color: #5b6572;">{{fe.name}}</div>
+            </sc-for>
+          </sc-if>
+        </sc-for>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 15px; font-weight: 700; color: #232a33; margin-bottom: 2px;">F · Поиск как основной вход</div>
+    <div style="max-width: 560px;">
+      <div style="display: flex; align-items: center; gap: 10px; border: 1px solid #c7ced7; border-radius: 6px; padding: 14px 18px; background: #fff;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#9aa1ab" stroke-width="1.6"/><path d="M11 11l3 3" stroke="#9aa1ab" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span style="font-size: 13.5px; color: #9aa1ab;">Найти материал, марку или ГОСТ — например «Х20Н80»</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12px; font-weight: 600; color: oklch(0.6 0.11 185);">
+        Весь каталог
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1700,"height":4000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = 'oklch(0.68 0.11 185)';
+    const accentDeep = 'oklch(0.6 0.11 185)';
+
+    const topDropdownsRaw = ['По материалу', 'По форме', 'Отрасли', 'База знаний'];
+    const topDropdowns = topDropdownsRaw.map(function (label, i) {
+      const active = i === 0;
+      return { label: label, color: active ? accentDeep : '#5b6572', underline: active ? accentDeep : 'transparent' };
+    });
+
+    const groupsRaw = [
+      { name: 'Прецизионные сплавы', items: ['Нихром', 'Фехраль', 'Термоэлектродные сплавы', 'Термопровода', 'Константан'] },
+      { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений', 'Хром'] },
+      { name: 'Никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор', 'Кобальт'] },
+      { name: 'Прочие материалы', items: ['Титан', 'Олово', 'Ванадий', 'Твёрдые сплавы', 'Ферросплавы'] }
+    ];
+    const groups = groupsRaw.map(function (g) {
+      return {
+        name: g.name,
+        items: g.items.map(function (label) {
+          const isActive = label === 'Нихром';
+          return {
+            label: label,
+            color: isActive ? accentDeep : '#232a33',
+            bg: isActive ? '#f2f4f6' : 'transparent',
+            border: isActive ? accentDeep : 'transparent',
+            hasChildren: isActive
+          };
+        })
+      };
+    });
+
+    const nihromForms = [
+      { name: 'Проволока и нить', meta: 'Х20Н80 · Х15Н60' },
+      { name: 'Лента', meta: 'Х20Н80' },
+      { name: 'Спираль (готовый элемент)', meta: 'Х20Н80' },
+      { name: 'Пруток / круг', meta: 'Х20Н80' },
+      { name: 'Кабель в изоляции', meta: 'марка КЭНВ' }
+    ].map(function (f, i) {
+      return { name: f.name, meta: f.meta, dColor: i === 0 ? accentDeep : '#5b6572', dBg: i === 0 ? '#f7f8fa' : 'transparent', expand: i === 0 };
+    });
+
+    const nihromGrades = [
+      { name: 'Х20Н80', std: 'ГОСТ 12766.1-90' },
+      { name: 'Х15Н60', std: 'ГОСТ 12766.1-90' }
+    ];
+
+    const groupsTop = groupsRaw.map(function (g, i) {
+      const active = i === 0;
+      return { name: g.name, headColor: active ? accentDeep : '#5b6572', headUnderline: active ? accentDeep : 'transparent' };
+    });
+    const activeGroupItems = groups[0].items;
+
+    return { topDropdowns, groups, nihromForms, nihromGrades, groupsTop, activeGroupItems };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Метотехника — обзор и порядок разбора</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #fefeff; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+</style>
+</helmet>
+<div style="width: 1200px; height: 1310px; box-sizing: border-box; padding: 56px; background: #fefeff; display: flex; flex-direction: column; gap: 22px;">
+
+  <div>
+    <div style="font-size: 24px; font-weight: 700; color: #232a33;">Метотехника — дизайн-система</div>
+    <div style="font-size: 13.5px; color: #5b6572; margin-top: 6px;">Разбираем по одной странице на элемент. Переключение страниц — в инструментах канваса.</div>
+  </div>
+
+  <sc-for list="{{sections}}" as="s" hint-placeholder-count="12">
+    <div style="display: flex; align-items: center; gap: 18px; border: 1px solid #e1e5ea; border-radius: 8px; padding: 16px 20px;">
+      <div style="width: 32px; height: 32px; border-radius: 50%; background: #f2f4f6; color: #5b6572; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">{{s.n}}</div>
+      <div style="flex-grow: 1;">
+        <div style="font-size: 14.5px; font-weight: 700; color: #232a33;">{{s.title}}</div>
+        <div style="font-size: 12px; color: #8b93a0; margin-top: 2px;">{{s.desc}}</div>
+      </div>
+      <div style="padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; color: {{s.statusColor}}; background: {{s.statusBg}}; flex-shrink: 0; white-space: nowrap;">{{s.status}}</div>
+    </div>
+  </sc-for>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1310}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const done = { status: 'Решено', statusColor: '#2a7a4f', statusBg: '#e7f3ec' };
+    const pick = { status: 'На выбор', statusColor: '#a3670f', statusBg: '#fbf1de' };
+    const disc = { status: 'На обсуждении', statusColor: '#5b6572', statusBg: '#f2f4f6' };
+    const comp = { status: 'Сравнение', statusColor: '#3f7fb0', statusBg: '#eaf2f8' };
+    const ref  = { status: 'Справочно', statusColor: '#5b6572', statusBg: '#f2f4f6' };
+
+    const raw = [
+      { title: 'Токены', desc: 'Цвет, типографика, отступы, скругления, тени, числа', s: done },
+      { title: 'Кнопки и композиции', desc: 'Варианты, размеры, состояния, парные и групповые композиции', s: done },
+      { title: 'Меню каталога и поиск', desc: 'Шесть структур навигации + виджет поиска. Выбрано: B (каскад TWMetals)', s: done },
+      { title: 'Шапка сайта', desc: 'Шесть вариантов + наследственная палитра (H). Номер телефона — жирным моно + стрелочка разворота (по правкам руководителя)', s: pick },
+      { title: 'Футер', desc: 'Шесть вариантов организации ссылок и контактов. Выбрано: D (визуальный мега-футер)', s: done },
+      { title: 'Карточки материалов', desc: 'Шесть трактовок одной и той же карточки. Выбрано сразу два, под разные места: B (приподнятая, с тенью) — для сеток/листингов, C (компактная строка) — для сайдбара/узких блоков', s: done },
+      { title: 'Табы, фильтры, прайс-таблица', desc: 'По 6 вариантов на каждый узел. Выбрано: табы — F, фильтры — A, прайс-таблица — C', s: done },
+      { title: 'Референсы', desc: 'Приёмы с evek, Precision Metals, Harald Pihl, Plansee — что взять в систему', s: disc },
+      { title: 'Целостные комбинации', desc: 'Две полностью собранные страницы «Нихром» для сравнения целиком', s: comp },
+      { title: 'Главная страница', desc: 'Финальная сборка — десктоп и моб.: два входа в каталог, поисковик OnlineMetals, карточки на реальных фото и данных Метрики, наследственная палитра', s: done },
+      { title: 'Старый прототип', desc: 'Первая версия редизайна — для сравнения с новыми элементами', s: ref },
+      { title: 'Наследственность (цвета)', desc: 'Оранжевый + синий, 4 сочетания. «Роли пополам» — фаворит, обкатан на кнопках и шапке (тень + штриховка)', s: pick }
+    ];
+    const sections = raw.map(function (r, i) {
+      return { n: i + 1, title: r.title, desc: r.desc, status: r.s.status, statusColor: r.s.statusColor, statusBg: r.s.statusBg };
+    });
+
+    return { sections };
+  }
+}
+</script>
+</body>
+</html>

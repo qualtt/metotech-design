@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Метотехника — Главная</title>
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <style>
+    :root{
+      --ink:oklch(0.26 0.015 240);
+      --ink-soft:oklch(0.47 0.012 240);
+      --ink-faint:oklch(0.63 0.008 240);
+      --paper:oklch(0.995 0.001 240);
+      --paper-dim:oklch(0.965 0.004 240);
+      --line:oklch(0.89 0.005 240);
+      --line-strong:oklch(0.78 0.006 240);
+      --brand:oklch(0.38 0.05 240);
+      --accent:oklch(0.6799 0.1101 184.94);
+      --accent-deep:oklch(0.55 0.1101 184.94);
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;}
+    .page{font-family:'IBM Plex Sans',system-ui,sans-serif;color:var(--ink);background:var(--paper);width:1440px;position:relative;}
+    h1,h2,h3{margin:0;font-weight:600;}
+    p{margin:0;}
+    a{color:var(--accent-deep);text-decoration:none;}
+    a:hover{color:var(--brand);}
+    img{display:block;}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:4px;font-weight:600;font-size:14px;cursor:pointer;border:1px solid transparent;white-space:nowrap;}
+    .btn-accent{background:var(--accent);color:white;}
+    .card{background:white;border:1px solid var(--line);border-radius:4px;}
+    .photo-ph{background:linear-gradient(135deg, oklch(0.93 0.003 240), oklch(0.87 0.003 240));display:flex;align-items:center;justify-content:center;color:oklch(0.65 0.005 240);}
+
+    .grp{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);padding:16px 20px 6px;}
+    .item{padding:8px 20px;font-size:13.5px;color:var(--ink-soft);display:block;}
+    .item:hover{color:var(--brand);background:var(--paper-dim);}
+    .item-active{padding:8px 17px;font-size:13.5px;font-weight:600;color:var(--brand);background:white;border-left:3px solid var(--accent);display:flex;justify-content:space-between;align-items:center;}
+    .item-hover{padding:8px 20px;font-size:13.5px;color:var(--ink-soft);display:flex;justify-content:space-between;align-items:center;}
+    .item-hover:hover{color:var(--brand);background:white;}
+
+    /* full-height cascading column (twmetals-style): hovering the metal keeps a tall sibling column open,
+       and the column itself stays open while the mouse is inside it */
+    .metals-col{flex:0 0 260px;background:var(--paper-dim);border-right:1px solid var(--line);position:relative;padding-bottom:20px;}
+    .forms-col{position:absolute;top:0;left:100%;height:100%;width:280px;background:white;border-right:1px solid var(--line);box-shadow:10px 0 32px -16px rgba(20,30,50,0.2);opacity:0;visibility:hidden;transition:opacity .15s ease;z-index:20;display:flex;flex-direction:column;overflow:visible;}
+    .metals-col:has(.row-nihrom:hover) .forms-col-nihrom,
+    .metals-col:has(.forms-col-nihrom:hover) .forms-col-nihrom{opacity:1;visibility:visible;}
+    .metals-col:has(.row-fehral:hover) .forms-col-fehral,
+    .metals-col:has(.forms-col-fehral:hover) .forms-col-fehral{opacity:1;visibility:visible;}
+    /* form-row is a plain wrapper (not a link) so it can host its own name-link plus a separate standard-link without illegal nested <a> */
+    .form-row{padding:13px 20px;border-bottom:1px solid var(--line);}
+    .form-row:hover{background:var(--paper-dim);}
+    .form-row-name{font-size:13.5px;font-weight:600;display:flex;justify-content:space-between;align-items:center;color:var(--ink);}
+    .form-row-name:hover{color:var(--brand);}
+    .form-row-meta{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+    .form-row-std{font-size:11px;margin-top:2px;}
+    .form-row-std a{color:var(--ink-faint);}
+    .form-row-std a:hover{color:var(--brand);}
+
+    /* level 3: grade column, nested inside a form row — same full-height trick, scoped locally so no per-metal classes needed */
+    .grade-col{position:absolute;top:0;left:100%;height:100%;width:280px;background:white;border-right:1px solid var(--line);box-shadow:10px 0 32px -16px rgba(20,30,50,0.2);opacity:0;visibility:hidden;transition:opacity .15s ease;z-index:25;overflow:visible;display:flex;flex-direction:column;}
+    .casc-inner:has(.grade-trigger:hover) .grade-col,
+    .casc-inner:has(.grade-col:hover) .grade-col{opacity:1;visibility:visible;}
+    .grade-row{padding:13px 20px;border-bottom:1px solid var(--line);}
+    .grade-row-meta{font-size:12px;color:var(--ink-soft);margin-top:4px;}
+    .grade-row:hover{background:white;}
+    .grade-row-name{font-size:13.5px;font-weight:600;color:var(--ink);}
+    .grade-row-name:hover{color:var(--brand);}
+    .grade-row-std{font-size:11px;color:var(--ink-faint);margin-top:3px;}
+    .grade-row-std a{color:var(--ink-faint);}
+    .grade-row-std a:hover{color:var(--brand);}
+
+    /* hero utility widgets */
+    .util-bar{display:flex;align-items:center;gap:28px;padding:11px 40px;background:var(--paper-dim);border-bottom:1px solid var(--line);}
+    .util-link{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-soft);font-weight:500;}
+    .util-link:hover{color:var(--brand);}
+    .field-label{font-size:11px;color:var(--ink-faint);margin-bottom:4px;}
+    .field-box{border:1px solid var(--line-strong);border-radius:4px;padding:8px 10px;font-size:13px;}
+
+    /* cart lives inside the header row itself now, not a floating strip — so the header always reads as one full-width bar */
+    .cart-trigger{position:relative;display:flex;align-items:center;gap:7px;padding:9px 13px;border:1px solid var(--line);border-radius:4px;color:var(--ink);}
+    .cart-trigger:hover{border-color:var(--accent);}
+    .quote-badge{font-size:11px;font-weight:700;background:var(--accent);color:white;border-radius:10px;padding:1px 7px;}
+    .quote-panel{position:absolute;top:100%;right:0;margin-top:10px;width:260px;background:white;border:1px solid var(--line-strong);border-radius:6px;box-shadow:0 18px 40px -14px rgba(20,30,50,0.3);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .15s ease, transform .15s ease;z-index:60;}
+    .cart-trigger:hover .quote-panel{opacity:1;visibility:visible;transform:translateY(0);}
+  </style>
+</helmet>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M20 20l-4.6-4.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h2.7l1.6 4-2 1.6a11 11 0 0 0 5.1 5.1l1.6-2 4 1.6v2.7a2 2 0 0 1-2.1 2C10.8 18 6 13.2 4.5 6.6a2 2 0 0 1 2-3.1z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="8.3" cy="9.3" r="1.6" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 17l5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevron-r" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M3 4h2l2.2 11h11.2L20 8H6.2" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="8" y1="7.5" x2="16" y2="7.5" stroke="currentColor" stroke-width="1.4"/><circle cx="8.3" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="15.7" cy="12" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.6-3.2 6.9-7 8.5-3.8-1.6-7-3.9-7-8.5V6l7-3z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M8.7 12l2.2 2.2 4.4-4.4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="page">
+
+  <!-- top bar -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid var(--line);">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <img src="/_blob/98fc7573f7e4a52e1e541a32d744e5b4" alt="Метотехника" style="width:37px;height:32px;">
+      <div style="font-size:16.5px;font-weight:700;color:var(--brand);">Метотехника</div>
+    </div>
+    <div style="flex:1;max-width:420px;margin:0 32px;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:4px;padding:9px 12px;color:var(--ink-faint);">
+      <svg width="15" height="15"><use href="#i-search"/></svg><span style="font-size:13.5px;">Поиск по марке, ГОСТ, артикулу…</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:13.5px;"><svg width="15" height="15" style="color:var(--brand);"><use href="#i-phone"/></svg>+7 (495) 504-95-54</div>
+      <div class="cart-trigger">
+        <svg width="16" height="16"><use href="#i-cart"/></svg>
+        <span style="font-size:13px;font-weight:600;">Заявка</span>
+        <div class="quote-badge">2</div>
+        <div class="quote-panel">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line);">
+            <div style="font-size:13px;font-weight:600;">Лист заявки</div>
+            <div class="quote-badge">2</div>
+          </div>
+          <div style="padding:8px 14px;font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;"><span>Проволока Х20Н80, ⌀0,10</span><span>от 12 000 ₽/кг</span></div>
+          <div style="padding:8px 14px 12px;font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;"><span>Лента Х20Н80, 0,05×0,2</span><span>от 1 000 ₽/м</span></div>
+          <div style="padding:0 14px 14px;"><a href="#" class="btn btn-accent" style="width:100%;justify-content:center;">Отправить заявку</a></div>
+        </div>
+      </div>
+      <a href="#" class="btn btn-accent">Оставить заявку</a>
+    </div>
+  </div>
+
+  <!-- utility strip: quick links to standalone tools/pages, persistent on every page -->
+  <div class="util-bar">
+    <a href="calc_heater.htm" class="util-link">Калькулятор нагревателей</a>
+    <a href="calc.htm" class="util-link">Калькулятор металлопроката</a>
+    <a href="gost.htm" class="util-link">Библиотека ГОСТ и ТУ</a>
+    <a href="article.htm" class="util-link">Статьи и публикации</a>
+    <a href="board/" class="util-link">Доска объявлений</a>
+    <div style="flex:1;"></div>
+    <a href="contact.htm" class="util-link">Контакты</a>
+  </div>
+
+  <div style="display:flex;align-items:stretch;">
+
+    <!-- left catalog sidebar — hover "Нихром" opens a full-height column, twmetals-style -->
+    <div class="metals-col">
+      <div class="grp" style="padding-top:20px;">Прецизионные сплавы</div>
+
+      <a href="nihrom.htm" class="item-hover row-nihrom">Нихром <svg width="14" height="14"><use href="#i-chevron-r"/></svg></a>
+      <a href="fehral.htm" class="item-hover row-fehral">Фехраль <svg width="14" height="14"><use href="#i-chevron-r"/></svg></a>
+      <a href="#" class="item">Термоэлектродные сплавы</a>
+      <a href="#" class="item">Термопровода</a>
+      <a href="#" class="item">Константан</a>
+
+      <div class="grp">Тугоплавкие металлы</div>
+      <a href="#" class="item">Вольфрам</a>
+      <a href="#" class="item">Молибден</a>
+      <a href="#" class="item">Тантал</a>
+      <a href="#" class="item">Ниобий</a>
+      <a href="#" class="item">Рений</a>
+      <a href="#" class="item">Хром</a>
+
+      <div class="grp">Никелевые сплавы</div>
+      <a href="#" class="item">Никель</a>
+      <a href="#" class="item">Монель</a>
+      <a href="#" class="item">Мельхиор</a>
+      <a href="#" class="item">Кобальт</a>
+
+      <div class="grp">Прочие материалы</div>
+      <a href="#" class="item">Титан</a>
+      <a href="#" class="item">Олово</a>
+      <a href="#" class="item">Ванадий</a>
+      <a href="#" class="item">Твёрдые сплавы</a>
+      <a href="#" class="item">Ферросплавы</a>
+
+      <!-- full-height flyout columns: one per metal that has one, shown/hidden independently -->
+      <div class="forms-col forms-col-nihrom">
+        <div style="padding:20px 20px 12px;">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);">Нихром</div>
+          <a href="nihrom.htm" style="font-size:16px;font-weight:600;color:var(--brand);margin-top:2px;display:block;">Форма поставки</a>
+        </div>
+        <div style="border-top:1px solid var(--line);">
+          <div class="casc-inner">
+            <div class="form-row grade-trigger">
+              <a href="nihromovaya-provoloka-nit.htm" class="form-row-name">Проволока и нить <svg width="13" height="13"><use href="#i-chevron-r"/></svg></a>
+              <div class="form-row-meta">Х20Н80 · Х15Н60</div>
+            </div>
+            <div class="grade-col">
+              <div style="padding:20px 20px 12px;">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);">Проволока и нить</div>
+                <div style="font-size:16px;font-weight:600;color:var(--brand);margin-top:2px;">Марка</div>
+              </div>
+              <div style="border-top:1px solid var(--line);">
+                <div class="grade-row"><a href="nihrom-cena.htm#h20n80" class="grade-row-name">Х20Н80</a><div class="grade-row-meta">до 1100 °C</div><div class="grade-row-std"><a href="gost_12766_1_90.htm">ГОСТ 12766.1-90</a></div></div>
+                <div class="grade-row" style="border-bottom:none;"><a href="nihrom-cena.htm#h15n60" class="grade-row-name">Х15Н60</a><div class="grade-row-meta">до 1100 °C</div><div class="grade-row-std"><a href="gost_12766_1_90.htm">ГОСТ 12766.1-90</a></div></div>
+              </div>
+              <div style="padding:16px 20px;margin-top:auto;">
+                <a href="nihrom-cena.htm" style="font-size:12.5px;font-weight:600;">Смотреть все размеры →</a>
+              </div>
+            </div>
+          </div>
+          <div class="form-row"><a href="nihromovaya-lenta-folga.htm" class="form-row-name">Лента</a><div class="form-row-meta">Х20Н80</div><div class="form-row-std"><a href="gost_12766_2_90.htm">ГОСТ 12766.2-90</a></div></div>
+          <div class="form-row"><a href="nihromovaya-spiral.htm" class="form-row-name">Спираль (готовый элемент)</a><div class="form-row-meta">Х20Н80</div></div>
+          <div class="form-row"><a href="nihromovyy-prutok-krug.htm" class="form-row-name">Пруток / круг</a><div class="form-row-meta">Х20Н80</div></div>
+          <div class="form-row" style="border-bottom:none;"><a href="nihrom-izol.htm" class="form-row-name">Кабель в изоляции</a><div class="form-row-meta">марка КЭНВ</div></div>
+        </div>
+        <div style="padding:16px 20px;margin-top:auto;">
+          <a href="nihrom-cena.htm" style="font-size:12.5px;font-weight:600;">Смотреть весь ассортимент →</a>
+        </div>
+      </div>
+
+      <div class="forms-col forms-col-fehral">
+        <div style="padding:20px 20px 12px;">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);">Фехраль</div>
+          <a href="fehral.htm" style="font-size:16px;font-weight:600;color:var(--brand);margin-top:2px;display:block;">Форма поставки</a>
+        </div>
+        <div style="border-top:1px solid var(--line);">
+          <div class="casc-inner">
+            <div class="form-row grade-trigger">
+              <a href="fehralevaya-provoloka-nit.htm" class="form-row-name">Проволока и нить <svg width="13" height="13"><use href="#i-chevron-r"/></svg></a>
+              <div class="form-row-meta">Х23Ю5Т · Х27Ю5Т</div>
+            </div>
+            <div class="grade-col">
+              <div style="padding:20px 20px 12px;">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);">Проволока и нить</div>
+                <div style="font-size:16px;font-weight:600;color:var(--brand);margin-top:2px;">Марка</div>
+              </div>
+              <div style="border-top:1px solid var(--line);">
+                <div class="grade-row"><a href="fehral-cena.htm#h23yu5t" class="grade-row-name">Х23Ю5Т</a><div class="grade-row-meta">до 1400 °C</div><div class="grade-row-std"><a href="gost_12766_1_90.htm">ГОСТ 12766.1-90</a></div></div>
+                <div class="grade-row" style="border-bottom:none;"><a href="fehral-cena.htm#h27yu5t" class="grade-row-name">Х27Ю5Т</a><div class="grade-row-meta">до 1400 °C</div><div class="grade-row-std"><a href="gost_12766_1_90.htm">ГОСТ 12766.1-90</a></div></div>
+              </div>
+              <div style="padding:16px 20px;margin-top:auto;">
+                <a href="fehral-cena.htm" style="font-size:12.5px;font-weight:600;">Смотреть все размеры →</a>
+              </div>
+            </div>
+          </div>
+          <div class="form-row"><a href="fehralevaya-lenta-folga.htm" class="form-row-name">Лента</a><div class="form-row-meta">Х23Ю5Т</div></div>
+          <div class="form-row"><a href="fehralevaya-spiral.htm" class="form-row-name">Спираль (готовый элемент)</a><div class="form-row-meta">Х23Ю5Т, Ø 20–80</div></div>
+          <div class="form-row" style="border-bottom:none;"><a href="fehralevyy-prutok-krug.htm" class="form-row-name">Пруток / круг</a><div class="form-row-meta">Х23Ю5Т</div></div>
+        </div>
+        <div style="padding:16px 20px;margin-top:auto;">
+          <a href="fehral-cena.htm" style="font-size:12.5px;font-weight:600;">Смотреть весь ассортимент →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- main content -->
+    <div style="flex:1;">
+      <div style="padding:36px 44px;display:flex;gap:32px;align-items:flex-start;border-bottom:1px solid var(--line);">
+        <div style="flex:1;max-width:420px;display:flex;flex-direction:column;gap:14px;">
+          <h1 style="font-size:27px;line-height:1.3;color:var(--brand);">Цветные металлы и сплавы со склада в Москве</h1>
+          <p style="font-size:14px;color:var(--ink-soft);line-height:1.6;">25+ материалов в наличии на складе в Москве. Отгрузка за 1–2 рабочих дня, сертификация по ГОСТ Р ИСО 9001-2015.</p>
+          <div style="display:flex;gap:16px;margin-top:4px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-soft);"><svg width="13" height="13" style="color:var(--accent-deep);"><use href="#i-check"/></svg>Отгрузка 1–2 дня</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-soft);"><svg width="13" height="13" style="color:var(--accent-deep);"><use href="#i-check"/></svg>ISO 9001</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-soft);"><svg width="13" height="13" style="color:var(--accent-deep);"><use href="#i-check"/></svg>По чертежам</div>
+          </div>
+        </div>
+
+        <!-- quick request: name+phone right in the hero, no click-through to a contacts page -->
+        <div class="card" style="flex:0 0 300px;padding:18px;display:flex;flex-direction:column;gap:11px;">
+          <div style="font-size:13.5px;font-weight:600;">Быстрая заявка</div>
+          <div><div class="field-label">Ваше имя</div><div class="field-box" style="color:var(--ink-faint);">Иван Петров</div></div>
+          <div><div class="field-label">Телефон</div><div class="field-box" style="color:var(--ink-faint);">+7 (___) ___-__-__</div></div>
+          <div><div class="field-label">Что нужно (необязательно)</div><div class="field-box" style="color:var(--ink-faint);">Нихром, проволока…</div></div>
+          <a href="#" class="btn btn-accent" style="justify-content:center;margin-top:2px;">Отправить</a>
+        </div>
+      </div>
+
+      <!-- trust badges: real certification facts -->
+      <div style="display:flex;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+        <a href="images/iso/iso_2025.jpg" target="_blank" rel="noopener" style="flex:1;background:var(--paper);display:flex;align-items:center;gap:12px;padding:16px 24px;color:inherit;">
+          <svg width="26" height="26" style="color:var(--accent-deep);flex-shrink:0;"><use href="#i-shield"/></svg>
+          <div><div style="font-size:13px;font-weight:600;">ГОСТ Р ИСО 9001-2015</div><div style="font-size:12px;color:var(--ink-soft);">Система менеджмента качества сертифицирована · скан сертификата</div></div>
+        </a>
+        <div style="flex:1;background:var(--paper);display:flex;align-items:center;gap:12px;padding:16px 24px;">
+          <svg width="26" height="26" style="color:var(--accent-deep);flex-shrink:0;"><use href="#i-check"/></svg>
+          <div><div style="font-size:13px;font-weight:600;">Соответствие ГОСТ / ТУ</div><div style="font-size:12px;color:var(--ink-soft);">Продукция сопровождается сертификатами</div></div>
+        </div>
+        <div style="flex:1;background:var(--paper);display:flex;align-items:center;gap:12px;padding:16px 24px;">
+          <svg width="26" height="26" style="color:var(--accent-deep);flex-shrink:0;"><use href="#i-check"/></svg>
+          <div><div style="font-size:13px;font-weight:600;">Метотехника®</div><div style="font-size:12px;color:var(--ink-soft);">Зарегистрированный товарный знак РФ</div></div>
+        </div>
+      </div>
+
+      <div style="padding:32px 44px;">
+        <h2 style="font-size:16px;margin-bottom:18px;">Популярные материалы</h2>
+        <div style="display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:16px;">
+          <a href="nihrom.htm" class="card" style="overflow:hidden;display:block;color:inherit;"><img src="/_blob/98e3af814f4f8d1d4d03d22d6cd8de71" alt="Нихром" style="width:100%;height:110px;object-fit:cover;"><div style="padding:14px;"><h3 style="font-size:14px;margin-bottom:4px;">Нихром</h3><p style="font-size:12px;color:var(--ink-soft);">Х20Н80, Х15Н60</p></div></a>
+          <a href="fehral.htm" class="card" style="overflow:hidden;display:block;color:inherit;"><img src="/_blob/b4bda96b26f74842459325375f2fad6d" alt="Фехраль" style="width:100%;height:110px;object-fit:cover;"><div style="padding:14px;"><h3 style="font-size:14px;margin-bottom:4px;">Фехраль</h3><p style="font-size:12px;color:var(--ink-soft);">До 1400 °C</p></div></a>
+          <a href="titan-menu.htm" class="card" style="display:block;color:inherit;"><div class="photo-ph" style="height:110px;border-radius:4px 4px 0 0;"><svg width="22" height="22"><use href="#i-image"/></svg></div><div style="padding:14px;"><h3 style="font-size:14px;margin-bottom:4px;">Титан</h3><p style="font-size:12px;color:var(--ink-soft);">ВТ1-0, ОТ4</p></div></a>
+          <a href="volfram-menu.htm" class="card" style="display:block;color:inherit;"><div class="photo-ph" style="height:110px;border-radius:4px 4px 0 0;"><svg width="22" height="22"><use href="#i-image"/></svg></div><div style="padding:14px;"><h3 style="font-size:14px;margin-bottom:4px;">Вольфрам</h3><p style="font-size:12px;color:var(--ink-soft);">ВА, ВЛ, СВИ</p></div></a>
+          <a href="molibden-menu.htm" class="card" style="display:block;color:inherit;"><div class="photo-ph" style="height:110px;border-radius:4px 4px 0 0;"><svg width="22" height="22"><use href="#i-image"/></svg></div><div style="padding:14px;"><h3 style="font-size:14px;margin-bottom:4px;">Молибден</h3><p style="font-size:12px;color:var(--ink-soft);">МЧ, ЦМ2А</p></div></a>
+          <a href="nikel-menu.htm" class="card" style="display:block;color:inherit;"><div class="photo-ph" style="height:110px;border-radius:4px 4px 0 0;"><svg width="22" height="22"><use href="#i-image"/></svg></div><div style="padding:14px;"><h3 style="font-size:14px;margin-bottom:4px;">Никель</h3><p style="font-size:12px;color:var(--ink-soft);">НП2, Н-1у</p></div></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer: full sitemap, not just a copyright line -->
+  <div style="background:var(--brand);padding:40px 44px 24px;">
+    <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:32px;padding-bottom:28px;border-bottom:1px solid oklch(0.46 0.05 240);">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <img src="/_blob/98fc7573f7e4a52e1e541a32d744e5b4" alt="Метотехника" style="width:33px;height:29px;">
+          <div style="font-size:15px;font-weight:700;color:white;">Метотехника®</div>
+        </div>
+        <p style="font-size:12.5px;color:oklch(0.8 0.02 240);line-height:1.6;max-width:240px;">Поставка и изготовление изделий из цветных металлов и прецизионных сплавов. Москва, Россия.</p>
+        <div style="font-size:12.5px;color:white;margin-top:2px;">+7 (495) 504-95-54</div>
+        <div style="font-size:12.5px;color:white;">info@metotech.ru</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:oklch(0.75 0.03 240);margin-bottom:4px;">Материалы</div>
+        <a href="nihrom.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Нихром</a>
+        <a href="fehral.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Фехраль</a>
+        <a href="titan-menu.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Титан</a>
+        <a href="volfram-menu.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Вольфрам</a>
+        <a href="menu.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Все категории →</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:oklch(0.75 0.03 240);margin-bottom:4px;">Инструменты</div>
+        <a href="calc_heater.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Калькулятор нагревателей</a>
+        <a href="calc.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Калькулятор металлопроката</a>
+        <a href="gost.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Библиотека ГОСТ и ТУ</a>
+        <a href="article.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Статьи и публикации</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:oklch(0.75 0.03 240);margin-bottom:4px;">Компания</div>
+        <a href="contact.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">О компании</a>
+        <a href="images/iso/iso_2025.jpg" target="_blank" rel="noopener" style="font-size:13px;color:oklch(0.86 0.02 240);">Сертификат ISO 9001</a>
+        <a href="contact.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Контакты</a>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding-top:18px;font-size:11.5px;color:oklch(0.7 0.02 240);">
+      <div>© Метотехника. Товарный знак зарегистрирован в Государственном реестре РФ.</div>
+      <div>Концепт-прототип · не финальный сайт</div>
+    </div>
+  </div>
+
+</div>
+<script>
+  /* hrefs stay real (this is where each link will go on the live site) but the preview sandbox can't
+     actually navigate — intercept every click, only replicate same-page anchor jumps by hand */
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (!a) return;
+    e.preventDefault();
+    var href = a.getAttribute('href') || '';
+    if (href.charAt(0) === '#' && href.length > 1) {
+      var el = document.getElementById(href.slice(1));
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }, true);
+</script>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1550}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

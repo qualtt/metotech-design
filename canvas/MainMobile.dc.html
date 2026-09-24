@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>Метотехника — Главная, моб.</title>
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <style>
+    :root{
+      --ink:oklch(0.26 0.015 240);
+      --ink-soft:oklch(0.47 0.012 240);
+      --ink-faint:oklch(0.63 0.008 240);
+      --paper:oklch(0.995 0.001 240);
+      --paper-dim:oklch(0.965 0.004 240);
+      --line:oklch(0.89 0.005 240);
+      --line-strong:oklch(0.78 0.006 240);
+      --brand:oklch(0.38 0.05 240);
+      --accent:oklch(0.6799 0.1101 184.94);
+      --accent-deep:oklch(0.55 0.1101 184.94);
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;}
+    .page{font-family:'IBM Plex Sans',system-ui,sans-serif;color:var(--ink);background:var(--paper);width:390px;position:relative;}
+
+    /* phone bezel mockup: the real page renders inside .phone-screen, which scrolls internally at a realistic
+       viewport height — the .phone-screen's transform makes it the containing block for position:fixed
+       descendants (the catalog overlay, the bottom quote bar), so they stay pinned to the phone's screen,
+       not the whole tall page */
+    .phone-shell{width:100%;min-height:920px;display:flex;align-items:center;justify-content:center;background:oklch(0.93 0.004 240);padding:20px 0;box-sizing:border-box;}
+    .phone-frame{box-sizing:border-box;position:relative;width:426px;height:880px;padding:18px;background:oklch(0.16 0 0);border-radius:54px;box-shadow:0 30px 70px -24px rgba(0,0,0,.4), inset 0 0 0 2px oklch(0.32 0 0);flex-shrink:0;}
+    /* the transform (for the fixed-position containing block) and the scrolling must live on two DIFFERENT
+       elements — an element that is both scrolled AND the fixed containing block drags its "fixed" children
+       along with its own scroll instead of pinning them, so .phone-screen only supplies the transform+clip
+       and .phone-scroll (inside it) is the one that actually scrolls */
+    .phone-screen{box-sizing:border-box;position:relative;width:100%;height:100%;background:var(--paper);border-radius:36px;overflow:hidden;transform:translateZ(0);}
+    .phone-scroll{width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+    .phone-notch{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:100px;height:28px;background:oklch(0.16 0 0);border-radius:16px;z-index:200;pointer-events:none;}
+    .phone-home{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:oklch(0.75 0.006 240);z-index:250;pointer-events:none;}
+    h1,h2,h3{margin:0;font-weight:600;}
+    p{margin:0;}
+    a{color:var(--accent-deep);text-decoration:none;}
+    a:hover{color:var(--brand);}
+    img{display:block;}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:4px;font-weight:600;font-size:14px;border:1px solid transparent;white-space:nowrap;}
+    .btn-accent{background:var(--accent);color:white;}
+    .card{background:white;border:1px solid var(--line);border-radius:4px;}
+    .photo-ph{background:linear-gradient(135deg, oklch(0.93 0.003 240), oklch(0.87 0.003 240));display:flex;align-items:center;justify-content:center;color:oklch(0.65 0.005 240);}
+    .field-label{font-size:11px;color:var(--ink-faint);margin-bottom:4px;}
+    .field-box{border:1px solid var(--line-strong);border-radius:4px;padding:9px 10px;font-size:13px;}
+
+    /* mobile header — cart lives here as an icon, never a separate row, so the header always reads as one full-width bar */
+    .mheader{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line);}
+    .mheader-burger{display:flex;align-items:center;justify-content:center;width:30px;height:30px;color:var(--ink);flex-shrink:0;}
+    .mheader-logo{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+    .mheader-logo img{width:26px;height:22px;flex-shrink:0;}
+    .mheader-logo span{font-size:14.5px;font-weight:700;color:var(--brand);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .mheader-actions{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+    .mheader-icon{position:relative;display:flex;align-items:center;justify-content:center;width:34px;height:34px;color:var(--ink);border-radius:4px;}
+    .quote-badge-mini{position:absolute;top:1px;right:1px;font-size:9px;line-height:1;font-weight:700;background:var(--accent);color:white;border-radius:8px;padding:2px 4px;min-width:8px;text-align:center;}
+    .msearch{display:flex;align-items:center;gap:8px;margin:14px 16px;border:1px solid var(--line);border-radius:4px;padding:10px 12px;color:var(--ink-faint);}
+    .msearch span{font-size:12.5px;}
+
+    /* material + shape finder (onlinemetals.com-style): pick a material and a form side by side, jump straight
+       to the matching product page — this replaces free-text search as the primary way in on mobile */
+    .finder{margin:14px 16px 22px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--paper-dim);}
+    .finder-title{font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:10px;}
+    .finder-row{display:grid;grid-template-columns:1fr 1.25fr;gap:8px;margin-bottom:10px;}
+    .finder-field{display:flex;flex-direction:column;gap:4px;min-width:0;}
+    .finder-label{font-size:10.5px;color:var(--ink-faint);}
+    .finder-select{display:flex;align-items:center;justify-content:space-between;gap:6px;background:white;border:1px solid var(--line-strong);border-radius:4px;padding:10px 10px;font-size:12.5px;font-weight:500;color:var(--ink);overflow:hidden;}
+    .finder-select span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .finder-select svg{flex-shrink:0;}
+
+    /* hamburger overlay + drill-down catalog nav: each level replaces the previous one full-screen, with a back arrow — twmetals-style cascade, adapted to tap instead of hover */
+    .menu-toggle,.cat-r{position:absolute;opacity:0;width:0;height:0;margin:0;pointer-events:none;}
+    .mobnav-overlay{position:fixed;inset:0;background:white;z-index:100;opacity:0;visibility:hidden;transition:opacity .15s ease;}
+    #menu-open:checked ~ .mobnav-overlay{opacity:1;visibility:visible;}
+    /* the editor strips the HTML "checked" attribute when it templates the page, so the default state must come from CSS,
+       not from any radio starting pre-checked: the root panel shows unless a deeper radio is checked, plain sibling combinator */
+    .cat-panel{display:none;position:absolute;inset:0;flex-direction:column;background:white;}
+    .cat-panel-root{display:flex;}
+    #cat-nihrom:checked ~ .cat-panel-root,
+    #cat-nihrom-wire:checked ~ .cat-panel-root,
+    #cat-fehral:checked ~ .cat-panel-root,
+    #cat-fehral-wire:checked ~ .cat-panel-root{display:none;}
+    #cat-nihrom:checked ~ .cat-panel-nihrom{display:flex;}
+    #cat-nihrom-wire:checked ~ .cat-panel-nihrom-wire{display:flex;}
+    #cat-fehral:checked ~ .cat-panel-fehral{display:flex;}
+    #cat-fehral-wire:checked ~ .cat-panel-fehral-wire{display:flex;}
+    .cat-panel-head{display:flex;align-items:center;gap:10px;padding:15px 16px;border-bottom:1px solid var(--line);flex:0 0 auto;}
+    .cat-back,.cat-close{display:flex;align-items:center;justify-content:center;width:28px;height:28px;color:var(--ink);flex-shrink:0;}
+    .cat-close{color:var(--ink-soft);}
+    .cat-panel-title{flex:1;font-size:15px;font-weight:600;}
+    .cat-panel-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:28px;}
+    .cat-crumb{display:flex;align-items:center;gap:6px;padding:9px 16px;font-size:11.5px;color:var(--ink-faint);border-bottom:1px solid var(--line);background:var(--paper-dim);overflow-x:auto;white-space:nowrap;flex:0 0 auto;-webkit-overflow-scrolling:touch;}
+    .cat-crumb label{color:var(--ink-faint);flex-shrink:0;}
+    .cat-crumb label:hover{color:var(--brand);}
+    .cat-crumb span{flex-shrink:0;}
+    .cat-crumb-current{color:var(--ink);font-weight:600;}
+    .cat-grp{padding:16px 16px 6px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);}
+    .cat-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink);}
+    .cat-row-meta{font-size:11.5px;color:var(--ink-faint);white-space:nowrap;}
+    .cat-link-strong{display:block;padding:13px 16px;font-size:13px;font-weight:600;color:var(--brand);border-bottom:1px solid var(--line);background:var(--paper-dim);}
+    .cat-quick{padding:8px 16px 4px;margin-top:8px;border-top:1px solid var(--line);display:flex;flex-direction:column;}
+    .cat-quick a{padding:11px 0;font-size:13px;color:var(--ink-soft);border-bottom:1px solid var(--line);}
+    .cat-quick a:last-child{border-bottom:none;}
+
+    /* bottom sticky quote bar — slim strip that expands upward on tap, never blocks the page by default */
+    .mquote{position:fixed;left:0;right:0;bottom:0;z-index:90;background:white;border-top:1px solid var(--line);box-shadow:0 -8px 24px -12px rgba(20,30,50,0.25);}
+    .mquote-bar{display:flex;align-items:center;gap:10px;padding:13px 16px;font-size:13px;font-weight:600;color:var(--brand);}
+    .mquote-bar svg{color:var(--accent-deep);flex-shrink:0;}
+    .mquote-chev{margin-left:auto;font-size:10px;color:var(--ink-faint);transition:transform .15s ease;}
+    .mquote-panel{max-height:0;overflow:hidden;transition:max-height .2s ease;}
+    #quote-open:checked ~ .mquote .mquote-panel{max-height:220px;}
+    #quote-open:checked ~ .mquote .mquote-chev{transform:rotate(180deg);}
+  </style>
+</helmet>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M20 20l-4.6-4.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h2.7l1.6 4-2 1.6a11 11 0 0 0 5.1 5.1l1.6-2 4 1.6v2.7a2 2 0 0 1-2.1 2C10.8 18 6 13.2 4.5 6.6a2 2 0 0 1 2-3.1z" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1.5" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="8.3" cy="9.3" r="1.6" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 17l5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevron-r" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.3" fill="currentColor"/><circle cx="17" cy="20" r="1.3" fill="currentColor"/><path d="M3 4h2l2.2 11h11.2L20 8H6.2" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.6-3.2 6.9-7 8.5-3.8-1.6-7-3.9-7-8.5V6l7-3z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M8.7 12l2.2 2.2 4.4-4.4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-burger" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="phone-shell">
+<div class="phone-frame">
+<div class="phone-notch"></div>
+<div class="phone-screen">
+<div class="phone-scroll">
+<div class="page">
+
+  <input type="checkbox" id="menu-open" class="menu-toggle">
+  <input type="checkbox" id="quote-open" class="menu-toggle">
+
+  <!-- header: hamburger + logo + phone/cart icons, one unified full-width row -->
+  <div class="mheader">
+    <label for="menu-open" class="mheader-burger"><svg width="21" height="21"><use href="#i-burger"/></svg></label>
+    <div class="mheader-logo"><img src="/_blob/98fc7573f7e4a52e1e541a32d744e5b4" alt="Метотехника"><span>Метотехника</span></div>
+    <div class="mheader-actions">
+      <a href="tel:+74955049554" class="mheader-icon"><svg width="17" height="17"><use href="#i-phone"/></svg></a>
+      <label for="quote-open" class="mheader-icon"><svg width="17" height="17"><use href="#i-cart"/></svg><span class="quote-badge-mini">2</span></label>
+    </div>
+  </div>
+  <div class="finder">
+    <div class="finder-title">Найти по материалу и форме</div>
+    <div class="finder-row">
+      <div class="finder-field">
+        <div class="finder-label">Материал</div>
+        <div class="finder-select"><span>Нихром</span><svg width="12" height="12" style="transform:rotate(90deg);color:var(--ink-faint);"><use href="#i-chevron-r"/></svg></div>
+      </div>
+      <div class="finder-field">
+        <div class="finder-label">Форма</div>
+        <div class="finder-select"><span>Проволока и нить</span><svg width="12" height="12" style="transform:rotate(90deg);color:var(--ink-faint);"><use href="#i-chevron-r"/></svg></div>
+      </div>
+    </div>
+    <a href="nihromovaya-provoloka-nit.htm" class="btn btn-accent" style="width:100%;justify-content:center;">Найти <svg width="13" height="13"><use href="#i-chevron-r"/></svg></a>
+  </div>
+
+  <!-- hero -->
+  <div style="padding:4px 16px 22px;">
+    <h1 style="font-size:20px;line-height:1.32;color:var(--brand);margin-bottom:10px;">Цветные металлы и сплавы со склада в Москве</h1>
+    <p style="font-size:13px;color:var(--ink-soft);line-height:1.55;margin-bottom:14px;">25+ материалов в наличии на складе. Отгрузка за 1–2 рабочих дня, сертификация по ГОСТ Р ИСО 9001-2015.</p>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-soft);"><svg width="13" height="13" style="color:var(--accent-deep);flex-shrink:0;"><use href="#i-check"/></svg>Отгрузка 1–2 дня</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-soft);"><svg width="13" height="13" style="color:var(--accent-deep);flex-shrink:0;"><use href="#i-check"/></svg>ISO 9001</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-soft);"><svg width="13" height="13" style="color:var(--accent-deep);flex-shrink:0;"><use href="#i-check"/></svg>По чертежам</div>
+    </div>
+    <div class="card" style="padding:16px;display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:13.5px;font-weight:600;">Быстрая заявка</div>
+      <div><div class="field-label">Ваше имя</div><div class="field-box" style="color:var(--ink-faint);">Иван Петров</div></div>
+      <div><div class="field-label">Телефон</div><div class="field-box" style="color:var(--ink-faint);">+7 (___) ___-__-__</div></div>
+      <div><div class="field-label">Что нужно (необязательно)</div><div class="field-box" style="color:var(--ink-faint);">Нихром, проволока…</div></div>
+      <a href="#" class="btn btn-accent" style="justify-content:center;margin-top:2px;">Отправить</a>
+    </div>
+  </div>
+
+  <!-- trust badges: stacked on mobile -->
+  <div style="display:flex;flex-direction:column;gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+    <a href="images/iso/iso_2025.jpg" target="_blank" rel="noopener" style="background:var(--paper);display:flex;align-items:center;gap:12px;padding:13px 16px;color:inherit;">
+      <svg width="22" height="22" style="color:var(--accent-deep);flex-shrink:0;"><use href="#i-shield"/></svg>
+      <div><div style="font-size:12.5px;font-weight:600;">ГОСТ Р ИСО 9001-2015</div><div style="font-size:11.5px;color:var(--ink-soft);">Скан сертификата</div></div>
+    </a>
+    <div style="background:var(--paper);display:flex;align-items:center;gap:12px;padding:13px 16px;">
+      <svg width="22" height="22" style="color:var(--accent-deep);flex-shrink:0;"><use href="#i-check"/></svg>
+      <div><div style="font-size:12.5px;font-weight:600;">Соответствие ГОСТ / ТУ</div><div style="font-size:11.5px;color:var(--ink-soft);">Сертификаты на продукцию</div></div>
+    </div>
+    <div style="background:var(--paper);display:flex;align-items:center;gap:12px;padding:13px 16px;">
+      <svg width="22" height="22" style="color:var(--accent-deep);flex-shrink:0;"><use href="#i-check"/></svg>
+      <div><div style="font-size:12.5px;font-weight:600;">Метотехника®</div><div style="font-size:11.5px;color:var(--ink-soft);">Товарный знак РФ</div></div>
+    </div>
+  </div>
+
+  <!-- popular materials: 2-column grid -->
+  <div style="padding:22px 16px;">
+    <h2 style="font-size:14.5px;margin-bottom:12px;">Популярные материалы</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <a href="nihrom.htm" class="card" style="overflow:hidden;display:block;color:inherit;"><img src="/_blob/98e3af814f4f8d1d4d03d22d6cd8de71" alt="Нихром" style="width:100%;height:88px;object-fit:cover;"><div style="padding:10px;"><h3 style="font-size:13px;margin-bottom:3px;">Нихром</h3><p style="font-size:11px;color:var(--ink-soft);">Х20Н80, Х15Н60</p></div></a>
+      <a href="fehral.htm" class="card" style="overflow:hidden;display:block;color:inherit;"><img src="/_blob/b4bda96b26f74842459325375f2fad6d" alt="Фехраль" style="width:100%;height:88px;object-fit:cover;"><div style="padding:10px;"><h3 style="font-size:13px;margin-bottom:3px;">Фехраль</h3><p style="font-size:11px;color:var(--ink-soft);">До 1400 °C</p></div></a>
+      <a href="titan-menu.htm" class="card" style="display:block;color:inherit;"><div class="photo-ph" style="height:88px;border-radius:4px 4px 0 0;"><svg width="18" height="18"><use href="#i-image"/></svg></div><div style="padding:10px;"><h3 style="font-size:13px;margin-bottom:3px;">Титан</h3><p style="font-size:11px;color:var(--ink-soft);">ВТ1-0, ОТ4</p></div></a>
+      <a href="volfram-menu.htm" class="card" style="display:block;color:inherit;"><div class="photo-ph" style="height:88px;border-radius:4px 4px 0 0;"><svg width="18" height="18"><use href="#i-image"/></svg></div><div style="padding:10px;"><h3 style="font-size:13px;margin-bottom:3px;">Вольфрам</h3><p style="font-size:11px;color:var(--ink-soft);">ВА, ВЛ, СВИ</p></div></a>
+      <a href="molibden-menu.htm" class="card" style="display:block;color:inherit;"><div class="photo-ph" style="height:88px;border-radius:4px 4px 0 0;"><svg width="18" height="18"><use href="#i-image"/></svg></div><div style="padding:10px;"><h3 style="font-size:13px;margin-bottom:3px;">Молибден</h3><p style="font-size:11px;color:var(--ink-soft);">МЧ, ЦМ2А</p></div></a>
+      <a href="nikel-menu.htm" class="card" style="display:block;color:inherit;"><div class="photo-ph" style="height:88px;border-radius:4px 4px 0 0;"><svg width="18" height="18"><use href="#i-image"/></svg></div><div style="padding:10px;"><h3 style="font-size:13px;margin-bottom:3px;">Никель</h3><p style="font-size:11px;color:var(--ink-soft);">НП2, Н-1у</p></div></a>
+    </div>
+  </div>
+
+  <!-- footer: stacked sections -->
+  <div style="background:var(--brand);padding:26px 16px 96px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <img src="/_blob/98fc7573f7e4a52e1e541a32d744e5b4" alt="Метотехника" style="width:28px;height:24px;">
+      <div style="font-size:14.5px;font-weight:700;color:white;">Метотехника®</div>
+    </div>
+    <p style="font-size:12px;color:oklch(0.8 0.02 240);line-height:1.6;margin-bottom:12px;">Поставка и изготовление изделий из цветных металлов и прецизионных сплавов. Москва, Россия.</p>
+    <div style="font-size:12.5px;color:white;margin-bottom:2px;">+7 (495) 504-95-54</div>
+    <div style="font-size:12.5px;color:white;margin-bottom:20px;">info@metotech.ru</div>
+
+    <div style="border-top:1px solid oklch(0.46 0.05 240);padding-top:16px;margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:oklch(0.75 0.03 240);margin-bottom:8px;">Материалы</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="nihrom.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Нихром</a>
+        <a href="fehral.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Фехраль</a>
+        <a href="titan-menu.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Титан</a>
+        <a href="volfram-menu.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Вольфрам</a>
+        <a href="menu.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Все категории →</a>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid oklch(0.46 0.05 240);padding-top:16px;margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:oklch(0.75 0.03 240);margin-bottom:8px;">Инструменты</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="calc_heater.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Калькулятор нагревателей</a>
+        <a href="calc.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Калькулятор металлопроката</a>
+        <a href="gost.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Библиотека ГОСТ и ТУ</a>
+        <a href="article.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Статьи и публикации</a>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid oklch(0.46 0.05 240);padding-top:16px;margin-bottom:18px;">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:oklch(0.75 0.03 240);margin-bottom:8px;">Компания</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="contact.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">О компании</a>
+        <a href="images/iso/iso_2025.jpg" target="_blank" rel="noopener" style="font-size:13px;color:oklch(0.86 0.02 240);">Сертификат ISO 9001</a>
+        <a href="contact.htm" style="font-size:13px;color:oklch(0.86 0.02 240);">Контакты</a>
+      </div>
+    </div>
+
+    <div style="font-size:11px;color:oklch(0.7 0.02 240);line-height:1.6;border-top:1px solid oklch(0.46 0.05 240);padding-top:14px;">
+      <div>© Метотехника. Товарный знак зарегистрирован в Государственном реестре РФ.</div>
+      <div style="margin-top:4px;">Концепт-прототип · не финальный сайт</div>
+    </div>
+  </div>
+
+  <!-- bottom sticky quote bar: slim strip, expands upward on tap -->
+  <div class="mquote">
+    <label for="quote-open" class="mquote-bar">
+      <svg width="16" height="16"><use href="#i-cart"/></svg>
+      <span>Заявка · 2 позиции</span>
+      <span class="mquote-chev">▲</span>
+    </label>
+    <div class="mquote-panel">
+      <div style="padding:0 16px 8px;font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px;"><span>Проволока Х20Н80, ⌀0,10</span><span>от 12 000 ₽/кг</span></div>
+      <div style="padding:0 16px 10px;font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;"><span>Лента Х20Н80, 0,05×0,2</span><span>от 1 000 ₽/м</span></div>
+      <div style="padding:0 16px 14px;"><a href="#" class="btn btn-accent" style="width:100%;justify-content:center;">Отправить заявку</a></div>
+    </div>
+  </div>
+
+  <!-- hamburger drill-down catalog: root → metal → form → grade, each level replaces the previous, back arrow at every level -->
+  <div class="mobnav-overlay">
+    <input type="radio" name="cat" id="cat-root" class="cat-r" checked>
+    <input type="radio" name="cat" id="cat-nihrom" class="cat-r">
+    <input type="radio" name="cat" id="cat-nihrom-wire" class="cat-r">
+    <input type="radio" name="cat" id="cat-fehral" class="cat-r">
+    <input type="radio" name="cat" id="cat-fehral-wire" class="cat-r">
+
+    <div class="cat-panel cat-panel-root">
+      <div class="cat-panel-head">
+        <span class="cat-panel-title">Каталог</span>
+        <label for="menu-open" class="cat-close"><svg width="18" height="18"><use href="#i-close"/></svg></label>
+      </div>
+      <div class="cat-panel-body">
+        <div class="cat-grp">Прецизионные сплавы</div>
+        <label for="cat-nihrom" class="cat-row">Нихром <svg width="14" height="14" style="color:var(--ink-faint);flex-shrink:0;"><use href="#i-chevron-r"/></svg></label>
+        <label for="cat-fehral" class="cat-row">Фехраль <svg width="14" height="14" style="color:var(--ink-faint);flex-shrink:0;"><use href="#i-chevron-r"/></svg></label>
+        <a href="#" class="cat-row">Термоэлектродные сплавы</a>
+        <a href="#" class="cat-row">Термопровода</a>
+        <a href="konstantan-menu.htm" class="cat-row">Константан</a>
+
+        <div class="cat-grp">Тугоплавкие металлы</div>
+        <a href="volfram-menu.htm" class="cat-row">Вольфрам</a>
+        <a href="molibden-menu.htm" class="cat-row">Молибден</a>
+        <a href="#" class="cat-row">Тантал</a>
+        <a href="#" class="cat-row">Ниобий</a>
+        <a href="#" class="cat-row">Рений</a>
+        <a href="#" class="cat-row">Хром</a>
+
+        <div class="cat-grp">Никелевые сплавы</div>
+        <a href="nikel-menu.htm" class="cat-row">Никель</a>
+        <a href="#" class="cat-row">Монель</a>
+        <a href="#" class="cat-row">Мельхиор</a>
+        <a href="#" class="cat-row">Кобальт</a>
+
+        <div class="cat-grp">Прочие материалы</div>
+        <a href="titan-menu.htm" class="cat-row">Титан</a>
+        <a href="#" class="cat-row">Олово</a>
+        <a href="#" class="cat-row">Ванадий</a>
+        <a href="#" class="cat-row">Твёрдые сплавы</a>
+        <a href="#" class="cat-row">Ферросплавы</a>
+
+        <div class="cat-quick">
+          <a href="calc_heater.htm">Калькулятор нагревателей</a>
+          <a href="calc.htm">Калькулятор металлопроката</a>
+          <a href="gost.htm">Библиотека ГОСТ и ТУ</a>
+          <a href="article.htm">Статьи и публикации</a>
+          <a href="board/">Доска объявлений</a>
+          <a href="contact.htm">Контакты</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-panel cat-panel-nihrom">
+      <div class="cat-panel-head">
+        <label for="cat-root" class="cat-back"><svg width="18" height="18" style="transform:scaleX(-1);"><use href="#i-chevron-r"/></svg></label>
+        <span class="cat-panel-title">Нихром</span>
+        <label for="menu-open" class="cat-close"><svg width="18" height="18"><use href="#i-close"/></svg></label>
+      </div>
+      <div class="cat-crumb"><label for="cat-root">Каталог</label><span>/</span><span class="cat-crumb-current">Нихром</span></div>
+      <div class="cat-panel-body">
+        <a href="nihrom.htm" class="cat-link-strong">Все товары «Нихром» →</a>
+        <label for="cat-nihrom-wire" class="cat-row">Проволока и нить <span class="cat-row-meta">Х20Н80 · Х15Н60</span></label>
+        <a href="nihromovaya-lenta-folga.htm" class="cat-row">Лента <span class="cat-row-meta">Х20Н80</span></a>
+        <a href="nihromovaya-spiral.htm" class="cat-row">Спираль <span class="cat-row-meta">готовый элемент</span></a>
+        <a href="nihromovyy-prutok-krug.htm" class="cat-row">Пруток / круг <span class="cat-row-meta">Х20Н80</span></a>
+        <a href="nihrom-izol.htm" class="cat-row">Кабель в изоляции <span class="cat-row-meta">КЭНВ</span></a>
+      </div>
+    </div>
+
+    <div class="cat-panel cat-panel-nihrom-wire">
+      <div class="cat-panel-head">
+        <label for="cat-nihrom" class="cat-back"><svg width="18" height="18" style="transform:scaleX(-1);"><use href="#i-chevron-r"/></svg></label>
+        <span class="cat-panel-title">Проволока и нить</span>
+        <label for="menu-open" class="cat-close"><svg width="18" height="18"><use href="#i-close"/></svg></label>
+      </div>
+      <div class="cat-crumb"><label for="cat-root">Каталог</label><span>/</span><label for="cat-nihrom">Нихром</label><span>/</span><span class="cat-crumb-current">Проволока и нить</span></div>
+      <div class="cat-panel-body">
+        <a href="nihrom-cena.htm#h20n80" class="cat-row">Х20Н80 <span class="cat-row-meta">до 1100 °C</span></a>
+        <a href="nihrom-cena.htm#h15n60" class="cat-row">Х15Н60 <span class="cat-row-meta">до 1100 °C</span></a>
+        <a href="gost_12766_1_90.htm" class="cat-row" style="color:var(--ink-faint);font-size:12.5px;">ГОСТ 12766.1-90 →</a>
+      </div>
+    </div>
+
+    <div class="cat-panel cat-panel-fehral">
+      <div class="cat-panel-head">
+        <label for="cat-root" class="cat-back"><svg width="18" height="18" style="transform:scaleX(-1);"><use href="#i-chevron-r"/></svg></label>
+        <span class="cat-panel-title">Фехраль</span>
+        <label for="menu-open" class="cat-close"><svg width="18" height="18"><use href="#i-close"/></svg></label>
+      </div>
+      <div class="cat-crumb"><label for="cat-root">Каталог</label><span>/</span><span class="cat-crumb-current">Фехраль</span></div>
+      <div class="cat-panel-body">
+        <a href="fehral.htm" class="cat-link-strong">Все товары «Фехраль» →</a>
+        <label for="cat-fehral-wire" class="cat-row">Проволока и нить <span class="cat-row-meta">Х23Ю5Т · Х27Ю5Т</span></label>
+        <a href="fehralevaya-lenta-folga.htm" class="cat-row">Лента <span class="cat-row-meta">Х23Ю5Т</span></a>
+        <a href="fehralevaya-spiral.htm" class="cat-row">Спираль <span class="cat-row-meta">Ø 20–80</span></a>
+        <a href="fehralevyy-prutok-krug.htm" class="cat-row">Пруток / круг <span class="cat-row-meta">Х23Ю5Т</span></a>
+      </div>
+    </div>
+
+    <div class="cat-panel cat-panel-fehral-wire">
+      <div class="cat-panel-head">
+        <label for="cat-fehral" class="cat-back"><svg width="18" height="18" style="transform:scaleX(-1);"><use href="#i-chevron-r"/></svg></label>
+        <span class="cat-panel-title">Проволока и нить</span>
+        <label for="menu-open" class="cat-close"><svg width="18" height="18"><use href="#i-close"/></svg></label>
+      </div>
+      <div class="cat-crumb"><label for="cat-root">Каталог</label><span>/</span><label for="cat-fehral">Фехраль</label><span>/</span><span class="cat-crumb-current">Проволока и нить</span></div>
+      <div class="cat-panel-body">
+        <a href="fehral-cena.htm#h23yu5t" class="cat-row">Х23Ю5Т <span class="cat-row-meta">до 1400 °C</span></a>
+        <a href="fehral-cena.htm#h27yu5t" class="cat-row">Х27Ю5Т <span class="cat-row-meta">до 1400 °C</span></a>
+        <a href="gost_12766_1_90.htm" class="cat-row" style="color:var(--ink-faint);font-size:12.5px;">ГОСТ 12766.1-90 →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+<div class="phone-home"></div>
+</div>
+</div>
+</div>
+<script>
+  /* hrefs stay real (this is where each link will go on the live site) but the preview sandbox can't
+     actually navigate — intercept every click, only replicate same-page anchor jumps by hand */
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (!a) return;
+    e.preventDefault();
+    var href = a.getAttribute('href') || '';
+    if (href.charAt(0) === '#' && href.length > 1) {
+      var el = document.getElementById(href.slice(1));
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }, true);
+</script>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":470,"height":930}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

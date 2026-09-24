@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Кнопки и композиции — 3 варианта</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #e8eaed; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+  button { font: inherit; cursor: pointer; }
+</style>
+</helmet>
+<div style="width: 1700px; height: 2500px; box-sizing: border-box; padding: 56px; background: #e8eaed; display: flex; flex-direction: column; gap: 28px;">
+
+  <div>
+    <div style="font-size: 22px; font-weight: 700; color: #1a1a1a;">Кнопки и композиции — 3 варианта</div>
+    <div style="font-size: 13px; color: #666; margin-top: 6px; max-width: 1150px; line-height: 1.5;">Сегодня в прототипе есть только одна кнопка (заливка, без hover) и ни одной пары/группы кнопок. Ниже — по 5 вариантов, 3 размера, состояния и 7 композиций на каждое направление, плюс переупаковка текущих самодельных элементов (кружок «в заявку», ссылка-PDF, чип фильтра, таб, чекбокс) в общие примитивы.</div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; align-items: start;">
+    <sc-for list="{{columns}}" as="col" hint-placeholder-count="3">
+      <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 22px; font-family: {{col.fontBody}};">
+
+        <div style="display: inline-block; padding: 5px 12px; border-radius: 999px; background: {{col.accent}}; color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; width: fit-content;">{{col.title}}</div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Варианты</div>
+          <sc-for list="{{col.variants}}" as="v" hint-placeholder-count="5">
+            <div style="display: flex; align-items: center; gap: 10px; padding: 4px 0;">
+              <span style="display: inline-flex; align-items: center; padding: 9px 16px; border-radius: {{col.radiusMd}}px; background: {{v.bg}}; color: {{v.color}}; border: {{v.border}}; font-size: 13px; font-weight: 600;">{{v.label}}</span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">{{v.name}}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Размеры</div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <sc-for list="{{col.sizes}}" as="sz" hint-placeholder-count="3">
+              <span style="display: inline-flex; align-items: center; padding: {{sz.pad}}; border-radius: {{col.radiusMd}}px; background: {{col.accent}}; color: #fff; font-size: {{sz.font}}px; font-weight: 600;">{{sz.label}}</span>
+            </sc-for>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Состояния (primary)</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <sc-for list="{{col.states}}" as="st" hint-placeholder-count="5">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                <span style="display: inline-flex; align-items: center; padding: 8px 14px; border-radius: {{col.radiusMd}}px; background: {{st.bg}}; color: {{st.color}}; border: {{st.border}}; box-shadow: {{st.ring}}; font-size: 12px; font-weight: 600; opacity: {{st.opacity}};">Заявка</span>
+                <span style="font-size: 9.5px; color: #a3a9b2;">{{st.name}}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Модификаторы</div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: {{col.radiusMd}}px; background: {{col.accent}}; color: #fff; font-size: 12.5px; font-weight: 600;">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 8h8M8 4v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                Добавить
+              </span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">иконка слева</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span aria-label="Скачать" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: {{col.radiusMd}}px; background: {{col.tintBg}}; color: {{col.accent}};">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">только иконка</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: {{col.radiusMd}}px; background: {{col.tintBg}}; color: {{col.ink}}; font-size: 12.5px; font-weight: 600;">
+                Заявки
+                <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: {{col.accent}}; color: #fff; font-size: 10.5px; font-weight: 700;">3</span>
+              </span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">со счётчиком</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: {{col.radiusMd}}px; background: {{col.accent}}; color: #fff; font-size: 12.5px; font-weight: 600; opacity: .6;">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6" stroke-dasharray="20 10"/></svg>
+                Отправка…
+              </span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">loading</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Композиции — новое для проекта</div>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+
+            <div>
+              <div style="font-size: 10px; color: #b0b5bd; margin-bottom: 6px;">Пара · подвал формы, слева</div>
+              <div style="display: flex; gap: 10px;">
+                <span style="padding: 8px 16px; border-radius: {{col.radiusMd}}px; background: {{col.accent}}; color: #fff; font-size: 12.5px; font-weight: 600;">Отправить заявку</span>
+                <span style="padding: 8px 16px; border-radius: {{col.radiusMd}}px; background: transparent; color: {{col.ink}}; border: 1px solid {{col.lineStrong}}; font-size: 12.5px; font-weight: 600;">Скачать прайс</span>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size: 10px; color: #b0b5bd; margin-bottom: 6px;">Пара · подвал панели, справа</div>
+              <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <span style="padding: 8px 16px; border-radius: {{col.radiusMd}}px; background: transparent; color: {{col.inkFaint}}; font-size: 12.5px; font-weight: 600;">Отмена</span>
+                <span style="padding: 8px 16px; border-radius: {{col.radiusMd}}px; background: {{col.accent}}; color: #fff; font-size: 12.5px; font-weight: 600;">Подтвердить</span>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size: 10px; color: #b0b5bd; margin-bottom: 6px;">Пара · на всю ширину (моб.)</div>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <span style="padding: 9px 16px; border-radius: {{col.radiusMd}}px; background: {{col.accent}}; color: #fff; font-size: 12.5px; font-weight: 600; text-align: center;">Отправить заявку</span>
+                <span style="padding: 9px 16px; border-radius: {{col.radiusMd}}px; background: transparent; color: {{col.ink}}; border: 1px solid {{col.lineStrong}}; font-size: 12.5px; font-weight: 600; text-align: center;">Скачать прайс PDF</span>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size: 10px; color: #b0b5bd; margin-bottom: 6px;">Сегментированная группа</div>
+              <div style="display: inline-flex; border: 1px solid {{col.lineStrong}}; border-radius: {{col.radiusMd}}px; overflow: hidden; width: fit-content;">
+                <span style="padding: 7px 14px; background: {{col.accent}}; color: #fff; font-size: 12px; font-weight: 600;">Таблица</span>
+                <span style="padding: 7px 14px; background: transparent; color: {{col.ink}}; font-size: 12px; font-weight: 600;">Плитка</span>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size: 10px; color: #b0b5bd; margin-bottom: 6px;">Сплит-кнопка</div>
+              <div style="display: inline-flex; border-radius: {{col.radiusMd}}px; overflow: hidden; width: fit-content;">
+                <span style="padding: 8px 14px; background: {{col.accent}}; color: #fff; font-size: 12.5px; font-weight: 600;">Купить</span>
+                <span style="padding: 8px 10px; background: {{col.accentDeep}}; color: #fff; font-size: 12.5px; font-weight: 600; border-left: 1px solid rgba(255,255,255,.3);">▾</span>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size: 10px; color: #b0b5bd; margin-bottom: 6px;">Кластер тулбара</div>
+              <div style="display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: {{col.paperDim}}; border-radius: {{col.radiusMd}}px; width: fit-content;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: {{col.radiusMd}}px; color: {{col.inkFaint}};">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: {{col.radiusMd}}px; color: {{col.inkFaint}};">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4h10M3 8h10M3 12h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </span>
+                <span style="width: 1px; height: 18px; background: {{col.lineStrong}};"></span>
+                <span style="padding: 6px 12px; border-radius: {{col.radiusMd}}px; background: {{col.accent}}; color: #fff; font-size: 11.5px; font-weight: 600;">Запросить счёт</span>
+              </div>
+            </div>
+
+            <div>
+              <div style="font-size: 10px; color: #b0b5bd; margin-bottom: 6px;">Строчная CTA прайс-таблицы (×200 в реальной таблице) — вес имеет значение</div>
+              <div style="display: flex; gap: 16px; align-items: center;">
+                <span style="font-size: 12px; font-weight: 600; color: {{col.accent}};">Купить →</span>
+                <span style="padding: 5px 12px; border-radius: {{col.radiusMd}}px; border: 1px solid {{col.lineStrong}}; color: {{col.ink}}; font-size: 12px; font-weight: 600;">Купить</span>
+                <span style="padding: 5px 12px; border-radius: {{col.radiusMd}}px; background: {{col.accent}}; color: #fff; font-size: 12px; font-weight: 600; opacity: .45;" title="слишком тяжело для 200 строк">Купить</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 10px;">Переупаковка самодельных элементов</div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: {{col.radiusMd}}px; background: {{col.accent}}; color: #fff;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 8h8M8 4v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">кружок «в заявку» → icon-only, тот же примитив</span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="display: inline-flex; align-items: center; gap: 5px; color: {{col.accent}}; font-size: 12px; font-weight: 600;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                ГОСТ 10994-74.pdf
+              </span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">ссылка-PDF → text-вариант кнопки</span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="padding: 5px 12px; border-radius: 999px; background: {{col.accent}}; color: #fff; font-size: 11px; font-weight: 600;">Проволока</span>
+              <span style="padding: 5px 12px; border-radius: 999px; background: {{col.paperDim}}; color: {{col.inkFaint}}; font-size: 11px; font-weight: 600;">Лента</span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">чип фильтра → тот же паттерн активн./неакт.</span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="padding: 6px 2px; border-bottom: 2px solid {{col.accent}}; color: {{col.ink}}; font-size: 12px; font-weight: 600;">Стоимость</span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">таб → тот же вес и радиус, что кнопки</span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 4px; background: {{col.accent}}; color: #fff;">
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span style="font-size: 10.5px; color: #a3a9b2;">чекбокс → тот же accent и radiusSm</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1700,"height":2500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    function buildVariants(accent, accentDeep, tintBg, ink, lineStrong, inkFaint) {
+      return [
+        { name: 'primary', label: 'Отправить заявку', bg: accent, color: '#fff', border: 'none' },
+        { name: 'secondary (тональная)', label: 'Скачать прайс', bg: tintBg, color: accentDeep, border: 'none' },
+        { name: 'outline', label: 'Все размеры', bg: 'transparent', color: ink, border: '1px solid ' + lineStrong },
+        { name: 'ghost', label: 'Печать', bg: 'transparent', color: inkFaint, border: 'none' },
+        { name: 'destructive/text', label: 'Удалить из заявки', bg: 'transparent', color: '#b91c1c', border: 'none' }
+      ];
+    }
+    function buildSizes(accent) {
+      return [
+        { label: 'sm', pad: '5px 12px', font: 11 },
+        { label: 'md', pad: '9px 16px', font: 13 },
+        { label: 'lg', pad: '13px 22px', font: 15 }
+      ];
+    }
+    function buildStates(accent, accentDeep, accentDeepest) {
+      return [
+        { name: 'default', bg: accent, color: '#fff', border: 'none', ring: 'none', opacity: 1 },
+        { name: 'hover', bg: accentDeep, color: '#fff', border: 'none', ring: 'none', opacity: 1 },
+        { name: 'active', bg: accentDeepest, color: '#fff', border: 'none', ring: 'none', opacity: 1 },
+        { name: 'disabled', bg: '#d7dade', color: '#9aa1ab', border: 'none', ring: 'none', opacity: 1 },
+        { name: 'focus-ring', bg: accent, color: '#fff', border: 'none', ring: '0 0 0 3px rgba(59,130,246,.35)', opacity: 1 }
+      ];
+    }
+
+    const columns = [
+      {
+        id: 'steel',
+        title: 'A · Сталь',
+        fontBody: "'IBM Plex Sans', system-ui, sans-serif",
+        accent: 'oklch(0.68 0.11 185)',
+        accentDeep: 'oklch(0.6 0.11 185)',
+        tintBg: 'oklch(0.94 0.03 185)',
+        ink: '#232a33',
+        inkFaint: '#8b93a0',
+        paperDim: '#f2f4f6',
+        lineStrong: '#c7ced7',
+        radiusMd: 4,
+        variants: buildVariants('oklch(0.68 0.11 185)', 'oklch(0.6 0.11 185)', 'oklch(0.94 0.03 185)', '#232a33', '#c7ced7', '#8b93a0'),
+        sizes: buildSizes('oklch(0.68 0.11 185)'),
+        states: buildStates('oklch(0.68 0.11 185)', 'oklch(0.6 0.11 185)', 'oklch(0.52 0.11 185)')
+      },
+      {
+        id: 'corporate',
+        title: 'B · Корпоратив',
+        fontBody: "'Open Sans', sans-serif",
+        accent: '#3B82F6',
+        accentDeep: '#2563EB',
+        tintBg: '#EFF6FF',
+        ink: '#1e293b',
+        inkFaint: '#94a3b8',
+        paperDim: '#f8fafc',
+        lineStrong: '#cbd5e1',
+        radiusMd: 8,
+        variants: buildVariants('#3B82F6', '#2563EB', '#EFF6FF', '#1e293b', '#cbd5e1', '#94a3b8'),
+        sizes: buildSizes('#3B82F6'),
+        states: buildStates('#3B82F6', '#2563EB', '#1D4ED8')
+      },
+      {
+        id: 'geo',
+        title: 'C · Геометрия',
+        fontBody: "'Inter', sans-serif",
+        accent: '#3B82F6',
+        accentDeep: '#2563EB',
+        tintBg: '#EFF6FF',
+        ink: '#0f172a',
+        inkFaint: '#94a3b8',
+        paperDim: '#f4f4f5',
+        lineStrong: '#d4d4d8',
+        radiusMd: 2,
+        variants: buildVariants('#3B82F6', '#2563EB', '#EFF6FF', '#0f172a', '#d4d4d8', '#94a3b8'),
+        sizes: buildSizes('#3B82F6'),
+        states: buildStates('#3B82F6', '#2563EB', '#1D4ED8')
+      }
+    ];
+
+    return { columns };
+  }
+}
+</script>
+</body>
+</html>

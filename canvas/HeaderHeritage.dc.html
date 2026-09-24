@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Шапка — «Роли пополам» + фактура</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #e8eaed; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+  .wordmark { font-weight: 700; font-size: 17px; color: #232a33; white-space: nowrap; }
+  .wordmark span { color: #EC9D47; }
+</style>
+</helmet>
+<div style="width: 1560px; height: 1040px; box-sizing: border-box; padding: 56px; background: #e8eaed; display: flex; flex-direction: column; gap: 26px;">
+
+  <div>
+    <div style="font-size: 22px; font-weight: 700; color: #232a33;">H · Наследственная палитра — финальный выбор шапки</div>
+    <div style="font-size: 13px; color: #666; margin-top: 6px; max-width: 1200px; line-height: 1.5;">Вариант F пересобран на наследственных оранжевом/синем: синий — навигация и структура, оранжевый — единственное действие (кнопка заявки). Штрихованная полоса сверху освобождена от текста (телефон и email перенесены под кнопку номера в основной строке), поэтому осталась чисто декоративной — тонкий акцент с фактурой логотипа. Полоса под шапкой вместо категорий материалов (эту роль уже выполняет каталог/поиск) — вкладки на служебные страницы верхнего уровня сайта. Логотип здесь перекрашен из «тила» в фирменный оранжевый — правка только в этом варианте, на остальных листах канваса логотип пока прежний.</div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="border: 1px solid #e1e5ea; border-radius: 6px; overflow: hidden;">
+
+      <div style="height: 8px; background: #3E5D88; background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.08) 0px, rgba(255,255,255,.08) 2px, transparent 2px, transparent 7px);"></div>
+
+      <div style="display: flex; align-items: center; gap: 20px; padding: 14px 20px;">
+        <div style="display: flex; align-items: center; gap: 8px;"><img src="/_blob/96e9b23974d107fe87ac804cb22b9a02" style="width: 26px; height: 23px;"><div class="wordmark"><span>МЕТО</span>ТЕХНИКА</div></div>
+        <div style="flex-grow: 1; max-width: 380px; display: flex; align-items: center; gap: 8px; border: 1px solid #c7ced7; border-radius: 4px; padding: 8px 12px;">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#9aa1ab" stroke-width="1.6"/><path d="M11 11l3 3" stroke="#9aa1ab" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span style="font-size: 12px; color: #9aa1ab;">Поиск по каталогу</span>
+        </div>
+        <div style="margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 5px;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #232a33;">+7 (495) 504-95-54</span>
+            <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#8b93a0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <span style="font-size: 11px; color: #9aa1ab;">info@metotech.ru</span>
+        </div>
+        <div style="padding: 9px 18px; border-radius: 4px; background: #EC9D47; color: #fff; font-size: 12.5px; font-weight: 600;">Оставить заявку</div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 26px; padding: 10px 20px; background: #f7f9fb; border-top: 1px solid #eceef1; font-size: 12px; font-weight: 600; color: #5b6572;">
+        <span>Калькулятор</span>
+        <span>Фото</span>
+        <span>Статьи</span>
+        <span>ГОСТы и ТУ</span>
+        <span>Справочные таблицы</span>
+        <span>Контакты</span>
+      </div>
+
+    </div>
+    <div style="font-size: 11px; color: #9aa1ab; margin-top: 10px;">Номер — жирным моно, стрелочка сигналит, что список (на живом сайте — 5 телефонов) можно развернуть; email — под номером, вторым по значимости контактом. Состав нижних вкладок — по реальному верхнему меню сайта (menu-top.htm): из одиннадцати пунктов взяты те, что не дублируют уже решённое в шапке — «Продукция» уже закрыта поиском/каталогом, «Главная» — логотипом, «Сделать заказ» — кнопкой «Оставить заявку». «Блог» и «Потребности» — нишевые, не в основной набор.</div>
+  </div>
+
+  <div style="background: #fff; border: 1px solid #dcdfe4; border-radius: 12px; padding: 24px;">
+    <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa1ab; border-bottom: 1px solid #eceef1; padding-bottom: 6px; margin-bottom: 14px;">Кнопка заявки — по наведению</div>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <span style="padding: 9px 18px; border-radius: 4px; background: #EC9D47; color: #fff; font-size: 12.5px; font-weight: 600;">Оставить заявку</span>
+        <span style="font-size: 9.5px; color: #a3a9b2;">по умолчанию</span>
+      </div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <span style="padding: 9px 18px; border-radius: 4px; background: #C5873F; color: #fff; font-size: 12.5px; font-weight: 600; box-shadow: 0 6px 16px -4px rgba(236,157,71,.55);">Оставить заявку</span>
+        <span style="font-size: 9.5px; color: #a3a9b2;">при наведении — цветная тень приподнимает</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1560,"height":1040}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
