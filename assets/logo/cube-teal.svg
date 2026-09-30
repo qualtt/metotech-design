@@ -1,0 +1,19 @@
+<?xml version="1.0"?><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 147.81 129.64">
+  <defs>
+    <linearGradient id="linear-gradient" x1="32.04" y1="73.66" x2="32.04" y2="36.83" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"></stop>
+      <stop offset="1" stop-color="#2baea1"></stop>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="95.37" x2="95.37" xlink:href="#linear-gradient"></linearGradient>
+    <linearGradient id="linear-gradient-3" x1="61.52" y1="129.14" x2="61.52" y2="92.19" xlink:href="#linear-gradient"></linearGradient>
+  </defs>
+  <polygon fill="url(#linear-gradient)" stroke="#000" stroke-linecap="round" stroke-linejoin="round" points="18.67 73.66 63.58 73.66 44.43 36.83 .5 36.83 18.67 73.66"></polygon>
+  <polygon fill="#2baea1" stroke="#000" stroke-linecap="round" stroke-linejoin="round" points="63.58 .5 44.43 36.83 .5 36.83 19.66 .5 63.58 .5"></polygon>
+  <polygon fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" points="73.16 55.24 63.58 73.66 44.43 36.83 63.58 .5 73.69 18.43 63.58 37.08 73.16 55.24"></polygon>
+  <polygon fill="#2baea1" stroke="#000" stroke-linecap="round" stroke-linejoin="round" points="83.4 .5 127.16 .5 108.5 36.83 63.58 37.08 83.4 .5"></polygon>
+  <polygon fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" points="127.16 73.66 147.31 36.83 127.16 .5 108.5 36.83 127.16 73.66"></polygon>
+  <polygon fill="url(#linear-gradient-2)" stroke="#000" stroke-linecap="round" stroke-linejoin="round" points="102.73 73.66 127.16 73.66 108.5 36.83 63.58 37.08 73.16 55.24 92.98 55.24 102.73 73.66"></polygon>
+  <polygon fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" points="73.82 92.65 92.98 55.24 112.55 92.19 93.31 129.14 73.82 92.65"></polygon>
+  <polygon fill="url(#linear-gradient-3)" stroke="#000" stroke-linecap="round" stroke-linejoin="round" points="49.05 129.14 93.31 129.14 73.82 92.65 29.73 92.19 49.05 129.14"></polygon>
+  <polygon fill="#2baea1" stroke="#000" stroke-linecap="round" stroke-linejoin="round" points="38.98 73.66 29.73 92.19 73.82 92.65 92.98 55.24 73.16 55.24 63.58 73.66 38.98 73.66"></polygon>
+</svg>
