@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Главная v2 — десктоп</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #fefeff; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: #2f4a6b; }
+  .wordmark { font-weight: 700; font-size: 20px; color: #232a33; white-space: nowrap; letter-spacing: .01em; }
+  .wordmark span { color: #EC9D47; }
+  .navitem:hover { background: #EAF1F8 !important; color: #2f4a6b !important; }
+  .flyrow:hover { background: #f4f7fb !important; }
+</style>
+</helmet>
+<div style="width: 1560px; height: 3100px; box-sizing: border-box; background: #fefeff; display: flex; flex-direction: column; color: #232a33;">
+
+  <!-- ШАПКА. Полоса прижата к верху (без белого зазора), логотип крупнее, поиск с примером запроса, контакты: +7 (800) + городской + часы работы, почта, переключатель RU/EN (всё с contact.htm) -->
+  <div style="border-bottom: 1px solid #e1e5ea;">
+    <div style="height: 8px; background: #3E5D88; background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.08) 0px, rgba(255,255,255,.08) 2px, transparent 2px, transparent 7px);"></div>
+    <div style="display: grid; grid-template-columns: 270px minmax(0, 1fr) auto; align-items: center; gap: 28px; padding: 16px 40px 16px 0;">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; padding-left: 24px;"><img src="/_blob/96e9b23974d107fe87ac804cb22b9a02" alt="" style="width: 34px; height: 30px;"><span class="wordmark"><span>МЕТО</span>ТЕХНИКА</span></a>
+      <label style="width: 100%; max-width: 560px; justify-self: center; display: flex; align-items: center; gap: 10px; border: 1px solid #c7ced7; border-radius: 4px; padding: 0 6px 0 14px; height: 44px; box-sizing: border-box; background: #fff;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="#6b7380" stroke-width="1.6"/><path d="M11 11l3 3" stroke="#6b7380" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="search" aria-label="Поиск по каталогу" placeholder="Например: нихром Х20Н80 проволока 0,5" style="flex: 1; min-width: 0; border: 0; outline: 0; font: inherit; font-size: 14px; color: #232a33; background: transparent;">
+        <button type="button" style="height: 34px; padding: 0 16px; border: 0; border-radius: 4px; background: #3E5D88; color: #fff; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;">Найти</button>
+      </label>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <div style="display: flex; flex-direction: column; gap: 2px; text-align: right;">
+          <a href="tel:+78002005275" style="font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; color: #232a33;">+7 (800) 200-52-75</a>
+          <div style="font-size: 12.5px; color: #5b6572;"><a href="tel:+74955049554">+7 (495) 504-95-54</a> · пн–пт 9:00–17:00</div>
+        </div>
+        <a href="mailto:info@metotech.ru" style="display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 500; color: #2f4a6b;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="3" width="13" height="10" rx="1.3" stroke="currentColor" stroke-width="1.3"/><path d="M2 4l6 5 6-5" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>info@metotech.ru
+        </a>
+        <a href="#zayavka" style="display: inline-flex; align-items: center; height: 44px; padding: 0 22px; border-radius: 4px; background: #EC9D47; color: #1f2630; font-size: 14px; font-weight: 700; white-space: nowrap;">Оставить заявку</a>
+        <div role="group" aria-label="Язык сайта" style="display: flex; height: 32px; border: 1px solid #c7ced7; border-radius: 4px; overflow: hidden; font-size: 12.5px; font-weight: 700;">
+          <button type="button" aria-pressed="true" style="width: 40px; border: 0; background: #3E5D88; color: #fff; font: inherit; cursor: pointer;">RU</button>
+          <a href="#en" lang="en" style="width: 40px; display: flex; align-items: center; justify-content: center; background: #fff; color: #414954;">EN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ВЕРХНИЙ БЛОК: каскадное меню (вариант B с листа 3, TWMetals) + служебная строка, hero и калькуляторы. Меню занимает только эту часть страницы — ниже секции идут на всю ширину, пустой колонки больше нет. -->
+  <div style="display: flex; position: relative;">
+
+    <!-- КАСКАД, уровень 1 — все 26 позиций реального меню сайта (menu-left), сгруппированы. «Прецизионные сплавы» с сайта — ссылка-заголовок группы. Белый фон вместо голубого. Марка справа — только где известна. Шеврон — у позиций, для которых есть данные следующих уровней (пока только нихром). -->
+    <nav aria-label="Каталог" style="width: 270px; flex-shrink: 0; background: #fff; border-right: 1px solid #e1e5ea; padding: 8px 0 12px; position: relative; z-index: 3;">
+      <sc-for list="{{navGroups}}" as="g" hint-placeholder-count="4">
+        <a href="#catalog" style="display: block; padding: 12px 20px 4px; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #5b6572;">{{g.name}}</a>
+        <sc-for list="{{g.items}}" as="it" hint-placeholder-count="6">
+          <sc-if value="{{it.hasChildren}}" hint-placeholder-val="false">
+            <button type="button" class="navitem" aria-expanded="{{it.expanded}}" onClick="{{toggleCascade}}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 16px 5px 17px; border: 0; border-left: 3px solid {{it.border}}; background: {{it.bg}}; color: {{it.color}}; font: inherit; font-size: 14px; line-height: 20px; font-weight: 600; text-align: left; cursor: pointer;">
+              <span>{{it.label}}</span>
+              <span style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 500; color: #6b7380;">{{it.grade}}</span>
+                <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </button>
+          </sc-if>
+          <sc-if value="{{it.plain}}" hint-placeholder-val="true">
+            <a href="#material" class="navitem" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 5px 16px 5px 17px; border-left: 3px solid transparent; font-size: 14px; line-height: 20px; font-weight: 500; color: #232a33;">
+              <span>{{it.label}}</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #6b7380;">{{it.grade}}</span>
+            </a>
+          </sc-if>
+        </sc-for>
+      </sc-for>
+    </nav>
+
+    <!-- КАСКАД, уровни 2 и 3 — открываются поверх контента по клику на «Нихром» (в Play), не сдвигают страницу. Данные — с листа 3 «Меню», вариант B. На холсте по умолчанию закрыто; открыть — твик «Показать каскад». -->
+    <sc-if value="{{cascadeOpen}}" hint-placeholder-val="false">
+      <div style="position: absolute; left: 270px; top: 0; z-index: 4; display: flex; align-items: flex-start;">
+        <div style="width: 290px; background: #fff; border: 1px solid #e1e5ea; border-left: 0; box-shadow: 10px 10px 28px -14px rgba(15,23,42,.28);">
+          <div style="padding: 16px 18px 12px; border-bottom: 1px solid #eceef1;">
+            <div style="font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #5b6572;">Нихром</div>
+            <div style="font-size: 16px; font-weight: 700; color: #232a33; margin-top: 2px;">Форма поставки</div>
+          </div>
+          <sc-for list="{{forms}}" as="f" hint-placeholder-count="5">
+            <button type="button" class="flyrow" onClick="{{f.pick}}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 18px; border: 0; border-bottom: 1px solid #f2f4f6; border-left: 3px solid {{f.border}}; background: {{f.bg}}; font: inherit; text-align: left; cursor: pointer;">
+              <span>
+                <span style="display: block; font-size: 14px; font-weight: 600; color: #232a33;">{{f.name}}</span>
+                <span style="display: block; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #6b7380; margin-top: 2px;">{{f.meta}}</span>
+              </span>
+              <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="#6b7380" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </sc-for>
+          <a href="#material" style="display: block; padding: 12px 18px; font-size: 13.5px; font-weight: 700; color: #2f4a6b;">Всё о нихроме →</a>
+        </div>
+        <div style="width: 270px; margin-left: -1px; background: #fff; border: 1px solid #e1e5ea; box-shadow: 10px 10px 28px -14px rgba(15,23,42,.28);">
+          <div style="padding: 16px 18px 12px; border-bottom: 1px solid #eceef1;">
+            <div style="font-size: 11.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #5b6572;">{{activeForm.name}}</div>
+            <div style="font-size: 16px; font-weight: 700; color: #232a33; margin-top: 2px;">Марка</div>
+          </div>
+          <sc-for list="{{activeForm.grades}}" as="gr" hint-placeholder-count="2">
+            <a href="#material" class="flyrow" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 18px; border-bottom: 1px solid #f2f4f6;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: #232a33;">{{gr.name}}</span>
+              <span style="font-size: 12px; color: #6b7380;">{{gr.std}}</span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+
+      <!-- СЛУЖЕБНАЯ СТРОКА. «По материалу» — выпадашка (закрыта, открывается поверх контента, не сдвигает страницу). Убраны «Отрасли» (на сайте нет) и «Фото». «Калькуляторы» — первым справа и акцентнее: это главная точка входа по Метрике. -->
+      <div style="display: flex; align-items: center; gap: 26px; padding: 0 40px; height: 48px; background: #f7f9fb; border-bottom: 1px solid #eceef1; font-size: 14px; font-weight: 600; color: #414954;">
+        <sc-for list="{{topDropdowns}}" as="td" hint-placeholder-count="2">
+          <button type="button" style="display: flex; align-items: center; gap: 6px; height: 48px; padding: 0; border: 0; background: transparent; font: inherit; color: #2f4a6b; cursor: pointer;">
+            {{td}}
+            <svg width="10" height="10" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </sc-for>
+        <span style="margin-left: auto; display: flex; align-items: center; gap: 26px; font-weight: 500;">
+          <a href="#calc" style="display: flex; align-items: center; gap: 6px; color: #2f4a6b; font-weight: 700;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="1.3" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="4.3" x2="11" y2="4.3" stroke="currentColor" stroke-width="1.3"/><circle cx="5.3" cy="7.4" r="0.7" fill="currentColor"/><circle cx="8" cy="7.4" r="0.7" fill="currentColor"/><circle cx="10.7" cy="7.4" r="0.7" fill="currentColor"/><circle cx="5.3" cy="10.1" r="0.7" fill="currentColor"/><circle cx="8" cy="10.1" r="0.7" fill="currentColor"/><circle cx="10.7" cy="10.1" r="0.7" fill="currentColor"/></svg>Калькуляторы</a>
+          <a href="#articles">Статьи</a>
+          <a href="#gost">ГОСТы и ТУ</a>
+          <a href="#about">О компании</a>
+          <a href="#contacts">Контакты</a>
+        </span>
+      </div>
+
+      <!-- HERO. Крупный заголовок, реальные фото, одно главное действие (заявка) + второе (каталог). Текст «О компании» вынесен ниже. Форма заявки и «Найти материал быстро» убраны: поиск есть в шапке, каталог — в боковом меню. -->
+      <section style="display: grid; grid-template-columns: minmax(0, 1fr) 560px; gap: 48px; align-items: center; padding: 48px 40px; border-bottom: 1px solid #e1e5ea;">
+        <div>
+          <div style="font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #3E5D88;">НПК «Метотехника»</div>
+          <h1 style="font-size: 44px; line-height: 1.12; font-weight: 700; color: #232a33; margin: 14px 0 18px; letter-spacing: -.01em;">Цветные металлы и&nbsp;сплавы со&nbsp;склада в&nbsp;Москве</h1>
+          <p style="font-size: 17px; line-height: 1.6; color: #414954; margin: 0 0 28px; max-width: 620px;">Стандартный металлопрокат — прутки, проволока, листы — и изделия под заказ, в том числе по чертежам заказчика. Среднее время отгрузки — 1–2 рабочих дня.</p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <a href="#zayavka" style="display: inline-flex; align-items: center; height: 52px; padding: 0 28px; border-radius: 4px; background: #EC9D47; color: #1f2630; font-size: 16px; font-weight: 700;">Оставить заявку</a>
+            <a href="#catalog" style="display: inline-flex; align-items: center; height: 52px; padding: 0 24px; border-radius: 4px; border: 1.5px solid #3E5D88; box-sizing: border-box; color: #2f4a6b; font-size: 16px; font-weight: 600;">Смотреть каталог</a>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 28px;">
+            <span style="font-size: 13px; color: #5b6572; margin-right: 4px;">Часто ищут:</span>
+            <sc-for list="{{popularQueries}}" as="pq" hint-placeholder-count="5">
+              <a href="#material" style="padding: 6px 12px; border-radius: 4px; background: #EAF1F8; font-size: 13px; font-weight: 500; color: #2f4a6b;">{{pq}}</a>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 180px 180px; gap: 12px;">
+          <img src="/_blob/64d182656ae5ad8c8f7835a93e958612" alt="Нихромовая проволока" style="grid-row: span 2; width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block;">
+          <img src="/_blob/18004f41f537b19714551c56f5642daf" alt="Вольфрам" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block;">
+          <img src="/_blob/f4f70cdc5a350b1e307f21545b4c91ae" alt="Титан" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block;">
+        </div>
+      </section>
+
+      <!-- КАЛЬКУЛЯТОРЫ — по Метрике calc.htm даёт больше входов (5588), чем сама главная (3765). Названия и описания — с реальных страниц calc.htm, calc_spir.htm, calc_heater.htm. -->
+      <section id="calc" style="padding: 44px 40px; background: #f4f7fb; border-bottom: 0;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 22px;">
+          <h2 style="margin: 0; font-size: 26px; font-weight: 700; color: #232a33;">Калькуляторы</h2>
+          <span style="font-size: 14px; color: #5b6572;">Бесплатно, без регистрации</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;">
+          <sc-for list="{{calculators}}" as="c" hint-placeholder-count="3">
+            <a href="{{c.href}}" style="display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 6px; background: #fff; border: 1px solid #d6e0ec; box-shadow: 0 6px 16px -10px rgba(15,23,42,.25);">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="width: 44px; height: 44px; border-radius: 6px; background: #3E5D88; display: flex; align-items: center; justify-content: center;">
+                  <svg width="22" height="22" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="1.3" stroke="#fff" stroke-width="1.2"/><line x1="5" y1="4.3" x2="11" y2="4.3" stroke="#fff" stroke-width="1.2"/><circle cx="5.3" cy="7.4" r="0.7" fill="#fff"/><circle cx="8" cy="7.4" r="0.7" fill="#fff"/><circle cx="10.7" cy="7.4" r="0.7" fill="#fff"/><circle cx="5.3" cy="10.1" r="0.7" fill="#fff"/><circle cx="8" cy="10.1" r="0.7" fill="#fff"/><circle cx="10.7" cy="10.1" r="0.7" fill="#fff"/></svg>
+                </div>
+                <sc-if value="{{c.top}}" hint-placeholder-val="false">
+                  <span style="padding: 4px 10px; border-radius: 4px; background: #FBEBD8; color: #7a4712; font-size: 12px; font-weight: 700;">Самый популярный</span>
+                </sc-if>
+              </div>
+              <div style="font-size: 19px; font-weight: 700; color: #232a33;">{{c.title}}</div>
+              <div style="font-size: 14.5px; line-height: 1.55; color: #414954; flex: 1;">{{c.desc}}</div>
+              <div style="font-size: 14px; font-weight: 700; color: #2f4a6b;">Рассчитать →</div>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <main style="display: flex; flex-direction: column; border-top: 1px solid #e1e5ea;">
+
+      <!-- ПОПУЛЯРНЫЕ МАТЕРИАЛЫ — порядок по Метрике; текст крупнее; «По согласованию» → нейтральное «Цена по запросу» -->
+      <section id="catalog" style="padding: 44px 40px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 22px;">
+          <h2 style="margin: 0; font-size: 26px; font-weight: 700; color: #232a33;">Популярные материалы</h2>
+          <a href="#catalog" style="font-size: 14px; font-weight: 600; color: #2f4a6b;">Весь каталог →</a>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px;">
+          <sc-for list="{{featured}}" as="m" hint-placeholder-count="7">
+            <a href="#material" style="display: flex; flex-direction: column; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px -8px rgba(15,23,42,.18); background: #fff; border: 1px solid #eceef1;">
+              <img src="{{m.img}}" alt="{{m.name}}" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+              <div style="padding: 16px 16px 18px; display: flex; flex-direction: column; flex: 1;">
+                <div style="font-size: 17px; font-weight: 700; color: #232a33;">{{m.name}}</div>
+                <div style="font-size: 13.5px; color: #5b6572; margin-top: 4px; line-height: 1.45; flex: 1;">{{m.desc}}</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px;">
+                  <sc-if value="{{m.hasPrice}}" hint-placeholder-val="true">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #8f5316;">{{m.price}}</span>
+                  </sc-if>
+                  <sc-if value="{{m.onRequest}}" hint-placeholder-val="false">
+                    <span style="font-size: 13.5px; font-weight: 500; color: #5b6572;">Цена по запросу</span>
+                  </sc-if>
+                  <span style="font-size: 13.5px; font-weight: 600; color: #2f4a6b;">Подробнее →</span>
+                </div>
+              </div>
+            </a>
+          </sc-for>
+          <a href="#catalog" style="border-radius: 6px; background: #3E5D88; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 24px;">
+            <div style="font-size: 18px; font-weight: 700; color: #fff;">Все материалы</div>
+            <div style="font-size: 14px; color: #dbe6f2; line-height: 1.5;">Прецизионные сплавы, тугоплавкие металлы, никелевые сплавы и другие</div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-top: 4px;"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- ДОВЕРИЕ — 4 пункта с «крупным фактом» вместо 6 одинаковых галочек. Только проверенное по metotech.ru: отгрузка 1–2 раб. дня, ГОСТ Р ИСО 9001-2015, по чертежам заказчика, товарный знак Метотехника®. «С 1998 года» и «по РФ и СНГ» на сайте не найдены — убраны. -->
+      <section style="padding: 36px 40px; background: #f7f8fa; border-top: 1px solid #eceef1; border-bottom: 1px solid #eceef1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px;">
+        <sc-for list="{{trust}}" as="t" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 6px; padding-left: 16px; border-left: 3px solid #3E5D88;">
+            <div style="font-size: 24px; font-weight: 700; color: #2f4a6b; line-height: 1.2;">{{t.big}}</div>
+            <div style="font-size: 14px; line-height: 1.5; color: #414954;">{{t.text}}</div>
+          </div>
+        </sc-for>
+      </section>
+
+      <!-- СТАТЬИ — топ статей-точек входа по Метрике; заголовки дословно с сайта -->
+      <section id="articles" style="padding: 44px 40px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 22px;">
+          <h2 style="margin: 0; font-size: 26px; font-weight: 700; color: #232a33;">Статьи и справочные материалы</h2>
+          <a href="#articles" style="font-size: 14px; font-weight: 600; color: #2f4a6b;">Все статьи →</a>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px;">
+          <sc-for list="{{articles}}" as="ar" hint-placeholder-count="4">
+            <a href="{{ar.href}}" style="display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: 6px; border: 1px solid #dde3ea; background: #fff;">
+              <span style="align-self: flex-start; padding: 3px 9px; border-radius: 4px; background: #EAF1F8; color: #2f4a6b; font-size: 12px; font-weight: 700;">{{ar.tag}}</span>
+              <div style="font-size: 16px; line-height: 1.4; font-weight: 700; color: #232a33; flex: 1;">{{ar.title}}</div>
+              <div style="font-size: 13.5px; font-weight: 600; color: #2f4a6b;">Читать →</div>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- О КОМПАНИИ — дословный текст с index.htm (исправлена незакрытая внешняя кавычка) + карточка заявки -->
+      <section id="about" style="padding: 44px 40px 52px; border-top: 1px solid #e1e5ea; display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 48px; align-items: start;">
+        <div>
+          <h2 style="margin: 0 0 16px; font-size: 26px; font-weight: 700; color: #232a33;">О компании</h2>
+          <p style="margin: 0 0 14px; font-size: 15.5px; line-height: 1.7; color: #414954;">НПК «Метотехника» специализируется на продаже цветных металлов и сплавов, производстве изделий из них. Компания успешно работает на данном рынке и поставляет как стандартный металлопрокат (прутки, проволоку, листы и т. д.), так и технологичные товары (тепловые экраны, нагреватели, термостойкие провода, средства измерения и др.) под заказ, в том числе по чертежам заказчика.</p>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.7; color: #414954;">Клиентами компании являются как крупные российские заводы, так и небольшие производственные фирмы — существенную долю составляют научные организации.</p>
+        </div>
+        <form id="zayavka" style="margin: 0; padding: 24px; border-radius: 6px; background: #fff; border: 2px solid #EC9D47; display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-size: 19px; font-weight: 700; color: #232a33;">Оставить заявку</div>
+          <div style="font-size: 13.5px; color: #5b6572; margin-top: -6px;">Перезвоним в рабочее время, пн–пт 9:00–17:00</div>
+          <label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: #414954;">Ваше имя
+            <input type="text" placeholder="Иван Петров" style="height: 44px; box-sizing: border-box; border: 1px solid #c7ced7; border-radius: 4px; padding: 0 12px; font: inherit; font-size: 14px;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: #414954;">Телефон
+            <input type="tel" placeholder="+7 (___) ___-__-__" style="height: 44px; box-sizing: border-box; border: 1px solid #c7ced7; border-radius: 4px; padding: 0 12px; font: inherit; font-size: 14px;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: #414954;">Что нужно (необязательно)
+            <input type="text" placeholder="Нихром Х20Н80, проволока 0,5 мм, 10 кг" style="height: 44px; box-sizing: border-box; border: 1px solid #c7ced7; border-radius: 4px; padding: 0 12px; font: inherit; font-size: 14px;">
+          </label>
+          <button type="button" style="height: 48px; margin-top: 4px; border: 0; border-radius: 4px; background: #EC9D47; color: #1f2630; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer;">Отправить заявку</button>
+        </form>
+      </section>
+
+  </main>
+
+  <!-- ФУТЕР — вместо третьей копии каталога: категории одной строкой с фото (наследие варианта D), сервисы, компания, контакты с contact.htm -->
+  <footer id="contacts" style="background: #232a33; color: #c9d0d9; padding: 44px 40px 0;">
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.3fr; gap: 40px;">
+      <div>
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px;">Каталог</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <sc-for list="{{photoCols}}" as="pc" hint-placeholder-count="4">
+            <a href="#catalog" style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: #e3e8ee;">
+              <img src="{{pc.img}}" alt="" style="width: 44px; height: 32px; object-fit: cover; border-radius: 4px; display: block;">{{pc.title}}
+            </a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px;">Сервисы</div>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+          <a href="calc.htm">Калькулятор «Металлы и сплавы»</a>
+          <a href="calc_spir.htm">Калькулятор спиралей</a>
+          <a href="calc_heater.htm">Калькулятор нагревателей</a>
+          <a href="#articles">Статьи</a>
+          <a href="#gost">ГОСТы и ТУ</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px;">Компания</div>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+          <a href="#about">О компании</a>
+          <a href="#contacts">Контакты</a>
+          <a href="#zayavka">Оставить заявку</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px;">Контакты</div>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.5;">
+          <a href="tel:+78002005275" style="font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 700; color: #fff;">+7 (800) 200-52-75</a>
+          <div style="font-family: 'JetBrains Mono', monospace; color: #e3e8ee;">+7 (495) 504-95-54 · +7 (499) 166-78-38</div>
+          <a href="mailto:info@metotech.ru" style="color: #F3B877;">info@metotech.ru</a>
+          <div>105187, Москва, ул. Кирпичная, д. 32, корп. 24</div>
+          <div>Пн–пт 9:00–17:00</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 36px; padding: 18px 0; border-top: 1px solid #3a434f; font-size: 13px; color: #a3acb8; display: flex; align-items: center; justify-content: space-between;">
+      <div>© ООО «НПК «Метотехника». Метотехника® — зарегистрированный товарный знак.</div>
+      <div>СМК соответствует ГОСТ Р ИСО 9001-2015</div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"cascadeOpen":{"editor":"boolean","default":false},"$preview":{"width":1560,"height":3100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    // порядок — по реальной популярности из Яндекс.Метрики (как на HomePage): Титан > Вольфрам > Нихром > Никель > Молибден > Фехраль > Тантал
+    const featuredRaw = [
+      { name: 'Титан', desc: 'ВТ1-0, ОТ4 — лёгкий и прочный', img: '/_blob/f4f70cdc5a350b1e307f21545b4c91ae', price: 'от 4200 ₽/кг' },
+      { name: 'Вольфрам', desc: 'ВА, ВЛ, СВИ — тугоплавкий металл', img: '/_blob/18004f41f537b19714551c56f5642daf', price: '' },
+      { name: 'Нихром', desc: 'Х20Н80, Х15Н60 — для нагревателей печей', img: '/_blob/64d182656ae5ad8c8f7835a93e958612', price: 'от 8000 ₽/кг' },
+      { name: 'Никель', desc: 'НП2, Н-1у — коррозионностойкий', img: '/_blob/7ae7ba8401389a3782f708fabcf27bd9', price: 'от 6100 ₽/кг' },
+      { name: 'Молибден', desc: 'МЧ, ЦМ2А — тугоплавкий металл', img: '/_blob/eb3c7a53e21557ea47dacf034ec814fa', price: '' },
+      { name: 'Фехраль', desc: 'Х23Ю5Т, Х27Ю5Т — рабочая т-ра до 1400 °С', img: '/_blob/e2e59819cc336eeeb15d4956f55eada5', price: 'от 3500 ₽/кг' },
+      { name: 'Тантал', desc: 'Т, ТВЧ — тугоплавкий, высокая прочность', img: '/_blob/677fc23f55598318570f19069c1d0bae', price: '' }
+    ];
+    const featured = featuredRaw.map(function (m) {
+      return Object.assign({}, m, { hasPrice: !!m.price, onRequest: !m.price });
+    });
+
+    const topDropdowns = ['По материалу', 'По форме'];
+
+    // из поисковых запросов Метрики (титан, вольфрам, сорта молибдена, нихром/ХН78Т в запросах калькулятора)
+    const popularQueries = ['Титан ВТ1-0', 'Вольфрам', 'Нихром Х20Н80', 'Молибден', 'Термопары'];
+
+    // названия/описания — с реальных страниц сайта
+    const calculators = [
+      { title: 'Металлы и сплавы', desc: 'Масса по длине и длина по массе для проволоки, прутка, трубы, ленты, листа, шестигранника, уголка — для любого сплава из базы.', href: 'calc.htm', top: true },
+      { title: 'Спирали', desc: 'Мощность и длина спиралей из нихрома, фехраля и других жаростойких сплавов.', href: 'calc_spir.htm', top: false },
+      { title: 'Нагреватели', desc: 'Диаметр, длина и масса проволочных нагревателей и размеры ленточных — для электрических печей по заданной мощности.', href: 'calc_heater.htm', top: false }
+    ];
+
+    const trust = [
+      { big: '1–2 дня', text: 'среднее время отгрузки со склада в Москве' },
+      { big: 'ГОСТ Р ИСО 9001', text: 'система менеджмента качества сертифицирована (ред. 2015)' },
+      { big: 'По чертежам', text: 'тепловые экраны, нагреватели, термостойкие провода — под заказ' },
+      { big: 'Метотехника®', text: 'зарегистрированный товарный знак' }
+    ];
+
+    // топ статей по входам из Метрики; заголовки дословно с сайта
+    const articles = [
+      { tag: 'Нагреватели', title: 'Нагреватели. Методика и примеры расчета', href: 'art_nagrev_1.htm' },
+      { tag: 'Термопары', title: 'Термопары. Типы, характеристики, конструкции, производство', href: 'art_termopary_4.htm' },
+      { tag: 'Титан', title: 'Титановые сплавы: виды, области применения, особенности использования', href: 'art_titan_11.htm' },
+      { tag: 'Титан', title: 'Применение титана и титановых сплавов в высокотехнологичных областях промышленности', href: 'art_titan_2.htm' }
+    ];
+
+    // все 26 позиций реального левого меню metotech.ru; «Прецизионные сплавы» — заголовок-ссылка группы
+    // марки — только известные по проекту (как в карточках материалов); у остальных пока пусто
+    const grades = { 'Нихром': 'Х20Н80', 'Фехраль': 'Х23Ю5Т', 'Титан': 'ВТ1-0', 'Вольфрам': 'ВА', 'Молибден': 'МЧ', 'Никель': 'НП2' };
+    const navRaw = [
+      { name: 'Прецизионные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции', 'Константан', 'Термопары', 'Термопары нагревостойкие'] },
+      { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений', 'Хром'] },
+      { name: 'Никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор', 'Кобальт', 'Жаропрочные сплавы'] },
+      { name: 'Прочие материалы', items: ['Титан', 'Цирконий', 'Олово', 'Ванадий', 'Нержавеющая сталь', 'Твёрдые сплавы', 'Порошки металлов', 'Ферросплавы'] }
+    ];
+    const open = this.state && this.state.open !== undefined ? this.state.open : (this.props.cascadeOpen ?? false);
+    const formIdx = this.state && this.state.form !== undefined ? this.state.form : 0;
+    const navGroups = navRaw.map(function (g) {
+      return {
+        name: g.name,
+        items: g.items.map(function (label) {
+          const withChildren = label === 'Нихром';
+          const active = withChildren && open;
+          return {
+            label: label,
+            grade: grades[label] || '',
+            hasChildren: withChildren,
+            plain: !withChildren,
+            expanded: active ? 'true' : 'false',
+            color: active ? '#2f4a6b' : '#232a33',
+            bg: active ? '#EAF1F8' : 'transparent',
+            border: active ? '#3E5D88' : 'transparent'
+          };
+        })
+      };
+    });
+    const toggleCascade = () => this.setState({ open: !open });
+
+    // уровни 2–3 — данные варианта B с листа «Меню» (формы поставки и марки нихрома)
+    const formsRaw = [
+      { name: 'Проволока и нить', meta: 'Х20Н80 · Х15Н60', grades: [{ name: 'Х20Н80', std: 'ГОСТ 12766.1-90' }, { name: 'Х15Н60', std: 'ГОСТ 12766.1-90' }] },
+      { name: 'Лента', meta: 'Х20Н80', grades: [{ name: 'Х20Н80', std: '' }] },
+      { name: 'Спираль (готовый элемент)', meta: 'Х20Н80', grades: [{ name: 'Х20Н80', std: '' }] },
+      { name: 'Пруток / круг', meta: 'Х20Н80', grades: [{ name: 'Х20Н80', std: '' }] },
+      { name: 'Кабель в изоляции', meta: 'марка КЭНВ', grades: [{ name: 'КЭНВ', std: '' }] }
+    ];
+    const forms = formsRaw.map((f, i) => ({
+      name: f.name,
+      meta: f.meta,
+      bg: i === formIdx ? '#f4f7fb' : '#fff',
+      border: i === formIdx ? '#3E5D88' : 'transparent',
+      pick: () => this.setState({ open: true, form: i })
+    }));
+    const activeForm = formsRaw[formIdx];
+
+    const photoCols = [
+      { title: 'Прецизионные сплавы', img: '/_blob/92aacf2587b596348aa64382541fe9ef' },
+      { title: 'Тугоплавкие металлы', img: '/_blob/600bb01bd31b86796871a5d42e4a5838' },
+      { title: 'Никелевые сплавы', img: '/_blob/df28d2818d6e6ba8b4206307da078207' },
+      { title: 'Прочие материалы', img: '/_blob/fa47428423878f96c8377f64cac95a10' }
+    ];
+
+    return { featured, topDropdowns, popularQueries, calculators, trust, articles, navGroups, toggleCascade, cascadeOpen: open, forms, activeForm, photoCols };
+  }
+}
+</script>
+</body>
+</html>

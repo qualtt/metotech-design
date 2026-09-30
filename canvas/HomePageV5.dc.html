@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Главная v5 — панель «Продукция»</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  body { margin: 0; background: #fefeff; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: #2f4a6b; }
+  .wordmark { font-weight: 700; font-size: 20px; color: #232a33; white-space: nowrap; letter-spacing: .01em; }
+  .wordmark span { color: #EC9D47; }
+  .navitem:hover { background: #EAF1F8 !important; color: #2f4a6b !important; }
+  .megaitem:hover { background: #D6E5F4; color: #1f3a5c; }
+  .popcard:hover { box-shadow: 0 8px 18px -10px rgba(15,23,42,.35); border-color: #b6cfea !important; }
+  .navprod:hover { background: #2f4a6b !important; }
+</style>
+</helmet>
+<div style="width: 1560px; height: 3300px; box-sizing: border-box; background: #fefeff; display: flex; flex-direction: column; color: #232a33;">
+
+  <!-- ШАПКА. Полоса прижата к верху (без белого зазора), логотип крупнее, поиск с примером запроса, контакты: +7 (800) + городской + часы работы, почта, переключатель RU/EN (всё с contact.htm) -->
+  <div style="border-bottom: 1px solid #e1e5ea;">
+    <div style="height: 8px; background: #3E5D88; background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.08) 0px, rgba(255,255,255,.08) 2px, transparent 2px, transparent 7px);"></div>
+    <div style="display: grid; grid-template-columns: 270px minmax(0, 1fr) auto; align-items: center; gap: 28px; padding: 16px 40px 16px 0;">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; padding-left: 24px;"><img src="/_blob/96e9b23974d107fe87ac804cb22b9a02" alt="" style="width: 34px; height: 30px;"><span class="wordmark"><span>МЕТО</span>ТЕХНИКА</span></a>
+      <!-- ЕДИНСТВЕННЫЙ ПОИСК на экране. Ввод сразу открывает панель «Продукция» и фильтрует её по названию и марке; при открытой панели поле подсвечено — видно, что панель управляется отсюда. «Найти» / Enter — полный поиск по сайту (статьи, ГОСТы). -->
+      <label style="width: 100%; max-width: 560px; justify-self: center; display: flex; align-items: center; gap: 10px; border: {{searchBorder}}; border-radius: 4px; padding: 0 6px 0 14px; height: 44px; box-sizing: border-box; background: #fff; box-shadow: {{searchGlow}};">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="#3E5D88" stroke-width="1.6"/><path d="M11 11l3 3" stroke="#3E5D88" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="search" aria-label="Поиск по каталогу" aria-controls="produkciya" value="{{q}}" onChange="{{onQuery}}" onFocus="{{openMega}}" placeholder="Материал или марка — например, Х20Н80" style="flex: 1; min-width: 0; border: 0; outline: 0; font: inherit; font-size: 14px; color: #232a33; background: transparent;">
+        <button type="button" style="height: 34px; padding: 0 16px; border: 0; border-radius: 4px; background: #3E5D88; color: #fff; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;">Найти</button>
+      </label>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <div style="display: flex; flex-direction: column; gap: 2px; text-align: right;">
+          <a href="tel:+78002005275" style="font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 700; color: #232a33;">+7 (800) 200-52-75</a>
+          <div style="font-size: 12.5px; color: #5b6572;"><a href="tel:+74955049554">+7 (495) 504-95-54</a> · пн–пт 9:00–17:00</div>
+        </div>
+        <a href="mailto:info@metotech.ru" style="display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 500; color: #2f4a6b;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="3" width="13" height="10" rx="1.3" stroke="currentColor" stroke-width="1.3"/><path d="M2 4l6 5 6-5" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>info@metotech.ru
+        </a>
+        <a href="#zayavka" style="display: inline-flex; align-items: center; height: 44px; padding: 0 22px; border-radius: 4px; background: #EC9D47; color: #1f2630; font-size: 14px; font-weight: 700; white-space: nowrap;">Оставить заявку</a>
+        <div role="group" aria-label="Язык сайта" style="display: flex; height: 32px; border: 1px solid #c7ced7; border-radius: 4px; overflow: hidden; font-size: 12.5px; font-weight: 700;">
+          <button type="button" aria-pressed="true" style="width: 40px; border: 0; background: #3E5D88; color: #fff; font: inherit; cursor: pointer;">RU</button>
+          <a href="#en" lang="en" style="width: 40px; display: flex; align-items: center; justify-content: center; background: #fff; color: #414954;">EN</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ВАРИАНТ 5 = вариант 3 (боковое меню — разделы сайта, каталог свёрнут в «Продукцию») + новая панель «Продукция»: на всю высоту экрана, прилипает вместе с меню, лёгкий голубой фон (продолжение меню). Поиск — один, в шапке: ввод открывает панель и фильтрует её по названию и марке на лету (латиница → кириллица: «x20» найдёт нихром). Марок в панели нет. Внутри: популярные материалы с реальными фото (порядок по Метрике), весь каталог плотным списком. Группировка переключается твиком grouping: 8 мелких групп (предложение) / 4 крупные (как в v2–v4) — обе пока НЕ согласованы с компанией. Высота экрана на холсте — твик viewportH (в продакшене 100vh). -->
+  <div style="display: flex; position: relative; flex: 1; min-height: 0;">
+
+    <nav aria-label="Разделы сайта" style="width: 270px; flex-shrink: 0; background: #fff; border-right: 1px solid #e1e5ea; position: relative; z-index: 3;">
+      <div style="position: sticky; top: 0; height: {{vh}};">
+        <div style="height: 100%; overflow-y: auto; box-sizing: border-box; padding: 20px 0 24px;">
+        <button type="button" class="navprod" aria-expanded="{{megaExpanded}}" onClick="{{toggleMega}}" style="margin: 0 16px 6px; width: calc(100% - 32px); height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 16px; border: 0; border-radius: 4px; background: {{prodBg}}; color: #fff; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer;">
+          <span style="display: flex; align-items: center; gap: 10px;">
+            <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1" stroke="#fff" stroke-width="1.3"/><rect x="9" y="1.5" width="5.5" height="5.5" rx="1" stroke="#fff" stroke-width="1.3"/><rect x="1.5" y="9" width="5.5" height="5.5" rx="1" stroke="#fff" stroke-width="1.3"/><rect x="9" y="9" width="5.5" height="5.5" rx="1" stroke="#fff" stroke-width="1.3"/></svg>
+            Продукция
+          </span>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 4l4 4-4 4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div style="margin: 0 16px 14px; font-size: 12.5px; color: #5b6572; padding: 0 2px;">Металлы и сплавы — весь каталог</div>
+        <div style="height: 1px; background: #eceef1; margin: 0 24px 8px;"></div>
+
+        <a href="#calc" class="navitem" style="display: flex; align-items: center; gap: 12px; padding: 10px 24px 6px; font-size: 15px; font-weight: 700; color: #2f4a6b;"><span style="display: flex; color: #3E5D88;"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="1.3" stroke="currentColor" stroke-width="1.3"/><line x1="5" y1="4.3" x2="11" y2="4.3" stroke="currentColor" stroke-width="1.3"/><circle cx="5.3" cy="7.4" r="0.7" fill="currentColor"/><circle cx="8" cy="7.4" r="0.7" fill="currentColor"/><circle cx="10.7" cy="7.4" r="0.7" fill="currentColor"/><circle cx="5.3" cy="10.1" r="0.7" fill="currentColor"/><circle cx="8" cy="10.1" r="0.7" fill="currentColor"/><circle cx="10.7" cy="10.1" r="0.7" fill="currentColor"/></svg></span>Калькуляторы</a>
+        <sc-for list="{{calculators}}" as="cl" hint-placeholder-count="3">
+          <a href="{{cl.href}}" class="navitem" style="display: block; padding: 5px 24px 5px 54px; font-size: 14px; font-weight: 500; color: #414954;">{{cl.title}}</a>
+        </sc-for>
+        <div style="height: 8px;"></div>
+        <a href="board/" class="navitem" style="display: flex; align-items: center; gap: 12px; padding: 10px 24px; font-size: 15px; font-weight: 600; color: #232a33;"><span style="display: flex; color: #3E5D88;"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="9" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5.5h7M4.5 8.2h4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M5 11.5l-1.5 3M11 11.5l1.5 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>Доска объявлений</a>
+        <a href="#articles" class="navitem" style="display: flex; align-items: center; gap: 12px; padding: 10px 24px; font-size: 15px; font-weight: 600; color: #232a33;"><span style="display: flex; color: #3E5D88;"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 1.5h6l3 3v10h-9z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><line x1="5.7" y1="8" x2="10.3" y2="8" stroke="currentColor" stroke-width="1.1"/><line x1="5.7" y1="10.5" x2="10.3" y2="10.5" stroke="currentColor" stroke-width="1.1"/></svg></span>Статьи</a>
+        <a href="#gost" class="navitem" style="display: flex; align-items: center; gap: 12px; padding: 10px 24px; font-size: 15px; font-weight: 600; color: #232a33;"><span style="display: flex; color: #3E5D88;"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 1.5l5.5 2.2v4.1c0 3.6-2.3 5.6-5.5 6.7-3.2-1.1-5.5-3.1-5.5-6.7V3.7z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M5.5 7.8l1.7 1.7 3.3-3.3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>ГОСТы и ТУ</a>
+        <a href="#about" class="navitem" style="display: flex; align-items: center; gap: 12px; padding: 10px 24px; font-size: 15px; font-weight: 600; color: #232a33;"><span style="display: flex; color: #3E5D88;"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="4.9" r="0.8" fill="currentColor"/></svg></span>О компании</a>
+        <a href="#contacts" class="navitem" style="display: flex; align-items: center; gap: 12px; padding: 10px 24px; font-size: 15px; font-weight: 600; color: #232a33;"><span style="display: flex; color: #3E5D88;"><svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.8 2.2h2.3l1.1 2.8-1.3 1.1a7.5 7.5 0 0 0 3.5 3.5l1.1-1.3 2.8 1.1v2.3a1.3 1.3 0 0 1-1.4 1.3C6.1 12.5 3.1 9.5 2 5.5a1.3 1.3 0 0 1 .8-3.3z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></span>Контакты</a>
+        </div>
+
+        <!-- ПАНЕЛЬ «Продукция» — на всю высоту экрана, до правого края страницы, поверх контента -->
+        <sc-if value="{{megaOpen}}" hint-placeholder-val="true">
+          <div id="produkciya" role="region" aria-label="Продукция" style="position: absolute; left: 270px; top: 0; width: 1290px; height: 100%; overflow-y: auto; box-sizing: border-box; background: #EEF4FA; border-left: 1px solid #d3e0ee; box-shadow: 16px 0 40px -20px rgba(15,23,42,.45); padding: 26px 40px 32px;">
+
+            <div style="display: flex; align-items: center; gap: 24px;">
+              <div style="font-size: 22px; font-weight: 700; color: #1d2d44; flex-shrink: 0;">Продукция</div>
+<div style="flex: 1; font-size: 14px; color: #4a5a6e;">{{panelHint}}</div>
+              <a href="#catalog" style="flex-shrink: 0; font-size: 14px; font-weight: 700; color: #1f3a5c;">Весь каталог →</a>
+            </div>
+
+            <sc-if value="{{showPopular}}" hint-placeholder-val="true">
+              <div style="margin-top: 26px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #4a5a6e;">Популярные</div>
+              <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px;">
+                <sc-for list="{{popular}}" as="pp" hint-placeholder-count="7">
+                  <a href="#material" class="popcard" style="display: block; background: #fff; border: 1px solid #d6e2ef; border-radius: 6px; overflow: hidden;">
+                    <img src="{{pp.img}}" alt="{{pp.name}}" style="width: 100%; height: 84px; object-fit: cover; display: block;">
+                    <div style="padding: 9px 10px 10px;">
+                      <div style="font-size: 14px; font-weight: 700; color: #232a33;">{{pp.name}}</div>
+                    </div>
+                  </a>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <div style="margin-top: 26px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #4a5a6e;">{{catalogTitle}}</div>
+            <div style="margin-top: 10px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 28px;">
+              <sc-for list="{{groupsView}}" as="gv" hint-placeholder-count="8">
+                <div>
+                  <a href="#catalog" style="display: block; padding: 0 8px 6px; margin-bottom: 4px; border-bottom: 1px solid #cfdcea; font-size: 15px; font-weight: 700; color: #1f3a5c;">{{gv.name}}</a>
+                  <sc-for list="{{gv.items}}" as="gi" hint-placeholder-count="4">
+                    <a href="#material" class="megaitem" style="display: block; padding: 4px 8px; border-radius: 4px; font-size: 14px; line-height: 20px; color: #232a33;">{{gi.label}}</a>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{nothingFound}}" hint-placeholder-val="false">
+              <div style="margin-top: 8px; padding: 20px 22px; background: #fff; border: 1px solid #d6e2ef; border-radius: 6px; font-size: 15px; color: #414954;">
+                По запросу «{{q}}» в каталоге ничего нет. <a href="#zayavka" style="color: #1f3a5c; font-weight: 700;">Оставьте заявку</a> — подберём материал или аналог.
+              </div>
+            </sc-if>
+
+            <div style="margin-top: 28px; padding-top: 18px; border-top: 1px solid #cfdcea; display: flex; align-items: center; gap: 28px; font-size: 14px; color: #414954;">
+              <span>Не нашли нужное? <a href="#zayavka" style="color: #1f3a5c; font-weight: 700;">Оставьте заявку</a> — подберём.</span>
+            </div>
+          </div>
+        </sc-if>
+
+      </div>
+    </nav>
+
+    <main style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+      <!-- HERO (контент уже на 270px уже — фото-колонка сужена). Крупный заголовок, реальные фото, одно главное действие (заявка) + второе (каталог). Текст «О компании» вынесен ниже. Форма заявки и «Найти материал быстро» убраны: поиск есть в шапке, каталог — в боковом меню. -->
+      <section style="display: grid; grid-template-columns: minmax(0, 1fr) 440px; gap: 40px; align-items: center; padding: 48px 40px; border-bottom: 1px solid #e1e5ea;">
+        <div>
+          <div style="font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #3E5D88;">НПК «Метотехника»</div>
+          <h1 style="font-size: 40px; line-height: 1.12; font-weight: 700; color: #232a33; margin: 14px 0 18px; letter-spacing: -.01em;">Цветные металлы и&nbsp;сплавы со&nbsp;склада в&nbsp;Москве</h1>
+          <p style="font-size: 17px; line-height: 1.6; color: #414954; margin: 0 0 28px; max-width: 620px;">Стандартный металлопрокат — прутки, проволока, листы — и изделия под заказ, в том числе по чертежам заказчика. Среднее время отгрузки — 1–2 рабочих дня.</p>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <a href="#zayavka" style="display: inline-flex; align-items: center; height: 52px; padding: 0 28px; border-radius: 4px; background: #EC9D47; color: #1f2630; font-size: 16px; font-weight: 700;">Оставить заявку</a>
+            <a href="#catalog" style="display: inline-flex; align-items: center; height: 52px; padding: 0 24px; border-radius: 4px; border: 1.5px solid #3E5D88; box-sizing: border-box; color: #2f4a6b; font-size: 16px; font-weight: 600;">Смотреть каталог</a>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 28px;">
+            <span style="font-size: 13px; color: #5b6572; margin-right: 4px;">Часто ищут:</span>
+            <sc-for list="{{popularQueries}}" as="pq" hint-placeholder-count="5">
+              <a href="#material" style="padding: 6px 12px; border-radius: 4px; background: #EAF1F8; font-size: 13px; font-weight: 500; color: #2f4a6b;">{{pq}}</a>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: 170px 170px; gap: 12px;">
+          <img src="/_blob/64d182656ae5ad8c8f7835a93e958612" alt="Нихромовая проволока" style="grid-row: span 2; width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block;">
+          <img src="/_blob/18004f41f537b19714551c56f5642daf" alt="Вольфрам" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block;">
+          <img src="/_blob/f4f70cdc5a350b1e307f21545b4c91ae" alt="Титан" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px; display: block;">
+        </div>
+      </section>
+
+      <!-- КАЛЬКУЛЯТОРЫ — по Метрике calc.htm даёт больше входов (5588), чем сама главная (3765). Названия и описания — с реальных страниц calc.htm, calc_spir.htm, calc_heater.htm. -->
+      <section id="calc" style="padding: 44px 40px; background: #f4f7fb; border-bottom: 0;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 22px;">
+          <h2 style="margin: 0; font-size: 26px; font-weight: 700; color: #232a33;">Калькуляторы</h2>
+          <span style="font-size: 14px; color: #5b6572;">Бесплатно, без регистрации</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;">
+          <sc-for list="{{calculators}}" as="c" hint-placeholder-count="3">
+            <a href="{{c.href}}" style="display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 6px; background: #fff; border: 1px solid #d6e0ec; box-shadow: 0 6px 16px -10px rgba(15,23,42,.25);">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="width: 44px; height: 44px; border-radius: 6px; background: #3E5D88; display: flex; align-items: center; justify-content: center;">
+                  <svg width="22" height="22" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="1.3" stroke="#fff" stroke-width="1.2"/><line x1="5" y1="4.3" x2="11" y2="4.3" stroke="#fff" stroke-width="1.2"/><circle cx="5.3" cy="7.4" r="0.7" fill="#fff"/><circle cx="8" cy="7.4" r="0.7" fill="#fff"/><circle cx="10.7" cy="7.4" r="0.7" fill="#fff"/><circle cx="5.3" cy="10.1" r="0.7" fill="#fff"/><circle cx="8" cy="10.1" r="0.7" fill="#fff"/><circle cx="10.7" cy="10.1" r="0.7" fill="#fff"/></svg>
+                </div>
+                <sc-if value="{{c.top}}" hint-placeholder-val="false">
+                  <span style="padding: 4px 10px; border-radius: 4px; background: #FBEBD8; color: #7a4712; font-size: 12px; font-weight: 700;">Самый популярный</span>
+                </sc-if>
+              </div>
+              <div style="font-size: 19px; font-weight: 700; color: #232a33;">{{c.title}}</div>
+              <div style="font-size: 14.5px; line-height: 1.55; color: #414954; flex: 1;">{{c.desc}}</div>
+              <div style="font-size: 14px; font-weight: 700; color: #2f4a6b;">Рассчитать →</div>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+
+
+      <!-- ПОПУЛЯРНЫЕ МАТЕРИАЛЫ — порядок по Метрике; текст крупнее; «По согласованию» → нейтральное «Цена по запросу» -->
+      <section id="catalog" style="padding: 44px 40px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 22px;">
+          <h2 style="margin: 0; font-size: 26px; font-weight: 700; color: #232a33;">Популярные материалы</h2>
+          <a href="#catalog" style="font-size: 14px; font-weight: 600; color: #2f4a6b;">Весь каталог →</a>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px;">
+          <sc-for list="{{featured}}" as="m" hint-placeholder-count="7">
+            <a href="#material" style="display: flex; flex-direction: column; border-radius: 6px; overflow: hidden; box-shadow: 0 8px 20px -8px rgba(15,23,42,.18); background: #fff; border: 1px solid #eceef1;">
+              <img src="{{m.img}}" alt="{{m.name}}" style="width: 100%; height: 200px; object-fit: cover; display: block;">
+              <div style="padding: 16px 16px 18px; display: flex; flex-direction: column; flex: 1;">
+                <div style="font-size: 17px; font-weight: 700; color: #232a33;">{{m.name}}</div>
+                <div style="font-size: 13.5px; color: #5b6572; margin-top: 4px; line-height: 1.45; flex: 1;">{{m.desc}}</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px;">
+                  <sc-if value="{{m.hasPrice}}" hint-placeholder-val="true">
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #8f5316;">{{m.price}}</span>
+                  </sc-if>
+                  <sc-if value="{{m.onRequest}}" hint-placeholder-val="false">
+                    <span style="font-size: 13.5px; font-weight: 500; color: #5b6572;">Цена по запросу</span>
+                  </sc-if>
+                  <span style="font-size: 13.5px; font-weight: 600; color: #2f4a6b;">Подробнее →</span>
+                </div>
+              </div>
+            </a>
+          </sc-for>
+          <a href="#catalog" style="border-radius: 6px; background: #3E5D88; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; padding: 24px;">
+            <div style="font-size: 18px; font-weight: 700; color: #fff;">Все материалы</div>
+            <div style="font-size: 14px; color: #dbe6f2; line-height: 1.5;">Прецизионные сплавы, тугоплавкие металлы, никелевые сплавы и другие</div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-top: 4px;"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </section>
+
+      <!-- ДОВЕРИЕ — 4 пункта с «крупным фактом» вместо 6 одинаковых галочек. Только проверенное по metotech.ru: отгрузка 1–2 раб. дня, ГОСТ Р ИСО 9001-2015, по чертежам заказчика, товарный знак Метотехника®. «С 1998 года» и «по РФ и СНГ» на сайте не найдены — убраны. -->
+      <section style="padding: 36px 40px; background: #f7f8fa; border-top: 1px solid #eceef1; border-bottom: 1px solid #eceef1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px;">
+        <sc-for list="{{trust}}" as="t" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 6px; padding-left: 16px; border-left: 3px solid #3E5D88;">
+            <div style="font-size: 24px; font-weight: 700; color: #2f4a6b; line-height: 1.2;">{{t.big}}</div>
+            <div style="font-size: 14px; line-height: 1.5; color: #414954;">{{t.text}}</div>
+          </div>
+        </sc-for>
+      </section>
+
+      <!-- СТАТЬИ — топ статей-точек входа по Метрике; заголовки дословно с сайта -->
+      <section id="articles" style="padding: 44px 40px;">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 22px;">
+          <h2 style="margin: 0; font-size: 26px; font-weight: 700; color: #232a33;">Статьи и справочные материалы</h2>
+          <a href="#articles" style="font-size: 14px; font-weight: 600; color: #2f4a6b;">Все статьи →</a>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px;">
+          <sc-for list="{{articles}}" as="ar" hint-placeholder-count="4">
+            <a href="{{ar.href}}" style="display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: 6px; border: 1px solid #dde3ea; background: #fff;">
+              <span style="align-self: flex-start; padding: 3px 9px; border-radius: 4px; background: #EAF1F8; color: #2f4a6b; font-size: 12px; font-weight: 700;">{{ar.tag}}</span>
+              <div style="font-size: 16px; line-height: 1.4; font-weight: 700; color: #232a33; flex: 1;">{{ar.title}}</div>
+              <div style="font-size: 13.5px; font-weight: 600; color: #2f4a6b;">Читать →</div>
+            </a>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- О КОМПАНИИ — дословный текст с index.htm (исправлена незакрытая внешняя кавычка) + карточка заявки -->
+      <section id="about" style="padding: 44px 40px 52px; border-top: 1px solid #e1e5ea; display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 48px; align-items: start;">
+        <div>
+          <h2 style="margin: 0 0 16px; font-size: 26px; font-weight: 700; color: #232a33;">О компании</h2>
+          <p style="margin: 0 0 14px; font-size: 15.5px; line-height: 1.7; color: #414954;">НПК «Метотехника» специализируется на продаже цветных металлов и сплавов, производстве изделий из них. Компания успешно работает на данном рынке и поставляет как стандартный металлопрокат (прутки, проволоку, листы и т. д.), так и технологичные товары (тепловые экраны, нагреватели, термостойкие провода, средства измерения и др.) под заказ, в том числе по чертежам заказчика.</p>
+          <p style="margin: 0; font-size: 15.5px; line-height: 1.7; color: #414954;">Клиентами компании являются как крупные российские заводы, так и небольшие производственные фирмы — существенную долю составляют научные организации.</p>
+        </div>
+        <form id="zayavka" style="margin: 0; padding: 24px; border-radius: 6px; background: #fff; border: 2px solid #EC9D47; display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-size: 19px; font-weight: 700; color: #232a33;">Оставить заявку</div>
+          <div style="font-size: 13.5px; color: #5b6572; margin-top: -6px;">Перезвоним в рабочее время, пн–пт 9:00–17:00</div>
+          <label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: #414954;">Ваше имя
+            <input type="text" placeholder="Иван Петров" style="height: 44px; box-sizing: border-box; border: 1px solid #c7ced7; border-radius: 4px; padding: 0 12px; font: inherit; font-size: 14px;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: #414954;">Телефон
+            <input type="tel" placeholder="+7 (___) ___-__-__" style="height: 44px; box-sizing: border-box; border: 1px solid #c7ced7; border-radius: 4px; padding: 0 12px; font: inherit; font-size: 14px;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: #414954;">Что нужно (необязательно)
+            <input type="text" placeholder="Нихром Х20Н80, проволока 0,5 мм, 10 кг" style="height: 44px; box-sizing: border-box; border: 1px solid #c7ced7; border-radius: 4px; padding: 0 12px; font: inherit; font-size: 14px;">
+          </label>
+          <button type="button" style="height: 48px; margin-top: 4px; border: 0; border-radius: 4px; background: #EC9D47; color: #1f2630; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer;">Отправить заявку</button>
+        </form>
+      </section>
+
+  </main>
+  </div>
+
+  <!-- ФУТЕР — вместо третьей копии каталога: категории одной строкой с фото (наследие варианта D), сервисы, компания, контакты с contact.htm -->
+  <footer id="contacts" style="background: #232a33; color: #c9d0d9; padding: 44px 40px 0;">
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.3fr; gap: 40px;">
+      <div>
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px;">Каталог</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <sc-for list="{{groupNames}}" as="gn" hint-placeholder-count="8">
+            <a href="#catalog" style="font-size: 14px; color: #e3e8ee;">{{gn}}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px;">Сервисы</div>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+          <a href="calc.htm">Калькулятор «Металлы и сплавы»</a>
+          <a href="calc_spir.htm">Калькулятор спиралей</a>
+          <a href="calc_heater.htm">Калькулятор нагревателей</a>
+          <a href="#articles">Статьи</a>
+          <a href="#gost">ГОСТы и ТУ</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px;">Компания</div>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+          <a href="#about">О компании</a>
+          <a href="#contacts">Контакты</a>
+          <a href="#zayavka">Оставить заявку</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 14px;">Контакты</div>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.5;">
+          <a href="tel:+78002005275" style="font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 700; color: #fff;">+7 (800) 200-52-75</a>
+          <div style="font-family: 'JetBrains Mono', monospace; color: #e3e8ee;">+7 (495) 504-95-54 · +7 (499) 166-78-38</div>
+          <a href="mailto:info@metotech.ru" style="color: #F3B877;">info@metotech.ru</a>
+          <div>105187, Москва, ул. Кирпичная, д. 32, корп. 24</div>
+          <div>Пн–пт 9:00–17:00</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 36px; padding: 18px 0; border-top: 1px solid #3a434f; font-size: 13px; color: #a3acb8; display: flex; align-items: center; justify-content: space-between;">
+      <div>© ООО «НПК «Метотехника». Метотехника® — зарегистрированный товарный знак.</div>
+      <div>СМК соответствует ГОСТ Р ИСО 9001-2015</div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"megaOpen":{"editor":"boolean","default":true},"grouping":{"editor":"enum","options":["8 мелких групп","4 крупные группы"],"default":"8 мелких групп"},"viewportH":{"editor":"range","min":560,"max":1100,"step":10,"unit":"px","default":800},"$preview":{"width":1560,"height":3300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    // порядок — по реальной популярности из Яндекс.Метрики (как на HomePage): Титан > Вольфрам > Нихром > Никель > Молибден > Фехраль > Тантал
+    const featuredRaw = [
+      { name: 'Титан', desc: 'ВТ1-0, ОТ4 — лёгкий и прочный', img: '/_blob/f4f70cdc5a350b1e307f21545b4c91ae', price: 'от 4200 ₽/кг' },
+      { name: 'Вольфрам', desc: 'ВА, ВЛ, СВИ — тугоплавкий металл', img: '/_blob/18004f41f537b19714551c56f5642daf', price: '' },
+      { name: 'Нихром', desc: 'Х20Н80, Х15Н60 — для нагревателей печей', img: '/_blob/64d182656ae5ad8c8f7835a93e958612', price: 'от 8000 ₽/кг' },
+      { name: 'Никель', desc: 'НП2, Н-1у — коррозионностойкий', img: '/_blob/7ae7ba8401389a3782f708fabcf27bd9', price: 'от 6100 ₽/кг' },
+      { name: 'Молибден', desc: 'МЧ, ЦМ2А — тугоплавкий металл', img: '/_blob/eb3c7a53e21557ea47dacf034ec814fa', price: '' },
+      { name: 'Фехраль', desc: 'Х23Ю5Т, Х27Ю5Т — рабочая т-ра до 1400 °С', img: '/_blob/e2e59819cc336eeeb15d4956f55eada5', price: 'от 3500 ₽/кг' },
+      { name: 'Тантал', desc: 'Т, ТВЧ — тугоплавкий, высокая прочность', img: '/_blob/677fc23f55598318570f19069c1d0bae', price: '' }
+    ];
+    const featured = featuredRaw.map(function (m) {
+      return Object.assign({}, m, { hasPrice: !!m.price, onRequest: !m.price });
+    });
+
+
+    // из поисковых запросов Метрики (титан, вольфрам, сорта молибдена, нихром/ХН78Т в запросах калькулятора)
+    const popularQueries = ['Титан ВТ1-0', 'Вольфрам', 'Нихром Х20Н80', 'Молибден', 'Термопары'];
+
+    // названия/описания — с реальных страниц сайта
+    const calculators = [
+      { title: 'Металлы и сплавы', desc: 'Масса по длине и длина по массе для проволоки, прутка, трубы, ленты, листа, шестигранника, уголка — для любого сплава из базы.', href: 'calc.htm', top: true },
+      { title: 'Спирали', desc: 'Мощность и длина спиралей из нихрома, фехраля и других жаростойких сплавов.', href: 'calc_spir.htm', top: false },
+      { title: 'Нагреватели', desc: 'Диаметр, длина и масса проволочных нагревателей и размеры ленточных — для электрических печей по заданной мощности.', href: 'calc_heater.htm', top: false }
+    ];
+
+    const trust = [
+      { big: '1–2 дня', text: 'среднее время отгрузки со склада в Москве' },
+      { big: 'ГОСТ Р ИСО 9001', text: 'система менеджмента качества сертифицирована (ред. 2015)' },
+      { big: 'По чертежам', text: 'тепловые экраны, нагреватели, термостойкие провода — под заказ' },
+      { big: 'Метотехника®', text: 'зарегистрированный товарный знак' }
+    ];
+
+    // топ статей по входам из Метрики; заголовки дословно с сайта
+    const articles = [
+      { tag: 'Нагреватели', title: 'Нагреватели. Методика и примеры расчета', href: 'art_nagrev_1.htm' },
+      { tag: 'Термопары', title: 'Термопары. Типы, характеристики, конструкции, производство', href: 'art_termopary_4.htm' },
+      { tag: 'Титан', title: 'Титановые сплавы: виды, области применения, особенности использования', href: 'art_titan_11.htm' },
+      { tag: 'Титан', title: 'Применение титана и титановых сплавов в высокотехнологичных областях промышленности', href: 'art_titan_2.htm' }
+    ];
+
+    // все 26 позиций реального левого меню metotech.ru, две схемы группировки — обе НЕ согласованы с компанией
+    // марки — только известные по проекту (как в карточках материалов)
+    const grades = { 'Нихром': 'Х20Н80', 'Фехраль': 'Х23Ю5Т', 'Титан': 'ВТ1-0', 'Вольфрам': 'ВА', 'Молибден': 'МЧ', 'Никель': 'НП2' };
+    const schemes = {
+      // предложение: мелкие группы по основе материала / назначению — меньше спорных отнесений
+      '8 мелких групп': [
+        { name: 'Нагревательные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции'] },
+        { name: 'Термопары и прецизионные сплавы', items: ['Термопары', 'Термопары нагревостойкие', 'Константан', 'Прецизионные сплавы'] },
+        { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений'] },
+        { name: 'Титан и цирконий', items: ['Титан', 'Цирконий'] },
+        { name: 'Никель и медно-никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор'] },
+        { name: 'Стали и жаропрочные сплавы', items: ['Нержавеющая сталь', 'Жаропрочные сплавы'] },
+        { name: 'Другие металлы', items: ['Кобальт', 'Хром', 'Ванадий', 'Олово'] },
+        { name: 'Порошки, твёрдые сплавы, ферросплавы', items: ['Порошки металлов', 'Твёрдые сплавы', 'Ферросплавы'] }
+      ],
+      // как в v2–v4
+      '4 крупные группы': [
+        { name: 'Прецизионные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции', 'Константан', 'Термопары', 'Термопары нагревостойкие'] },
+        { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений', 'Хром'] },
+        { name: 'Никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор', 'Кобальт', 'Жаропрочные сплавы'] },
+        { name: 'Прочие материалы', items: ['Титан', 'Цирконий', 'Олово', 'Ванадий', 'Нержавеющая сталь', 'Твёрдые сплавы', 'Порошки металлов', 'Ферросплавы'] }
+      ]
+    };
+    const scheme = schemes[this.props.grouping] || schemes['8 мелких групп'];
+
+    const megaOpen = this.state && this.state.mega !== undefined ? this.state.mega : (this.props.megaOpen ?? true);
+    const toggleMega = () => this.setState({ mega: !megaOpen });
+    const openMega = () => this.setState({ mega: true });
+
+    // поиск: регистр не важен, латинские двойники букв → кириллица («x20h80» найдёт Х20Н80)
+    const q = (this.state && this.state.q) || '';
+    const onQuery = (e) => this.setState({ q: e.target.value, mega: true });
+    const lat = { a: 'а', b: 'в', c: 'с', e: 'е', h: 'н', k: 'к', m: 'м', o: 'о', p: 'р', t: 'т', x: 'х', y: 'у' };
+    const norm = (t) => t.toLowerCase().replace(/[a-z]/g, (ch) => lat[ch] || ch).replace(/ё/g, 'е');
+    const nq = norm(q.trim());
+    const match = (label) => !nq || norm(label).indexOf(nq) !== -1 || norm(grades[label] || '').indexOf(nq) !== -1;
+    const groupsView = scheme
+      .map((g) => ({ name: g.name, items: g.items.filter(match).map((label) => ({ label: label })) }))
+      .filter((g) => g.items.length > 0);
+    const nothingFound = !!nq && groupsView.length === 0;
+    const showPopular = !nq;
+    const catalogTitle = nq ? 'Найдено' : 'Весь каталог';
+    const groupNames = scheme.map((g) => g.name);
+
+    // популярные — порядок по Метрике, реальные фото
+    const popular = featuredRaw.map((m) => ({ name: m.name, img: m.img }));
+    const panelHint = nq ? '' : 'Начните вводить название или марку в поиске вверху — список отфильтруется';
+    const searchBorder = megaOpen ? '2px solid #3E5D88' : '1px solid #c7ced7';
+    const searchGlow = megaOpen ? '0 0 0 3px #D6E5F4' : 'none';
+
+    // высота экрана: в продакшене 100vh, на холсте — твик
+    const vh = (this.props.viewportH ?? 800) + 'px';
+
+
+    return { featured, popularQueries, calculators, trust, articles, megaOpen, megaExpanded: megaOpen ? 'true' : 'false', prodBg: megaOpen ? '#2f4a6b' : '#3E5D88', toggleMega, openMega, q, onQuery, panelHint, searchBorder, searchGlow, groupsView, nothingFound, showPopular, catalogTitle, groupNames, popular, vh };
+  }
+}
+</script>
+</body>
+</html>
