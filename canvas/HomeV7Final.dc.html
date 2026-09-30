@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Главная v7 — итоговый вариант (B, доработанный)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  body { margin: 0; background: #fff; font-family: 'Onest', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: #2f4a6b; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+  /* наведение и фокус (в исходнике — атрибуты style-hover / style-focus) */
+  .hv1:hover { background: #2f4a6b !important; }
+  .hv2:hover { background: #eef3f9 !important; }
+  .hv3:hover { background: #eef3f9 !important; }
+  .hv4:hover { background: #eef3f9 !important; }
+  .hv5:hover { background: #eef3f9 !important; }
+  .hv6:hover { background: #eef3f9 !important; }
+  .hv7:hover { background: #e38c30 !important; color: #1b222c !important; }
+  .hv8:hover { color: #1f3a5c !important; }
+  .hv9:hover { color: #1f3a5c !important; }
+  .hv10:hover { color: #1f3a5c !important; }
+  .hv11:hover { color: #1f3a5c !important; }
+  .hv12:hover { color: #1f3a5c !important; }
+  .hv13:hover { color: #1f3a5c !important; }
+  .hv14:hover { background: #dde8f4 !important; }
+  .hv15:hover { background: #eef3f9 !important; color: #1f3a5c !important; }
+  .hv16:hover { background: #eef3f9 !important; }
+  .hv17:hover { background: #e38c30 !important; color: #1b222c !important; transform: translateY(-1px) !important; }
+  .hv18:hover { border-color: #3E5D88 !important; }
+  .hv19:hover { background: #e2ebf5 !important; color: #1f3a5c !important; }
+  .hv20:hover { border-color: #EC9D47 !important; color: #fff !important; }
+  .hv21:hover { transform: scale(1.04) !important; }
+  .hv22:hover { background: #eef3f9 !important; transform: translateY(-4px) !important; color: inherit !important; }
+  .hv23:hover { transform: scale(1.05) !important; }
+  .hv24:hover { background: #2f4a6b !important; color: #fff !important; }
+  .hv25:hover { padding-left: 10px !important; color: #1f3a5c !important; }
+  .hv26:focus { border-color: #3E5D88 !important; background: #fff !important; box-shadow: 0 0 0 3px #dde8f4 !important; }
+  .hv27:focus { border-color: #3E5D88 !important; background: #fff !important; box-shadow: 0 0 0 3px #dde8f4 !important; }
+  .hv28:focus { border-color: #3E5D88 !important; background: #fff !important; box-shadow: 0 0 0 3px #dde8f4 !important; }
+  .hv29:hover { background: #e38c30 !important; }
+  .hv30:hover { color: #F3B877 !important; }
+  .hv31:hover { color: #F3B877 !important; }
+  .hv32:hover { color: #F3B877 !important; }
+  .hv33:hover { color: #F3B877 !important; }
+  .hv34:hover { color: #F3B877 !important; }
+  .hv35:hover { color: #F3B877 !important; }
+  .hv36:hover { color: #F3B877 !important; }
+  .hv37:hover { color: #F3B877 !important; }
+  .hv38:hover { color: #F3B877 !important; }
+</style>
+</helmet>
+<div ref="{{rootRef}}" style="width: 100%; min-width: 1200px; box-sizing: border-box; background: #fff; display: flex; flex-direction: column; color: #1b222c; overflow: clip;">
+<!--HDR-B-->
+  <div style="position: sticky; top: 0; z-index: 20; height: {{hd.wrapH}}; pointer-events: none;">
+    <div style="pointer-events: auto; position: relative; background: rgba(255,255,255,.96); backdrop-filter: blur(10px); border-bottom: 1px solid #eceff3; box-shadow: {{hd.shadow}}; transition: box-shadow .24s ease;">
+      <div style="height: {{hd.h}}; box-sizing: border-box; max-width: 1540px; margin: 0 auto; padding: 0 48px; display: flex; align-items: center; gap: 20px; transition: height .24s cubic-bezier(.2,.7,.3,1);">
+        <a href="#top" aria-label="«Метотехника» — на главную" style="display: flex; align-items: center; flex-shrink: 0; margin-right: 12px;">
+          <img src="/_blob/5a916be1eafd644ae6414495e0c6db8c" alt="«Метотехника»" style="width: 212px; height: 28px; display: block;">
+        </a>
+        <button class="hv1" type="button" aria-expanded="{{megaExpanded}}" aria-controls="produkciya" onClick="{{toggleMega}}" style="flex-shrink: 0; height: {{hd.searchH}}; display: flex; align-items: center; gap: 10px; padding: 0 18px 0 16px; border: 0; border-radius: 8px; background: {{prodBg}}; color: #fff; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; transition: height .24s cubic-bezier(.2,.7,.3,1), background-color .16s ease;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1" stroke="#fff" stroke-width="1.4"></rect><rect x="9" y="1.5" width="5.5" height="5.5" rx="1" stroke="#fff" stroke-width="1.4"></rect><rect x="1.5" y="9" width="5.5" height="5.5" rx="1" stroke="#fff" stroke-width="1.4"></rect><rect x="9" y="9" width="5.5" height="5.5" rx="1" stroke="#fff" stroke-width="1.4"></rect></svg>
+          Каталог
+        </button>
+        <label style="flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; border: {{searchBorder}}; border-radius: 8px; padding: 0 16px; height: {{hd.searchH}}; box-sizing: border-box; background: #f5f7fa; box-shadow: {{searchGlow}}; transition: height .24s cubic-bezier(.2,.7,.3,1), border-color .16s ease, box-shadow .16s ease;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="#3E5D88" stroke-width="1.6"></circle><path d="M11 11l3 3" stroke="#3E5D88" stroke-width="1.6" stroke-linecap="round"></path></svg>
+          <input type="search" aria-label="Поиск по каталогу" aria-controls="produkciya" value="{{q}}" onChange="{{onQuery}}" onKeyDown="{{onSearchKey}}" onFocus="{{openMega}}" placeholder="Материал или марка — например, Х20Н80" style="flex: 1; min-width: 0; border: 0; outline: 0; font: inherit; font-size: 15px; color: #1b222c; background: transparent;">
+        </label>
+        <div data-phones="1" style="position: relative; flex-shrink: 0; display: flex; flex-direction: column; text-align: right; margin-left: 8px;">
+          <span style="display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
+            <a href="tel:+78002005275" style="font-family: 'IBM Plex Mono', monospace; font-size: 16.5px; font-weight: 600; color: #1b222c; white-space: nowrap; letter-spacing: -.01em;">+7 (800) 200-52-75</a>
+            <button type="button" aria-label="Все телефоны и контакты" aria-expanded="{{phonesExp}}" aria-controls="phones-list" onClick="{{togglePhones}}" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 6px; background: {{phonesBtnBg}}; color: #3E5D88; cursor: pointer;"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="transform: rotate({{phonesRot}}); transition: transform .2s ease;"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          </span>
+          <span style="display: block; padding-right: 32px; overflow: hidden; max-height: {{hd.capH}}; opacity: {{hd.capOp}}; font-size: 12px; line-height: 16px; color: #5f6975; white-space: nowrap; transition: max-height .24s cubic-bezier(.2,.7,.3,1), opacity .16s ease;">Бесплатно по России</span>
+          <div id="phones-list" aria-hidden="{{phFx.hidden}}" style="position: absolute; right: 0; top: calc(100% + 12px); z-index: 30; width: 340px; padding: 8px; box-sizing: border-box; text-align: left; background: #fff; border: 1px solid #e6e9ee; border-radius: 12px; box-shadow: 0 24px 48px -20px rgba(15,23,42,.35); opacity: {{phFx.op}}; transform: {{phFx.tf}}; visibility: {{phFx.vis}}; transition: {{phFx.tr}};">
+            <a class="hv2" href="tel:+78002005275" style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 8px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: #1b222c; white-space: nowrap;">+7 (800) 200-52-75</span><span style="font-size: 12.5px; color: #5f6975; white-space: nowrap;">бесплатно по России</span></a>
+            <a class="hv3" href="tel:+74991667838" style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 8px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: #1b222c; white-space: nowrap;">+7 (499) 166-78-38</span><span style="font-size: 12.5px; color: #5f6975;">Москва</span></a>
+            <a class="hv4" href="tel:+74955049554" style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 8px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: #1b222c; white-space: nowrap;">+7 (495) 504-95-54</span><span style="font-size: 12.5px; color: #5f6975;">Москва</span></a>
+            <a class="hv5" href="tel:+74956424195" style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 12px; border-radius: 8px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; font-weight: 600; color: #1b222c; white-space: nowrap;">+7 (495) 642-41-95</span><span style="font-size: 12.5px; color: #5f6975;">Москва</span></a>
+            <div style="height: 1px; background: #eceff3; margin: 6px 12px;"></div>
+            <a class="hv6" href="mailto:info@metotech.ru" style="display: block; padding: 8px 12px; border-radius: 8px; font-size: 14.5px; font-weight: 600; color: #2f4a6b;">info@metotech.ru</a>
+            <div style="padding: 4px 12px 8px; font-size: 13px; line-height: 1.5; color: #5f6975;">Пн–пт 9:00–17:00<br>Москва, ул. Кирпичная, д. 32, корп. 24</div>
+          </div>
+        </div>
+        <a class="hv7" href="#zayavka" style="flex-shrink: 0; display: inline-flex; align-items: center; height: {{hd.ctaH}}; padding: 0 22px; border-radius: 8px; background: #EC9D47; color: #1b222c; font-size: 15px; font-weight: 600; white-space: nowrap; transition: height .24s cubic-bezier(.2,.7,.3,1), background-color .16s ease;">Оставить заявку</a>
+      </div>
+      <div style="height: {{hd.barH}}; opacity: {{hd.barOp}}; overflow: hidden; transition: height .24s cubic-bezier(.2,.7,.3,1), opacity .16s ease; border-top: 1px solid #f0f2f5;">
+        <div style="height: 32px; max-width: 1540px; margin: 0 auto; padding: 0 48px; box-sizing: border-box; display: flex; align-items: center; gap: 28px; font-size: 13.5px; color: #3d4652;">
+          <a class="hv8" href="#calc">Калькуляторы</a>
+          <a class="hv9" href="board/">Доска объявлений</a>
+          <a class="hv10" href="#articles">Статьи</a>
+          <a class="hv11" href="#gost">ГОСТы и ТУ</a>
+          <a class="hv12" href="#about">О компании</a>
+          <a class="hv13" href="#contacts">Контакты</a>
+          <span style="margin-left: auto; color: #5f6975;">Москва, ул. Кирпичная, д. 32, корп. 24 · пн–пт 9:00–17:00</span>
+          <a href="#en" lang="en" style="font-weight: 600; letter-spacing: .06em; color: #2f4a6b;">EN</a>
+        </div>
+      </div>
+
+      <div id="produkciya" role="region" aria-label="Каталог" aria-hidden="{{panelFx.hidden}}" style="opacity: {{panelFx.op}}; transform: {{panelFx.tf}}; visibility: {{panelFx.vis}}; pointer-events: {{panelFx.pe}}; transition: {{panelFx.tr}}; position: absolute; left: 0; right: 0; top: 100%; max-height: {{stickyH}}; overflow-y: auto; background: #fff; border-top: 1px solid #eceff3; box-shadow: 0 40px 60px -30px rgba(15,23,42,.35);">
+        <div style="max-width: 1540px; margin: 0 auto; padding: 32px 48px 40px; box-sizing: border-box;">
+          <div style="display: flex; align-items: baseline; gap: 24px;">
+            <div style="font-size: 28px; font-weight: 600; letter-spacing: -.02em; color: #1d2d44; flex-shrink: 0;">Каталог</div>
+            <div style="flex: 1; font-size: 14px; color: #5f6975;">{{panelHint}}</div>
+            <a href="#catalog" style="flex-shrink: 0; font-size: 14px; font-weight: 600; color: #2f4a6b;">Весь каталог →</a>
+          </div>
+          <div style="display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 48px; margin-top: 24px; align-items: start;">
+            <div>
+              <sc-if value="{{hasMarkHits}}" hint-placeholder-val="{{ false }}">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #5f6975;">{{markHitsLabel}}</div>
+                <div style="margin: 12px 0 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 12px;">
+                  <sc-for list="{{markHitsView}}" as="mh" hint-placeholder-count="2">
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #f5f7fa; border-radius: 10px;">
+                      <a href="{{mh.href}}" onClick="{{mh.go}}" data-mark-hit="1" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px;">
+                        <span style="display: flex; align-items: baseline; gap: 10px;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 15.5px; font-weight: 600; color: #1d2d44; white-space: nowrap;">{{mh.m}}</span><span style="font-size: 14px; color: #4a5360; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{mh.mat}} · {{mh.nLabel}}</span></span>
+                        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; font-weight: 600; color: #8f5316;">{{mh.from}}</span>
+                      </a>
+                      <span style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; max-width: 52%;">
+                        <sc-for list="{{mh.forms}}" as="mf" hint-placeholder-count="3">
+                          <a class="hv14" href="{{mf.href}}" onClick="{{mf.go}}" style="padding: 3px 9px; border-radius: 6px; background: #fff; font-size: 13px; color: #1f3a5c; white-space: nowrap;">{{mf.label}}</a>
+                        </sc-for>
+                      </span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #5f6975;">{{catalogTitle}}</div>
+              <div style="margin-top: 12px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 26px 28px;">
+                <sc-for list="{{groupsView}}" as="gv" hint-placeholder-count="8">
+                  <div>
+                    <a href="#catalog" style="display: block; padding: 0 8px 8px; margin-bottom: 4px; border-bottom: 1px solid #e3e7ec; font-size: 15px; font-weight: 600; color: #1d2d44;">{{gv.name}}</a>
+                    <sc-for list="{{gv.items}}" as="gi" hint-placeholder-count="4">
+                      <a class="hv15" href="#material" style="display: block; padding: 4px 8px; border-radius: 6px; font-size: 14px; line-height: 20px; color: #2a323d;">{{gi.label}}</a>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+              <sc-if value="{{nothingFound}}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top: 8px; padding: 20px 22px; background: #f5f7fa; border-radius: 10px; font-size: 15px; color: #4a5360;">По запросу «{{q}}» в каталоге ничего нет. <a href="#zayavka" style="color: #2f4a6b; font-weight: 600;">Оставьте заявку</a> — подберём материал или аналог.</div>
+              </sc-if>
+            </div>
+            <sc-if value="{{showPopular}}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #5f6975;">Популярные</div>
+                <div style="margin-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+                  <sc-for list="{{popular}}" as="pp" hint-placeholder-count="6">
+                    <a class="hv16" href="#material" style="display: flex; align-items: center; gap: 10px; padding: 6px; border-radius: 10px; background: #f5f7fa; transition: background-color .16s ease;">
+                      <img src="{{pp.img}}" alt="" style="width: 52px; height: 40px; object-fit: cover; border-radius: 6px; display: block;">
+                      <span style="font-size: 14.5px; font-weight: 600; color: #1b222c;">{{pp.name}}</span>
+                    </a>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+          <div style="margin-top: 32px; padding-top: 18px; border-top: 1px solid #eceff3; font-size: 14px; color: #4a5360;">Не нашли нужное? <a href="#zayavka" style="color: #2f4a6b; font-weight: 600;">Оставьте заявку</a> — подберём.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--/HDR-B-->
+
+  <main style="display: flex; flex-direction: column;">
+    <section data-reveal="1" style="max-width: 1540px; width: 100%; margin: 0 auto; padding: 64px 48px 80px; box-sizing: border-box; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: end;">
+      <div style="grid-column: span 7; padding-bottom: 8px;">
+        <div style="display: flex; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: #3E5D88;"><span style="width: 24px; height: 2px; background: #EC9D47;"></span>НПК «Метотехника»</div>
+        <h1 style="font-size: 80px; line-height: .98; font-weight: 600; color: #1b222c; margin: 24px 0 28px; letter-spacing: -.045em; text-wrap: balance;">Цветные металлы и&nbsp;сплавы со&nbsp;склада в&nbsp;Москве</h1>
+        <p style="font-size: 19px; line-height: 1.55; color: #4a5360; margin: 0 0 36px; max-width: 600px; text-wrap: pretty;">Стандартный металлопрокат — прутки, проволока, листы — и изделия под заказ, в том числе по чертежам заказчика. Среднее время отгрузки — 1–2 рабочих дня.</p>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a class="hv17" href="#zayavka" style="display: inline-flex; align-items: center; height: 56px; padding: 0 32px; border-radius: 8px; background: #EC9D47; color: #1b222c; font-size: 16.5px; font-weight: 600; transition: background-color .16s ease, transform .16s ease;">Оставить заявку</a>
+          <button class="hv18" type="button" onClick="{{openMega}}" style="display: inline-flex; align-items: center; gap: 10px; height: 56px; padding: 0 26px; border: 1.5px solid #cfd8e3; border-radius: 8px; background: #fff; color: #1f3a5c; font: inherit; font-size: 16.5px; font-weight: 600; cursor: pointer; transition: border-color .16s ease;">Смотреть каталог <span aria-hidden="true">→</span></button>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 40px;">
+          <span style="font-size: 13.5px; color: #5f6975; margin-right: 6px;">Часто ищут</span>
+          <sc-for list="{{popularQueries}}" as="pq" hint-placeholder-count="5">
+            <a class="hv19" href="#material" style="padding: 7px 13px; border-radius: 6px; background: #f3f5f8; font-size: 14px; color: #2a323d; transition: background-color .16s ease, color .16s ease;">{{pq}}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div style="grid-column: span 5; position: relative; height: 560px; border-radius: 18px; overflow: hidden; background: #eef1f5;">
+        <img src="/_blob/64d182656ae5ad8c8f7835a93e958612" alt="Нихромовая проволока" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        <div style="position: absolute; left: 16px; right: 16px; bottom: 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+          <div style="border-radius: 12px; overflow: hidden; height: 130px; border: 3px solid #fff;"><img src="/_blob/18004f41f537b19714551c56f5642daf" alt="Вольфрам" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+          <div style="border-radius: 12px; overflow: hidden; height: 130px; border: 3px solid #fff;"><img src="/_blob/f4f70cdc5a350b1e307f21545b4c91ae" alt="Титан" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calc" style="background: #1d2d44; color: #fff;">
+      <div data-reveal="1" style="max-width: 1540px; margin: 0 auto; padding: 72px 48px; box-sizing: border-box; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px;">
+        <div style="grid-column: span 3;">
+          <h2 style="margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -.03em; line-height: 1.05;">Калькуляторы</h2>
+          <p style="margin: 14px 0 0; font-size: 15.5px; line-height: 1.55; color: #b7c5d8;">Бесплатно, без регистрации</p>
+        </div>
+        <div style="grid-column: span 9; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px;">
+          <sc-for list="{{calculators}}" as="c" hint-placeholder-count="3">
+            <a class="hv20" href="{{c.href}}" style="display: flex; flex-direction: column; gap: 12px; padding-top: 22px; border-top: 1px solid #3a4d68; color: #fff; transition: border-color .2s ease;">
+              <div style="display: flex; align-items: center; justify-content: space-between; min-height: 24px;">
+                <svg width="22" height="22" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="color: #F3B877;"><rect x="3" y="1.5" width="10" height="13" rx="1.3" stroke="currentColor" stroke-width="1.1"></rect><line x1="5" y1="4.3" x2="11" y2="4.3" stroke="currentColor" stroke-width="1.1"></line><circle cx="5.3" cy="7.4" r="0.6" fill="currentColor"></circle><circle cx="8" cy="7.4" r="0.6" fill="currentColor"></circle><circle cx="10.7" cy="7.4" r="0.6" fill="currentColor"></circle><circle cx="5.3" cy="10.1" r="0.6" fill="currentColor"></circle><circle cx="8" cy="10.1" r="0.6" fill="currentColor"></circle><circle cx="10.7" cy="10.1" r="0.6" fill="currentColor"></circle></svg>
+                <sc-if value="{{c.top}}" hint-placeholder-val="{{ false }}">
+                  <span style="padding: 4px 10px; border-radius: 6px; background: #EC9D47; color: #1b222c; font-size: 12px; font-weight: 600;">Самый популярный</span>
+                </sc-if>
+              </div>
+              <div style="font-size: 22px; font-weight: 600; letter-spacing: -.015em;">{{c.title}}</div>
+              <div style="font-size: 15px; line-height: 1.55; color: #c6d2e1; flex: 1; text-wrap: pretty;">{{c.desc}}</div>
+              <div style="font-size: 15px; font-weight: 600; color: #F3B877; margin-top: 4px;">Рассчитать →</div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="catalog" data-reveal="1" style="max-width: 1540px; width: 100%; margin: 0 auto; padding: 88px 48px 80px; box-sizing: border-box;">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 32px;">
+        <h2 style="margin: 0; font-size: 48px; font-weight: 600; letter-spacing: -.035em; line-height: 1; color: #1b222c;">Популярные материалы</h2>
+        <button type="button" onClick="{{openMega}}" style="padding: 0; border: 0; background: transparent; font: inherit; font-size: 15px; font-weight: 600; color: #2f4a6b; cursor: pointer;">Весь каталог →</button>
+      </div>
+      <!-- ПОПУЛЯРНЫЕ — ровная сетка 4 × 2: все карточки одного размера (крупная фото-карточка убрана, пока нет фото без водяных знаков; фото — полоса 150px).
+           Бейдж по правилу для всех 25 материалов: чистый металл — символ и атомный номер (Mo · 42), сплав — ведущая марка из прайса (Х20Н80 · марка). -->
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+        <sc-for list="{{featured}}" as="m" hint-placeholder-count="7">
+          <a class="hv22" href="#material" style="display: flex; flex-direction: column; border-radius: 14px; overflow: hidden; background: #f5f7fa; transition: background-color .2s ease, transform .22s cubic-bezier(.2,.7,.3,1);">
+            <div style="position: relative; height: 150px; overflow: hidden; background: #e9edf2;">
+              <img class="hv23" src="{{m.img}}" alt="{{m.name}}" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .7s cubic-bezier(.2,.7,.3,1);">
+            </div>
+            <div style="display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px 16px;">
+              <span style="flex-shrink: 0; min-width: 52px; height: 52px; padding: 0 8px; box-sizing: border-box; border-radius: 8px; background: {{m.badgeBg}}; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: {{m.badgeFs}}; font-weight: 600; line-height: 1.1; white-space: nowrap;">{{m.badge}}</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; line-height: 1.1; opacity: .8; white-space: nowrap;">{{m.badgeSub}}</span>
+              </span>
+              <span style="flex: 1; min-width: 0;">
+                <span style="display: block; font-size: 18px; font-weight: 600; letter-spacing: -.015em; color: #1b222c;">{{m.name}}</span>
+                <span style="display: block; font-size: 13.5px; color: #5f6975; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{m.desc}}</span>
+                <sc-if value="{{m.hasPrice}}" hint-placeholder-val="{{ true }}">
+                  <span style="display: block; margin-top: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: #8f5316; white-space: nowrap;">{{m.price}}</span>
+                </sc-if>
+                <sc-if value="{{m.onRequest}}" hint-placeholder-val="{{ false }}">
+                  <span style="display: block; margin-top: 8px; font-size: 13.5px; color: #5f6975;">цена по запросу</span>
+                </sc-if>
+              </span>
+            </div>
+          </a>
+        </sc-for>
+        <a class="hv24" href="#catalog" style="border-radius: 14px; background: #3E5D88; display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 26px; box-sizing: border-box; color: #fff; transition: background-color .2s ease;">
+          <div>
+            <div style="font-size: 28px; font-weight: 600; letter-spacing: -.025em; line-height: 1.1;">Все материалы</div>
+            <div style="font-size: 14.5px; color: #dbe6f2; line-height: 1.5; margin-top: 10px;">25 материалов: тугоплавкие металлы, нагревательные и прецизионные сплавы, титан, никель и другие</div>
+          </div>
+          <span style="width: 48px; height: 48px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; align-self: flex-end;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="#1d2d44" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+        </a>
+      </div>
+    </section>
+
+    <section data-reveal="1" style="max-width: 1540px; width: 100%; margin: 0 auto; padding: 0 48px 88px; box-sizing: border-box;">
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #e3e7ec; border-bottom: 1px solid #e3e7ec;">
+        <sc-for list="{{trust}}" as="t" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 12px; padding: 36px 32px 36px 0;">
+            <div style="font-size: 32px; font-weight: 600; letter-spacing: -.03em; color: #1d2d44; line-height: 1.1;">{{t.big}}</div>
+            <div style="font-size: 15px; line-height: 1.5; color: #4a5360; max-width: 260px;">{{t.text}}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="articles" data-reveal="1" style="max-width: 1540px; width: 100%; margin: 0 auto; padding: 0 48px 88px; box-sizing: border-box; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px;">
+      <div style="grid-column: span 4;">
+        <h2 style="margin: 0; font-size: 40px; font-weight: 600; letter-spacing: -.03em; line-height: 1.05; color: #1b222c;">Статьи и справочные материалы</h2>
+        <a href="#articles" style="display: inline-block; margin-top: 20px; font-size: 15px; font-weight: 600; color: #2f4a6b;">Все статьи →</a>
+      </div>
+      <div style="grid-column: span 8; display: flex; flex-direction: column;">
+        <sc-for list="{{articles}}" as="ar" hint-placeholder-count="4">
+          <a class="hv25" href="{{ar.href}}" style="display: grid; grid-template-columns: 140px minmax(0, 1fr) 32px; gap: 24px; align-items: center; padding: 22px 0; border-bottom: 1px solid #e3e7ec; transition: padding .22s cubic-bezier(.2,.7,.3,1), color .16s ease;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: #3E5D88;">{{ar.tag}}</span>
+            <span style="font-size: 20px; line-height: 1.35; font-weight: 500; letter-spacing: -.01em; text-wrap: pretty;">{{ar.title}}</span>
+            <span aria-hidden="true" style="font-size: 20px; color: #3E5D88; justify-self: end;">→</span>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="about" style="background: #f3f6fa;">
+      <div data-reveal="1" style="max-width: 1540px; margin: 0 auto; padding: 88px 48px; box-sizing: border-box; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 32px; align-items: start;">
+        <div style="grid-column: span 7;">
+          <h2 style="margin: 0 0 24px; font-size: 40px; font-weight: 600; letter-spacing: -.03em; color: #1b222c;">О компании</h2>
+          <p style="margin: 0 0 18px; font-size: 18px; line-height: 1.7; color: #3d4652; max-width: 720px; text-wrap: pretty;">НПК «Метотехника» специализируется на продаже цветных металлов и сплавов, производстве изделий из них. Компания успешно работает на данном рынке и поставляет как стандартный металлопрокат (прутки, проволоку, листы и т. д.), так и технологичные товары (тепловые экраны, нагреватели, термостойкие провода, средства измерения и др.) под заказ, в том числе по чертежам заказчика.</p>
+          <p style="margin: 0; font-size: 18px; line-height: 1.7; color: #3d4652; max-width: 720px; text-wrap: pretty;">Клиентами компании являются как крупные российские заводы, так и небольшие производственные фирмы — существенную долю составляют научные организации.</p>
+        </div>
+        <form id="zayavka" style="grid-column: 9 / span 4; margin: 0; padding: 32px; border-radius: 18px; background: #fff; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 30px 60px -40px rgba(15,23,42,.4);">
+          <div style="font-size: 24px; font-weight: 600; letter-spacing: -.02em; color: #1b222c;">Оставить заявку</div>
+          <div style="font-size: 14px; color: #5f6975; margin-top: -8px;">Перезвоним в рабочее время, пн–пт 9:00–17:00</div>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: #4a5360;">Ваше имя
+            <input class="hv26" type="text" placeholder="Иван Петров" style="height: 48px; box-sizing: border-box; border: 1px solid #dfe3e8; border-radius: 8px; padding: 0 14px; font: inherit; font-size: 15px; background: #fafbfc; outline: 0;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: #4a5360;">Телефон
+            <input class="hv27" type="tel" placeholder="+7 (___) ___-__-__" style="height: 48px; box-sizing: border-box; border: 1px solid #dfe3e8; border-radius: 8px; padding: 0 14px; font: inherit; font-size: 15px; background: #fafbfc; outline: 0;">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: #4a5360;">Что нужно (необязательно)
+            <input class="hv28" type="text" placeholder="Нихром Х20Н80, проволока 0,5 мм, 10 кг" style="height: 48px; box-sizing: border-box; border: 1px solid #dfe3e8; border-radius: 8px; padding: 0 14px; font: inherit; font-size: 15px; background: #fafbfc; outline: 0;">
+          </label>
+          <button class="hv29" type="button" style="height: 54px; margin-top: 6px; border: 0; border-radius: 8px; background: #EC9D47; color: #1b222c; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; transition: background-color .16s ease;">Отправить заявку</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+<!--FTR-A-->
+  <footer id="contacts" style="background: #1b222c; color: #b9c2cd; padding: 64px 56px 0;">
+    <div style="display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.3fr; gap: 48px;">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #8c97a4; margin-bottom: 18px;">Каталог</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <sc-for list="{{groupNames}}" as="gn" hint-placeholder-count="8">
+            <a class="hv30" href="#catalog" style="font-size: 14.5px; color: #e3e8ee;">{{gn}}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #8c97a4; margin-bottom: 18px;">Сервисы</div>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: #e3e8ee;">
+          <a class="hv31" href="calc.htm">Калькулятор «Металлы и сплавы»</a>
+          <a class="hv32" href="calc_spir.htm">Калькулятор спиралей</a>
+          <a class="hv33" href="calc_heater.htm">Калькулятор нагревателей</a>
+          <a class="hv34" href="#articles">Статьи</a>
+          <a class="hv35" href="#gost">ГОСТы и ТУ</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #8c97a4; margin-bottom: 18px;">Компания</div>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: #e3e8ee;">
+          <a class="hv36" href="#about">О компании</a>
+          <a class="hv37" href="#contacts">Контакты</a>
+          <a class="hv38" href="#zayavka">Оставить заявку</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #8c97a4; margin-bottom: 18px;">Контакты</div>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14.5px; line-height: 1.5;">
+          <a href="tel:+78002005275" style="font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; color: #fff;">+7 (800) 200-52-75</a>
+          <a href="tel:+74991667838" style="font-family: 'IBM Plex Mono', monospace; color: #e3e8ee;">+7 (499) 166-78-38</a>
+          <a href="tel:+74955049554" style="font-family: 'IBM Plex Mono', monospace; color: #e3e8ee;">+7 (495) 504-95-54</a>
+          <a href="tel:+74956424195" style="font-family: 'IBM Plex Mono', monospace; color: #e3e8ee;">+7 (495) 642-41-95</a>
+          <a href="mailto:info@metotech.ru" style="color: #F3B877;">info@metotech.ru</a>
+          <div>105187, Москва, ул. Кирпичная, д. 32, корп. 24</div>
+          <div>Пн–пт 9:00–17:00</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 48px; padding: 22px 0; border-top: 1px solid #2f3843; font-size: 13px; color: #8c97a4; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <div>© ООО «НПК «Метотехника». Товарные знаки № 969349, № 974088.</div>
+      <div>СМК соответствует ГОСТ Р ИСО 9001-2015</div>
+    </div>
+  </footer>
+<!--/FTR-A-->
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1560,&quot;height&quot;:3700},&quot;megaOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false},&quot;grouping&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;8 мелких групп&quot;,&quot;4 крупные группы&quot;],&quot;default&quot;:&quot;8 мелких групп&quot;},&quot;viewportH&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:560,&quot;max&quot;:1100,&quot;step&quot;:10,&quot;unit&quot;:&quot;px&quot;,&quot;default&quot;:800}}">
+class Component extends DCLogic {
+  // ---- Анимации (WAAPI): смена вкладки, фильтров, фото, добавление в заявку; полоска активной вкладки ----
+  fxReduce() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  fxRun(name, frames, opts) {
+    const root = this._root;
+    if (!root || this.fxReduce()) return;
+    root.querySelectorAll('[data-fx="' + name + '"]').forEach((el) => { if (el.animate) el.animate(frames, Object.assign({ duration: 220, easing: 'cubic-bezier(.2,.7,.3,1)' }, opts || {})); });
+  }
+  fxTabInd(instant) {
+    const root = this._root;
+    if (!root) return;
+    const ind = root.querySelector('[data-fx="tabind"]');
+    const t = root.querySelector('[role="tab"][aria-selected="true"]');
+    if (!ind || !t) return;
+    if (instant || this.fxReduce()) ind.style.transition = 'none';
+    ind.style.width = t.offsetWidth + 'px';
+    ind.style.transform = 'translateX(' + t.offsetLeft + 'px)';
+    ind.style.opacity = '1';
+    if (instant) { void ind.offsetWidth; ind.style.transition = ''; }
+  }
+  fxMount() {
+    this.fxTabInd(true);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.fxTabInd(true));
+  }
+  componentDidUpdate(pp, ps) {
+    const st = this.state || {};
+    ps = ps || {};
+    const sig = (s) => [s.prod, s.mark, s.from, s.to, s.priced].join('|');
+    const gsig = (s) => [s.gq, s.gt].join('|');
+    // пока заявку не трогали, в ней 2 позиции по умолчанию (как в renderVals)
+    const reqN = (s) => (s.req ? Object.keys(s.req).filter((k) => s.req[k]).length : 2);
+    // смена вкладки: проявляем содержимое, но не плашку заявки — она остаётся на месте
+    if (st.tab !== ps.tab && this._root && !this.fxReduce()) {
+      this._root.querySelectorAll('[data-fx="tabbody"]').forEach((box) => Array.from(box.children).forEach((el) => {
+        if (el.getAttribute('data-fx') !== 'reqbar' && el.animate) el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.7,.3,1)' });
+      }));
+    }
+    if (sig(st) !== sig(ps)) this.fxRun('results', [{ opacity: 0.35, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }]);
+    if (gsig(st) !== gsig(ps)) this.fxRun('gostlist', [{ opacity: 0.35 }, { opacity: 1 }], { duration: 180 });
+    if (st.photo !== ps.photo && st.tab === ps.tab) this.fxRun('photo', [{ opacity: 0 }, { opacity: 1 }], { duration: 240 });
+    if (st.req !== ps.req && reqN(ps) === 0 && reqN(st) > 0) this.fxRun('reqbar', [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 280 });
+    else if (st.req !== ps.req && reqN(st) > reqN(ps)) this.fxRun('reqcount', [{ transform: 'scale(1)' }, { transform: 'scale(1.14)' }, { transform: 'scale(1)' }], { duration: 320 });
+    this.fxTabInd(false);
+  }
+  // Полноэкранный режим (Fill): доска растягивается по окну и прокручивается как страница.
+  // Здесь меряем реальную высоту окна и прокрутку: шапка сжимается до 56px, меню и панель «Продукция» — на высоту окна.
+  // На холсте прокрутки нет — остаются значения твиков (viewportH).
+  baseDidMount() {
+    const measure = () => {
+      const root = this._root;
+      if (!root) return;
+      let sc = null;
+      for (let el = root.parentElement; el && el !== document.body; el = el.parentElement) {
+        const oy = getComputedStyle(el).overflowY;
+        if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight + 100) { sc = el; break; }
+      }
+      const doc = document.scrollingElement || document.documentElement;
+      if (!sc && doc.scrollHeight > window.innerHeight + 100) sc = doc;
+      const h = sc ? (sc === doc ? window.innerHeight : sc.clientHeight) : 0;
+      const liveH = h > 0 && h <= 1600 ? h : 0;
+      const y = liveH ? (sc === doc ? window.scrollY : sc.scrollTop) : 0;
+      const cur = this.state || {};
+      const compact = liveH ? (cur.compact ? y > 64 : y > 80) : false;
+      const rootW = root.offsetWidth;
+      if (cur.liveH !== liveH || cur.compact !== compact || cur.rootW !== rootW) this.setState({ liveH, compact, rootW });
+    };
+    this._tick = () => {
+      if (this._raf) return;
+      this._raf = requestAnimationFrame(() => { this._raf = 0; measure(); });
+    };
+    window.addEventListener('scroll', this._tick, { capture: true, passive: true });
+    window.addEventListener('resize', this._tick);
+    if (typeof ResizeObserver !== 'undefined' && this._root) { this._ro = new ResizeObserver(this._tick); this._ro.observe(this._root); }
+    measure();
+    this.fxMount();
+    // выпадающий список телефонов: закрыть кликом снаружи или Esc
+    this._docClick = (e) => { if (this.state && this.state.phones && !(e.target && e.target.closest && e.target.closest('[data-phones]'))) this.setState({ phones: false }); };
+    this._docKey = (e) => { if (e.key === 'Escape' && this.state && this.state.phones) this.setState({ phones: false }); };
+    document.addEventListener('click', this._docClick, true);
+    document.addEventListener('keydown', this._docKey);
+  }
+  baseWillUnmount() {
+    window.removeEventListener('scroll', this._tick, { capture: true });
+    window.removeEventListener('resize', this._tick);
+    document.removeEventListener('click', this._docClick, true);
+    document.removeEventListener('keydown', this._docKey);
+    if (this._ro) this._ro.disconnect();
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
+  baseVals() {
+    // порядок — по реальной популярности из Яндекс.Метрики (как на HomePage): Титан > Вольфрам > Нихром > Никель > Молибден > Фехраль > Тантал
+    const featuredRaw = [
+      { name: 'Титан', desc: 'ВТ1-0, ОТ4 — лёгкий и прочный', img: '/_blob/f4f70cdc5a350b1e307f21545b4c91ae', price: 'от 4200 ₽/кг' },
+      { name: 'Вольфрам', desc: 'ВА, ВЛ, СВИ — тугоплавкий металл', img: '/_blob/18004f41f537b19714551c56f5642daf', price: '' },
+      { name: 'Нихром', desc: 'Х20Н80, Х15Н60 — для нагревателей печей', img: '/_blob/64d182656ae5ad8c8f7835a93e958612', price: 'от 8000 ₽/кг' },
+      { name: 'Никель', desc: 'НП2, Н-1у — коррозионностойкий', img: '/_blob/7ae7ba8401389a3782f708fabcf27bd9', price: 'от 6100 ₽/кг' },
+      { name: 'Молибден', desc: 'МЧ, ЦМ2А — тугоплавкий металл', img: '/_blob/eb3c7a53e21557ea47dacf034ec814fa', price: '' },
+      { name: 'Фехраль', desc: 'Х23Ю5Т, Х27Ю5Т — рабочая т-ра до 1400 °С', img: '/_blob/e2e59819cc336eeeb15d4956f55eada5', price: 'от 3500 ₽/кг' },
+      { name: 'Тантал', desc: 'Т, ТВЧ — тугоплавкий, высокая прочность', img: '/_blob/677fc23f55598318570f19069c1d0bae', price: '' }
+    ];
+    const featured = featuredRaw.map(function (m) {
+      return Object.assign({}, m, { hasPrice: !!m.price, onRequest: !m.price });
+    });
+
+
+    // из поисковых запросов Метрики (титан, вольфрам, сорта молибдена, нихром/ХН78Т в запросах калькулятора)
+    const popularQueries = ['Титан ВТ1-0', 'Вольфрам', 'Нихром Х20Н80', 'Молибден', 'Термопары'];
+
+    // названия/описания — с реальных страниц сайта
+    const calculators = [
+      { title: 'Металлы и сплавы', desc: 'Масса по длине и длина по массе для проволоки, прутка, трубы, ленты, листа, шестигранника, уголка — для любого сплава из базы.', href: 'calc.htm', top: true },
+      { title: 'Спирали', desc: 'Мощность и длина спиралей из нихрома, фехраля и других жаростойких сплавов.', href: 'calc_spir.htm', top: false },
+      { title: 'Нагреватели', desc: 'Диаметр, длина и масса проволочных нагревателей и размеры ленточных — для электрических печей по заданной мощности.', href: 'calc_heater.htm', top: false }
+    ];
+
+    const trust = [
+      { big: '1–2 дня', text: 'среднее время отгрузки со склада в Москве' },
+      { big: 'ГОСТ Р ИСО 9001', text: 'система менеджмента качества сертифицирована (ред. 2015)' },
+      { big: 'По чертежам', text: 'тепловые экраны, нагреватели, термостойкие провода — под заказ' },
+      { big: 'Метотехника®', text: 'зарегистрированный товарный знак' }
+    ];
+
+    // топ статей по входам из Метрики; заголовки дословно с сайта
+    const articles = [
+      { tag: 'Нагреватели', title: 'Нагреватели. Методика и примеры расчета', href: 'art_nagrev_1.htm' },
+      { tag: 'Термопары', title: 'Термопары. Типы, характеристики, конструкции, производство', href: 'art_termopary_4.htm' },
+      { tag: 'Титан', title: 'Титановые сплавы: виды, области применения, особенности использования', href: 'art_titan_11.htm' },
+      { tag: 'Титан', title: 'Применение титана и титановых сплавов в высокотехнологичных областях промышленности', href: 'art_titan_2.htm' }
+    ];
+
+    // все 26 позиций реального левого меню metotech.ru, две схемы группировки — обе НЕ согласованы с компанией
+    // марки — только известные по проекту (как в карточках материалов)
+    const grades = { 'Нихром': 'Х20Н80', 'Фехраль': 'Х23Ю5Т', 'Титан': 'ВТ1-0', 'Вольфрам': 'ВА', 'Молибден': 'МЧ', 'Никель': 'НП2' };
+    const schemes = {
+      // предложение: мелкие группы по основе материала / назначению — меньше спорных отнесений
+      '8 мелких групп': [
+        { name: 'Нагревательные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции'] },
+        { name: 'Термопары и прецизионные сплавы', items: ['Термопары', 'Термопары нагревостойкие', 'Константан', 'Прецизионные сплавы'] },
+        { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений'] },
+        { name: 'Титан и цирконий', items: ['Титан', 'Цирконий'] },
+        { name: 'Никель и медно-никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор'] },
+        { name: 'Стали и жаропрочные сплавы', items: ['Нержавеющая сталь', 'Жаропрочные сплавы'] },
+        { name: 'Другие металлы', items: ['Кобальт', 'Хром', 'Ванадий', 'Олово'] },
+        { name: 'Порошки, твёрдые сплавы, ферросплавы', items: ['Порошки металлов', 'Твёрдые сплавы', 'Ферросплавы'] }
+      ],
+      // как в v2–v4
+      '4 крупные группы': [
+        { name: 'Прецизионные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции', 'Константан', 'Термопары', 'Термопары нагревостойкие'] },
+        { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений', 'Хром'] },
+        { name: 'Никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор', 'Кобальт', 'Жаропрочные сплавы'] },
+        { name: 'Прочие материалы', items: ['Титан', 'Цирконий', 'Олово', 'Ванадий', 'Нержавеющая сталь', 'Твёрдые сплавы', 'Порошки металлов', 'Ферросплавы'] }
+      ]
+    };
+    const scheme = schemes[this.props.grouping] || schemes['8 мелких групп'];
+
+    const megaOpen = this.state && this.state.mega !== undefined ? this.state.mega : (this.props.megaOpen ?? false);
+    const toggleMega = () => this.setState({ mega: !megaOpen });
+    const openMega = () => this.setState({ mega: true });
+
+    // поиск: регистр не важен, латинские двойники букв → кириллица («x20h80» найдёт Х20Н80)
+    const q = (this.state && this.state.q) || '';
+    const onQuery = (e) => this.setState({ q: e.target.value, mega: true });
+    const lat = { a: 'а', b: 'в', c: 'с', e: 'е', h: 'н', k: 'к', m: 'м', o: 'о', p: 'р', t: 'т', x: 'х', y: 'у' };
+    const norm = (t) => t.toLowerCase().replace(/[a-z]/g, (ch) => lat[ch] || ch).replace(/ё/g, 'е');
+    const nq = norm(q.trim());
+    // ПОИСК ПО МАРКЕ. Индекс — реальный прайс (Django-импорт; молибден — строки этой доски): [марка, материал, позиций, цена «от», формы].
+    // Нормализация: регистр, латиница → кириллица, пробелы/дефисы/точки не важны («x20 h80» = Х20Н80). Порядок: точное совпадение → начало марки → вхождение.
+    const MARKS = [["Х20Н80","Нихром",135,"от 4 950 ₽/кг",["Лента","Проволока","Пруток","Спираль"]],["ТВЧ","Тантал",128,"от 70 200 ₽/кг",["Лист","Труба","Проволока","Пруток","Лента","Фольга"]],["Х23Ю5Т","Фехраль",102,"от 1 600 ₽/кг",["Лента","Проволока","Спираль","Пруток"]],["НП2","Никель",100,"цена по запросу",["Лента","Проволока","Труба","Пруток","Лист","Полоса"]],["МЧ","Молибден",94,"от 17 500 ₽/кг",["Пруток","Проволока","Лист","Труба","Фольга"]],["ВТ1-0","Титан",73,"от 1 880 ₽/кг",["Пруток","Плита","Лист","Труба","Фольга"]],["29НК-ВИ","Прецизионные сплавы",72,"цена по запросу",["Труба","Лента","Пруток","Проволока","Лист","Фольга"]],["Нб","Ниобий",66,"от 31 800 ₽/кг",["Лист","Проволока","Пруток","Лента","Труба","Фольга"]],["КЭНВЛ НХ 300","Нихром в изоляции",44,"от 607 ₽/м",["Лента"]],["ВА","Вольфрам",42,"от 15 300 ₽/кг",["Проволока","Пруток"]],["КЭНВ НХ 300","Нихром в изоляции",42,"от 475 ₽/м",["Проволока","Лента"]],["МЧВП","Молибден",37,"от 17 700 ₽/кг",["Пруток"]],["Х15Н60","Нихром",32,"от 4 700 ₽/кг",["Проволока","Лента"]],["МНМц 40-1,5","Константан",29,"от 7 500 ₽/кг",["Проволока","Лента"]],["36НХТЮ","Прецизионные сплавы",25,"цена по запросу",["Лента","Труба","Пруток","Проволока","Лист"]],["НМЖМц 28-2,5-1,5","Монель",24,"от 5 900 ₽/кг",["Пруток","Проволока","Лента"]],["КЭНВЛ НХ 600","Нихром в изоляции",22,"от 1 175 ₽/м",["Лента"]],["КЭНВЛ НХ 1000","Нихром в изоляции",22,"от 1 275 ₽/м",["Лента"]],["ВТ3-1","Титан",22,"от 2 150 ₽/кг",["Пруток"]],["В-МП","Вольфрам",21,"цена по запросу",["Лист"]],["КЭНВ НХ 600","Нихром в изоляции",21,"от 925 ₽/м",["Проволока","Лента"]],["КЭНВ НХ 1000","Нихром в изоляции",21,"от 990 ₽/м",["Проволока","Лента"]],["ВТ9","Титан",21,"от 2 150 ₽/кг",["Пруток"]],["Монель 400","Монель",19,"от 5 900 ₽/кг",["Лист","Пруток","Труба"]],["Э110","Цирконий",19,"от 14 900 ₽/кг",["Лист","Пруток","Труба"]],["ВнПл-1","Ванадий",17,"от 48 000 ₽/кг",["Лист"]],["ВЛ","Вольфрам",16,"от 15 800 ₽/кг",["Пруток","Проволока"]],["О1","Олово",16,"от 3 800 ₽/кг",["Пруток","Проволока","Анод","Слиток"]],["ЦМ2А","Молибден",16,"от 19 500 ₽/кг",["Лист"]],["79НМ","Прецизионные сплавы",15,"цена по запросу",["Лента","Фольга","Шайба","Пруток"]],["ВТ1-00св","Титан",15,"от 4 200 ₽/кг",["Проволока"]],["ОТ4","Титан",15,"от 2 150 ₽/кг",["Пруток","Лист"]],["ХН78Т (ЭИ 435)","Жаропрочные сплавы",14,"от 9 500 ₽/кг",["Труба","Лента","Лист","Проволока","Пруток"]],["Э100","Цирконий",13,"от 12 800 ₽/кг",["Лента","Лист","Пруток","Плита","Фольга"]],["Э125","Цирконий",13,"от 12 800 ₽/кг",["Пруток","Труба","Плита"]],["ВТ16","Титан",10,"от 3 150 ₽/кг",["Винт","Пруток"]],["ВТ20","Титан",10,"от 2 150 ₽/кг",["Пруток","Лист"]],["AISI 304 (08Х18Н9)","Нержавеющая сталь",9,"от 360 ₽/шт",["Труба","Отвод","Лента"]],["ВТ5","Титан",9,"от 2 150 ₽/кг",["Пруток"]],["ХН32Т (ЭП 670)","Жаропрочные сплавы",8,"цена по запросу",["Труба","Пруток"]],["МНЖМц 30-1-1","Мельхиор",8,"от 1 500 ₽/кг",["Труба","Пруток"]],["12Х18Н10Т","Нержавеющая сталь",8,"цена по запросу",["Проволока","Пруток"]],["НПА1 (анод)","Никель",8,"цена по запросу",["Лист"]],["Х20Н80-ВИ","Нихром",8,"цена по запросу",["Нить"]],["80НХС","Прецизионные сплавы",8,"цена по запросу",["Лента","Фольга","Пруток"]],["НМцАК 2-2-1","Термопары",8,"от 7 880 ₽/кг",["Проволока","Пруток"]],["НХ 9,5","Термопары",8,"от 7 880 ₽/кг",["Проволока","Пруток"]],["ВТ6","Титан",8,"от 2 200 ₽/кг",["Пруток"]],["ЦН25","Цирконий",8,"от 32 500 ₽/кг",["Лист","Пруток"]],["К1","Кобальт",7,"от 25 000 ₽/кг",["Проволока","Пруток"]],["МНМц 43-0,5","Термопары",7,"от 6 800 ₽/кг",["Проволока"]],["ОТ4-1","Титан",7,"от 2 200 ₽/кг",["Лист","Пруток"]],["ВнП-1","Ванадий",6,"от 36 000 ₽/кг",["Пруток"]],["29НК","Прецизионные сплавы",6,"цена по запросу",["Проволока","Лента"]],["32НКД","Прецизионные сплавы",6,"от 4 000 ₽/кг",["Пруток"]],["50Н","Прецизионные сплавы",6,"цена по запросу",["Лента"]],["ПТН-1100 ХА","Термопары нагревостойкие",6,"от 873 ₽/м",["Провод"]],["ПТН-800 ХК","Термопары нагревостойкие",6,"от 874 ₽/м",["Провод"]],["ПТН-1100 ОХ","Термопары нагревостойкие",6,"от 315 ₽/м",["Провод"]],["ПТН-1100 ОА","Термопары нагревостойкие",6,"от 315 ₽/м",["Провод"]],["ПТН-800 ОК","Термопары нагревостойкие",6,"от 315 ₽/м",["Провод"]],["ВР5/ВР20","Вольфрам",5,"от 2 350 ₽/м",["Проволока","Термопара"]],["ВР5/20","Вольфрам",5,"от 2 350 ₽/м",["Проволока","Термопара"]],["ХН60ВТ (ЭИ 868)","Жаропрочные сплавы",5,"цена по запросу",["Труба","Лист"]],["ПК-1у","Кобальт",5,"от 13 500 ₽/кг",["Порошок"]],["Монель К500","Монель",5,"цена по запросу",["Пруток"]],["ВР-27ВП","Вольфрам",4,"от 238 000 ₽/кг",["Пруток"]],["СВИ","Вольфрам",4,"от 17 900 ₽/кг",["Пруток"]],["ХН65МВ (ЭП 567)","Жаропрочные сплавы",4,"цена по запросу",["Проволока","Пруток","Труба"]],["ХН35ВТ (ЭИ 612)","Жаропрочные сплавы",4,"цена по запросу",["Пруток"]],["ХН65МВУ (ЭП 760)","Жаропрочные сплавы",4,"от 7 500 ₽/кг",["Пруток","Труба"]],["МН19","Мельхиор",4,"от 5 400 ₽/кг",["Лист","Лента"]],["Х23Ю5Т","Прецизионные сплавы",4,"от 1 500 ₽/кг",["Проволока"]],["Х27Ю5Т","Прецизионные сплавы",4,"от 1 500 ₽/кг",["Проволока"]],["ВТ8","Титан",4,"от 2 150 ₽/кг",["Пруток"]],["ВТ22","Титан",4,"от 2 150 ₽/кг",["Пруток"]],["ВнПр-1","Ванадий",3,"от 54 000 ₽/кг",["Проволока"]],["ВнМ-1","Ванадий",3,"от 15 600 ₽/кг",["Слиток"]],["ВР-27ЗВП","Вольфрам",3,"от 314 500 ₽/кг",["Проволока"]],["ЭВЛ","Вольфрам",3,"от 16 800 ₽/кг",["Пруток"]],["К1АУ","Кобальт",3,"от 6 200 ₽/кг",["Слиток"]],["НП0эви","Никель",3,"цена по запросу",["Лента"]],["40КХНМ","Прецизионные сплавы",3,"цена по запросу",["Проволока","Лента"]],["49К2ФА-ВИ","Прецизионные сплавы",3,"цена по запросу",["Пруток","Лента","Полоса"]],["50НП","Прецизионные сплавы",3,"цена по запросу",["Фольга"]],["ВТ14","Титан",3,"от 2 150 ₽/кг",["Пруток"]],["ПТ3В","Титан",3,"от 2 100 ₽/кг",["Пруток","Лист"]],["ПВТ","Вольфрам",2,"от 8 700 ₽/кг",["Порошок"]],["W 99,95%","Вольфрам",2,"от 8 700 ₽/кг",["Порошок"]],["06Х15Н60М15 (ЭП 367)","Жаропрочные сплавы",2,"цена по запросу",["Проволока"]],["ХН60ВТ (ЭИ868)","Жаропрочные сплавы",2,"цена по запросу",["Проволока"]],["36НХТЮ (ЭИ 702)","Жаропрочные сплавы",2,"цена по запросу",["Пруток","Труба"]],["ХН45Ю (ЭП 747)","Жаропрочные сплавы",2,"цена по запросу",["Лист"]],["ЭП718ИД","Жаропрочные сплавы",2,"цена по запросу",["Лист"]],["29НК","Жаропрочные сплавы",2,"цена по запросу",["Труба"]],["ХН60Ю (Инконель 601)","Жаропрочные сплавы",2,"цена по запросу",["Труба"]],["МН19-ВИ","Мельхиор",2,"от 5 800 ₽/кг",["Пруток"]],["МН19ВИ","Мельхиор",2,"от 3 050 ₽/кг",["Пруток"]],["04Х18Н11М3","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["ЭП333-ВГ","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["09Х18Н10Т","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["07Х19Н9Б","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["08Х18Н9 (AISI 304)","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["НМц2,5","Никель",2,"цена по запросу",["Проволока"]],["НП2 (мягк.)","Никель",2,"цена по запросу",["Проволока"]],["НП2 (тверд.)","Никель",2,"цена по запросу",["Проволока"]],["НП2Э","Никель",2,"цена по запросу",["Лента"]],["Н1У (катод)","Никель",2,"цена по запросу",["Лист"]],["ПНЭ-2","Никель",2,"цена по запросу",["Порошок"]],["ПНК-УТ3","Никель",2,"цена по запросу",["Порошок"]],["ХН70Ю","Прецизионные сплавы",2,"от 7 500 ₽/кг",["Проволока","Пруток"]],["45Н","Прецизионные сплавы",2,"цена по запросу",["Пруток","Лента"]],["44НХТЮ","Прецизионные сплавы",2,"цена по запросу",["Пруток"]],["50НХС","Прецизионные сплавы",2,"цена по запросу",["Лента"]],["34НКМП-ВИ","Прецизионные сплавы",2,"цена по запросу",["Фольга"]],["КВ","Твёрдые сплавы",2,"цена по запросу",["Проволока"]],["ВК8","Твёрдые сплавы",2,"от 7 500 ₽/кг",["Порошок"]],["ВТ5-1","Титан",2,"от 2 250 ₽/кг",["Лист"]],["ПТ7М","Титан",2,"цена по запросу",["Труба"]],["ЦГ20","Цирконий",2,"цена по запросу",["Пруток"]],["МПЧ","Молибден",2,"от 8 980 ₽/кг",["Порошок"]],["МШ-2","Молибден",2,"от 9 500 ₽/кг",["Штабик"]],["ВВ-8","Ванадий",1,"от 60 000 ₽/кг",["Пруток"]],["ВЭЛ-1","Ванадий",1,"от 36 000 ₽/кг",["Слиток"]],["ШВЧ","Вольфрам",1,"цена по запросу",["Штабик"]],["ХН77ТЮ (ЭИ 437А)","Жаропрочные сплавы",1,"от 5 600 ₽/кг",["Проволока"]],["ХН38ВТ (ЭИ 703)","Жаропрочные сплавы",1,"цена по запросу",["Пруток"]],["ХН70Ю (ЭИ 652)","Жаропрочные сплавы",1,"цена по запросу",["Пруток"]],["ХН73МБТЮ-ВД (ЭИ 698-ВД)","Жаропрочные сплавы",1,"цена по запросу",["Пруток"]],["ХН65ВМТЮ (ЭИ 893)","Жаропрочные сплавы",1,"цена по запросу",["Лента"]],["49к2ф","Жаропрочные сплавы",1,"цена по запросу",["Лента"]],["10Х11Н20Т3Р (ЭИ 696)","Жаропрочные сплавы",1,"цена по запросу",["Шестигранник"]],["К0","Кобальт",1,"от 6 900 ₽/кг",["Лист"]],["ПАНЧ 11","Никель",1,"цена по запросу",["Проволока"]],["29НКви","Никель",1,"цена по запросу",["Пруток"]],["НП1","Никель",1,"цена по запросу",["Лист"]],["НбП","Ниобий",1,"цена по запросу",["Порошок"]],["65БТ","Прецизионные сплавы",1,"цена по запросу",["Проволока"]],["40Н","Прецизионные сплавы",1,"цена по запросу",["Проволока"]],["38НКД","Прецизионные сплавы",1,"цена по запросу",["Проволока"]],["29НК-1","Прецизионные сплавы",1,"цена по запросу",["Проволока"]],["52КФТМ","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Пруток"]],["47НД-ВИ","Прецизионные сплавы",1,"цена по запросу",["Пруток"]],["49КФ","Прецизионные сплавы",1,"цена по запросу",["Пруток"]],["36КНМ","Прецизионные сплавы",1,"цена по запросу",["Пруток"]],["52К12Ф","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Лента"]],["52К10Ф","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Лента"]],["52К9Ф","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Лента"]],["47НХР","Прецизионные сплавы",1,"цена по запросу",["Лента"]],["40НКМП","Прецизионные сплавы",1,"цена по запросу",["Лента"]],["47НД","Прецизионные сплавы",1,"цена по запросу",["Лист"]],["36Н","Прецизионные сплавы",1,"цена по запросу",["Плита"]],["Н50К10","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Фольга"]],["52К11Ф","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Полоса"]],["Р-0","Рений",1,"от 170 000 ₽/кг",["Порошок"]],["Р-1","Рений",1,"от 136 000 ₽/кг",["Порошок"]],["ТаПМ","Тантал",1,"цена по запросу",["Порошок"]],["ВК6","Твёрдые сплавы",1,"от 7 200 ₽/кг",["Порошок"]],["ВТ25","Титан",1,"от 2 150 ₽/кг",["Пруток"]],["ПТ3ВМ","Титан",1,"от 2 400 ₽/кг",["Пруток"]],["ТПП-3","Титан",1,"от 4 500 ₽/кг",["Порошок"]],["ФМо60","Ферросплавы",1,"от 3 280 ₽/кг",["Куски"]],["ФВ70","Ферросплавы",1,"от 3 280 ₽/кг",["Куски"]],["ФНб65","Ферросплавы",1,"от 4 220 ₽/кг",["Куски"]],["ФВд80","Ферросплавы",1,"от 4 070 ₽/кг",["Куски"]],["NiNb80","Ферросплавы",1,"от 4 840 ₽/кг",["Куски"]],["AlNb90","Ферросплавы",1,"от 5 150 ₽/кг",["Куски"]],["Х99Н1","Хром",1,"от 2 604 ₽/кг",["Куски"]],["БДХ 2","Хром",1,"от 4 680 ₽/кг",["Слиток"]],["ЭРХ-1","Хром",1,"от 9 960 ₽/кг",["Чешуйки"]],["ЭРХ-2","Хром",1,"от 9 720 ₽/кг",["Чешуйки"]],["ЦГ-20","Цирконий",1,"цена по запросу",["Лента"]],["МЧ-К","Молибден",1,"цена по запросу",["Пруток"]]];
+    const nk = (t) => norm(t).replace(/[\s\-–.,\/()]/g, '');
+    const nqk = nk(q.trim());
+    const pluralPos = (n) => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'позиция' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'позиции' : 'позиций');
+    const hitsAll = nqk.length < 2 ? [] : MARKS.map((x) => {
+      const k = nk(x[0]);
+      const r = k === nqk ? 0 : k.indexOf(nqk) === 0 ? 1 : k.indexOf(nqk) !== -1 ? 2 : -1;
+      return { x, r };
+    }).filter((h) => h.r >= 0).sort((a, b) => a.r - b.r || b.x[2] - a.x[2]);
+    const marksAll = !!(this.state && this.state.marksAll);
+    const goMark = (m, form, forms) => (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      const expNext = {};
+      (form ? [form] : forms).forEach((f) => { expNext[f] = true; });
+      this.setState({ mark: m, prod: form || 'Все', exp: expNext, mega: false, q: '', screen: 'Страница', tab: 'Стоимость', marksAll: false, more: {} });
+      setTimeout(() => {
+        const el = this._root && this._root.querySelector('[data-fx="results"]');
+        if (el && el.scrollIntoView) el.scrollIntoView({ behavior: this.fxReduce() ? 'auto' : 'smooth', block: 'start' });
+      }, 90);
+    };
+    const markHref = (mat) => mat === 'Молибден' ? 'MolibdenV2Final.dc.html' : '#material';
+    const markHitsView = (marksAll ? hitsAll : hitsAll.slice(0, 6)).map(({ x }) => {
+      const local = false && x[1] === 'Молибден';
+      const noop = () => {};
+      return {
+        m: x[0], mat: x[1], nLabel: pluralPos(x[2]), from: x[3], href: local ? '#price' : markHref(x[1]), go: local ? goMark(x[0], null, x[4]) : noop,
+        forms: x[4].slice(0, 4).map((f) => ({ label: f, href: local ? '#price' : markHref(x[1]), go: local ? goMark(x[0], f, x[4]) : noop }))
+      };
+    });
+    const hasMarkHits = markHitsView.length > 0;
+    const markMoreN = hitsAll.length - markHitsView.length;
+    const markHitsMore = markMoreN > 0;
+    const markHitsLabel = hitsAll.length === 1 ? 'Марка' : 'Марки · ' + hitsAll.length;
+    const showAllMarks = () => this.setState({ marksAll: true });
+    const exact = hitsAll.filter((h) => h.r === 0);
+    const onSearchKey = (e) => {
+      if (e.key !== 'Enter' || !exact.length) return;
+      e.preventDefault();
+      if (exact.length === 1 && false && exact[0].x[1] === 'Молибден') { goMark(exact[0].x[0], null, exact[0].x[4])(); return; }
+      const first = this._root && this._root.querySelector('[data-mark-hit]');
+      if (first) first.focus();
+    };
+    const match = (label) => !nq || norm(label).indexOf(nq) !== -1 || (nqk.length >= 2 && MARKS.some((x) => x[1] === label && nk(x[0]).indexOf(nqk) !== -1));
+    const groupsView = scheme
+      .map((g) => ({ name: g.name, items: g.items.filter(match).map((label) => ({ label: label })) }))
+      .filter((g) => g.items.length > 0);
+    const nothingFound = !!nq && groupsView.length === 0;
+    const showPopular = !nq;
+    const catalogTitle = nq ? 'Найдено' : 'Весь каталог';
+    const groupNames = scheme.map((g) => g.name);
+
+    // популярные — порядок по Метрике, реальные фото
+    const popular = featuredRaw.map((m) => ({ name: m.name, img: m.img }));
+    const panelHint = exact.length === 1 && false && exact[0].x[1] === 'Молибден' ? 'Enter — цены по марке ' + exact[0].x[0] : nq ? '' : 'Начните вводить название или марку в поиске вверху — список отфильтруется';
+    const searchBorder = megaOpen ? '2px solid #3E5D88' : '1px solid #c7ced7';
+    const searchGlow = megaOpen ? '0 0 0 3px #D6E5F4' : 'none';
+
+    // высота экрана: в продакшене 100vh; на холсте — твик viewportH, в полноэкранном режиме — реальная высота окна
+    const liveH = (this.state && this.state.liveH) || 0;
+    const vhNum = liveH || (this.props.viewportH ?? 800);
+    const vh = vhNum + 'px';
+    // режим доски: вся страница или экран после прокрутки (компактная шапка)
+    const scrolled = this.props.scrolled ?? false;
+    const full = !scrolled;
+    const compact = scrolled || !!(this.state && this.state.compact);
+    const bigHeader = !compact;
+    const smallHeader = compact;
+    const rootH = scrolled ? vh : 'auto';
+    const rootMinH = scrolled || liveH ? '0' : '3330px';
+    const headH = compact ? 56 : 120;
+    const navTop = headH + 'px';
+    const stickyH = (vhNum - headH) + 'px';
+    const panelW = (((this.state && this.state.rootW) || 1560) - 270) + 'px';
+    const rootRef = (el) => { this._root = el; };
+    // шапка: одни и те же элементы, размеры — по состоянию (полная / компактная); переходы — в CSS
+    // выпадающий список телефонов в шапке
+    const phonesOpen = !!(this.state && this.state.phones);
+    const togglePhones = () => this.setState({ phones: !phonesOpen });
+    const phonesExp = phonesOpen ? 'true' : 'false';
+    const phonesRot = phonesOpen ? '180deg' : '0deg';
+    const phonesBtnBg = phonesOpen ? '#EAF1F8' : 'transparent';
+    const phFx = phonesOpen
+      ? { op: 1, tf: 'none', vis: 'visible', hidden: 'false', tr: 'opacity .16s ease, transform .2s cubic-bezier(.2,.7,.3,1), visibility 0s' }
+      : { op: 0, tf: 'translateY(-6px)', vis: 'hidden', hidden: 'true', tr: 'opacity .14s ease, transform .16s ease, visibility 0s linear .16s' };
+    const hd = compact
+      ? { h: '56px', shadow: '0 6px 16px -12px rgba(15,23,42,.35)', capH: '0px', capOp: 0, searchH: '40px', findH: '32px', ctaH: '40px' }
+      : { h: '88px', shadow: '0 6px 16px -12px rgba(15,23,42,0)', capH: '16px', capOp: 1, searchH: '46px', findH: '36px', ctaH: '46px' };
+    hd.wrapH = scrolled ? '56px' : '120px';
+    hd.barH = compact ? '0px' : '32px';
+    hd.barOp = compact ? 0 : 1;
+    // панель «Продукция» всегда в DOM — открывается и закрывается плавно
+    const panelFx = megaOpen
+      ? { op: 1, tf: 'none', vis: 'visible', pe: 'auto', tr: 'opacity .2s ease, transform .26s cubic-bezier(.2,.7,.3,1), visibility 0s', hidden: 'false' }
+      : { op: 0, tf: 'translateX(-14px)', vis: 'hidden', pe: 'none', tr: 'opacity .16s ease, transform .2s ease, visibility 0s linear .2s', hidden: 'true' };
+
+
+    return { rootRef, phonesExp, togglePhones, phonesRot, phonesBtnBg, phFx, hasMarkHits, markHitsView, markHitsMore, markMoreN, markHitsLabel, showAllMarks, onSearchKey, rootMinH, hd, panelFx, bigHeader, smallHeader, navTop, panelW, featured, popularQueries, calculators, trust, articles, megaOpen, megaExpanded: megaOpen ? 'true' : 'false', prodBg: megaOpen ? '#2f4a6b' : '#3E5D88', toggleMega, openMega, q, onQuery, scrolled, full, rootH, stickyH, panelHint, searchBorder, searchGlow, groupsView, nothingFound, showPopular, catalogTitle, groupNames, popular, vh };
+  }
+  // ---- v7: надстройка над логикой v6 (свернуть меню, символы элементов, появление секций) ----
+  componentDidMount() { if (this.baseDidMount) this.baseDidMount(); this.v7Reveal(); }
+  componentWillUnmount() { if (this.baseWillUnmount) this.baseWillUnmount(); if (this._io) this._io.disconnect(); }
+  v7Reveal() {
+    let reduce = false; try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    if (reduce || typeof IntersectionObserver === 'undefined' || !this._root) return;
+    const ease = 'cubic-bezier(.2,.7,.3,1)';
+    this._io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      this._io.unobserve(e.target);
+      if (e.target.animate) e.target.animate([{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'none' }], { duration: 560, easing: ease });
+    }), { threshold: 0.08 });
+    this._root.querySelectorAll('[data-reveal]').forEach((el) => this._io.observe(el));
+  }
+  renderVals() {
+    const v = this.baseVals();
+    const st = this.state || {};
+    const rail = !!st.rail;
+    const W = rail ? 76 : 264;
+    const rootW = st.rootW || 1560;
+    // БЕЙДЖ МАТЕРИАЛА — правило для всех 25 материалов каталога: чистый металл — символ + атомный номер; сплав и прочее — ведущая марка из прайса (по числу позиций) + «марка»
+    const ELEM = { 'Титан': ['Ti', 22], 'Вольфрам': ['W', 74], 'Никель': ['Ni', 28], 'Молибден': ['Mo', 42], 'Тантал': ['Ta', 73], 'Ниобий': ['Nb', 41], 'Рений': ['Re', 75], 'Кобальт': ['Co', 27], 'Хром': ['Cr', 24], 'Ванадий': ['V', 23], 'Олово': ['Sn', 50], 'Цирконий': ['Zr', 40] };
+    const LEAD = { 'Нихром': 'Х20Н80', 'Фехраль': 'Х23Ю5Т', 'Нихром в изоляции': 'КЭНВ', 'Константан': 'МНМц40', 'Мельхиор': 'МН19', 'Монель': '400', 'Термопары': 'НХ 9,5', 'Термопары нагревостойкие': 'ПТН', 'Прецизионные сплавы': '29НК', 'Жаропрочные сплавы': 'ХН78Т', 'Нержавеющая сталь': '12Х18Н10Т', 'Твёрдые сплавы': 'ВК8', 'Ферросплавы': 'ФМо60' };
+    const badgeOf = (name) => {
+      if (ELEM[name]) return { badge: ELEM[name][0], badgeSub: String(ELEM[name][1]), badgeBg: '#3E5D88', badgeFs: '19px' };
+      const g = LEAD[name] || name.slice(0, 3);
+      return { badge: g, badgeSub: 'марка', badgeBg: '#1d2d44', badgeFs: g.length > 6 ? '12px' : '14px' };
+    };
+    const featured = (v.featured || []).map((m) => Object.assign({}, m, badgeOf(m.name)));
+    return Object.assign(v, {
+      featured,
+      theadTop: ((parseInt(v.navTop, 10) || 0) + 56) + 'px',
+      rail, showLabels: !rail, navW: W + 'px', panelLeft: W + 'px', panelWidthA: (rootW - W) + 'px',
+      railLabel: rail ? 'Развернуть' : 'Свернуть', railRot: rail ? '180deg' : '0deg',
+      toggleRail: () => this.setState({ rail: !rail })
+    });
+  }
+}
+
+</script>
+</body>
+</html>

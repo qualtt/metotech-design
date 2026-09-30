@@ -312,6 +312,66 @@
       "h": 970,
       "title": "Молибден — все 7 вкладок · моб.",
       "is_interactive": true
+    },
+    "HomeV7A.dc.html": {
+      "page": "home7",
+      "x": 0,
+      "y": 0,
+      "w": 1560,
+      "h": 3600,
+      "title": "Главная v7 A — боковое меню (сворачивается)",
+      "is_interactive": true,
+      "expand": "fill"
+    },
+    "HomeV7B.dc.html": {
+      "page": "home7",
+      "x": 1640,
+      "y": 0,
+      "w": 1560,
+      "h": 3700,
+      "title": "Главная v7 B — меню в шапке",
+      "is_interactive": true,
+      "expand": "fill"
+    },
+    "MolibdenV2A.dc.html": {
+      "page": "tabs2",
+      "x": 0,
+      "y": 0,
+      "w": 1560,
+      "h": 3200,
+      "title": "Молибден v2 A — все вкладки",
+      "is_interactive": true,
+      "expand": "fill"
+    },
+    "MolibdenV2B.dc.html": {
+      "page": "tabs2",
+      "x": 1640,
+      "y": 0,
+      "w": 1560,
+      "h": 3200,
+      "title": "Молибден v2 B — все вкладки",
+      "is_interactive": true,
+      "expand": "fill"
+    },
+    "HomeV7Final.dc.html": {
+      "page": "final7",
+      "x": 0,
+      "y": 0,
+      "w": 1560,
+      "h": 3500,
+      "title": "Главная v7 — итог (B, доработанный)",
+      "is_interactive": true,
+      "expand": "fill"
+    },
+    "MolibdenV2Final.dc.html": {
+      "page": "final7",
+      "x": 1640,
+      "y": 0,
+      "w": 1560,
+      "h": 3200,
+      "title": "Молибден v2 — итог (B)",
+      "is_interactive": true,
+      "expand": "fill"
     }
   },
   "createdOnFiles": {
@@ -390,6 +450,10 @@
       "name": "10.5 · Главная v6 (новая шапка)"
     },
     {
+      "id": "home7",
+      "name": "10.6 · Главная v7 (A и B)"
+    },
+    {
       "id": "material",
       "name": "13 · Страница материала (Молибден)"
     },
@@ -400,6 +464,14 @@
     {
       "id": "tabs",
       "name": "15 · Молибден — все вкладки"
+    },
+    {
+      "id": "tabs2",
+      "name": "15.1 · Молибден v2 (A и B)"
+    },
+    {
+      "id": "final7",
+      "name": "16 · Итог: Главная v7 + Молибден v2 (вариант B)"
     },
     {
       "id": "old",
@@ -433,6 +505,8 @@
     "HomePageV5.dc.html",
     "HomePageV6.dc.html",
     "HomePageV6Scrolled.dc.html",
+    "HomeV7A.dc.html",
+    "HomeV7B.dc.html",
     "MaterialMolibden.dc.html",
     "MobileHome.dc.html",
     "MobileHomeMenu.dc.html",
@@ -442,6 +516,10 @@
     "MobileMolibdenReq.dc.html",
     "MolibdenTabs.dc.html",
     "MobileMolibdenTabs.dc.html",
+    "MolibdenV2A.dc.html",
+    "MolibdenV2B.dc.html",
+    "HomeV7Final.dc.html",
+    "MolibdenV2Final.dc.html",
     "Main.dc.html",
     "CategoryD.dc.html",
     "MainMobile.dc.html",
