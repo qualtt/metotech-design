@@ -61,13 +61,9 @@
   a, button, select, input, label, .popcard, .card { transition: background-color .16s ease, color .16s ease, border-color .16s ease, box-shadow .2s ease, opacity .16s ease; }
   [data-fx="row"] { animation: dcFadeUp .22s cubic-bezier(.2,.7,.3,1) both; transition: background-color .25s ease; }
   [data-fx="tabind"] { transition: transform .28s cubic-bezier(.2,.7,.3,1), width .28s cubic-bezier(.2,.7,.3,1); }
-  .overlay { animation: dcInRight .28s cubic-bezier(.2,.7,.3,1) both; }
-  .overlay.ov-left { animation-name: dcInLeft; }
   .overlay.is-leaving { animation: dcOutRight .19s ease-in both; }
   .overlay.ov-left.is-leaving { animation-name: dcOutLeft; }
-  .sheet { animation: dcSheetIn .3s cubic-bezier(.2,.7,.3,1) both; }
   .sheet.is-leaving { animation: dcSheetOut .19s ease-in both; }
-  .backdrop { animation: dcFadeIn .24s ease both; }
   .backdrop.is-leaving { animation: dcFadeOut .19s ease both; }
   @media (prefers-reduced-motion: reduce) {
     html, .scroll { scroll-behavior: auto; }
@@ -403,6 +399,15 @@ class Component extends DCLogic {
     this.fxTabInd(true);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.fxTabInd(true));
   }
+  // мобильные оверлеи и шторки: выезд только в момент открытия (а не при каждом обновлении — см. fxRows)
+  fxOverlay() {
+    const root = this._root;
+    if (!root || this.fxReduce()) return;
+    const ease = 'cubic-bezier(.2,.7,.3,1)';
+    root.querySelectorAll('.overlay:not(.is-leaving)').forEach((el) => { if (el.animate) el.animate([{ transform: el.classList.contains('ov-left') ? 'translateX(-100%)' : 'translateX(100%)' }, { transform: 'none' }], { duration: 280, easing: ease }); });
+    root.querySelectorAll('.sheet:not(.is-leaving)').forEach((el) => { if (el.animate) el.animate([{ transform: 'translateY(100%)' }, { transform: 'none' }], { duration: 300, easing: ease }); });
+    root.querySelectorAll('.backdrop:not(.is-leaving)').forEach((el) => { if (el.animate) el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: 'ease' }); });
+  }
   componentDidUpdate(pp, ps) {
     const st = this.state || {};
     ps = ps || {};
@@ -421,6 +426,7 @@ class Component extends DCLogic {
     if (st.photo !== ps.photo && st.tab === ps.tab) this.fxRun('photo', [{ opacity: 0 }, { opacity: 1 }], { duration: 240 });
     if (st.req !== ps.req && reqN(ps) === 0 && reqN(st) > 0) this.fxRun('reqbar', [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 280 });
     else if (st.req !== ps.req && reqN(st) > reqN(ps)) this.fxRun('reqcount', [{ transform: 'scale(1)' }, { transform: 'scale(1.14)' }, { transform: 'scale(1)' }], { duration: 320 });
+    if (st.screen !== ps.screen && st.screen && st.screen !== 'Страница') this.fxOverlay();
     this.fxTabInd(false);
   }
   componentDidMount() { this.fxMount(); }

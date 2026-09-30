@@ -297,7 +297,7 @@
               </button>
               <sc-if value="{{gp.expandedB}}" hint-placeholder-val="{{ false }}">
                 <sc-for list="{{gp.rows}}" as="pr" hint-placeholder-count="6">
-                  <div class="hv22" data-fx="row" style="display: grid; grid-template-columns: 140px minmax(0, 1fr) 190px 150px; gap: 16px; align-items: center; min-height: 50px; padding: 0 20px; border-top: 1px solid #f0f2f5; background: {{pr.bg}}; transition: background-color .16s ease;">
+                  <div class="hv22" data-fx="row" data-rid="{{pr.rid}}" style="display: grid; grid-template-columns: 140px minmax(0, 1fr) 190px 150px; gap: 16px; align-items: center; min-height: 50px; padding: 0 20px; border-top: 1px solid #f0f2f5; background: {{pr.bg}}; transition: background-color .16s ease;">
                     <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: #1d2d44; white-space: nowrap;">{{pr.m}}</div>
                     <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #1b222c; white-space: nowrap; font-variant-numeric: tabular-nums;">{{pr.sz}}</div>
                     <div style="text-align: right; white-space: nowrap;">
@@ -537,15 +537,20 @@
           <div id="calc-mo" style="padding: 22px; border-radius: 14px; background: #fff; border: 1px solid #e3e7ec; box-shadow: 0 20px 40px -30px rgba(15,23,42,.35);">
             <div style="font-size: 18px; font-weight: 600; letter-spacing: -.01em; color: #1b222c;">Масса изделия</div>
             <div style="font-size: 13px; color: #5f6975; margin-top: 2px;">Молибден, плотность 10,2 г/см³</div>
-            <div role="group" aria-label="Профиль" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin-top: 14px; padding: 4px; border-radius: 8px; background: #f3f5f8;">
-              <button type="button" onClick="{{calcRound}}" aria-pressed="{{isRoundS}}" style="height: 34px; border: 0; border-radius: 6px; background: {{roundBg}}; color: {{roundColor}}; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: background-color .16s ease;">Пруток, проволока</button>
-              <button type="button" onClick="{{calcSheet}}" aria-pressed="{{isSheetS}}" style="height: 34px; border: 0; border-radius: 6px; background: {{sheetBg}}; color: {{sheetColor}}; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: background-color .16s ease;">Лист, фольга</button>
+            <div role="group" aria-label="Профиль" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; margin-top: 14px; padding: 4px; border-radius: 8px; background: #f3f5f8; position: relative;">
+              <span aria-hidden="true" style="position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 6px); border-radius: 6px; background: #3E5D88; transform: {{segX}}; transition: transform .24s cubic-bezier(.2,.7,.3,1);"></span>
+              <button type="button" onClick="{{calcRound}}" aria-pressed="{{isRoundS}}" style="height: 34px; border: 0; border-radius: 6px; background: transparent; position: relative; z-index: 1; color: {{roundColor}}; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: color .2s ease;">Пруток, проволока</button>
+              <button type="button" onClick="{{calcSheet}}" aria-pressed="{{isSheetS}}" style="height: 34px; border: 0; border-radius: 6px; background: transparent; position: relative; z-index: 1; color: {{sheetColor}}; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: color .2s ease;">Лист, фольга</button>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px;">
+            <div style="display: flex; flex-direction: column; margin-top: 14px;">
               <sc-for list="{{calcFields}}" as="cf" hint-placeholder-count="2">
-                <label style="display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; color: #4a5360;">{{cf.label}}
-                  <input class="hv31" inputmode="decimal" value="{{cf.value}}" onChange="{{cf.set}}" style="width: 112px; height: 38px; box-sizing: border-box; padding: 0 12px; border: 1px solid #dfe3e8; border-radius: 8px; background: #fafbfc; font-family: 'IBM Plex Mono', monospace; font-size: 14px; text-align: right; outline: 0;">
-                </label>
+                <div aria-hidden="{{cf.hidden}}" style="display: grid; grid-template-rows: {{cf.rows}}; opacity: {{cf.op}}; transition: grid-template-rows .26s cubic-bezier(.2,.7,.3,1), opacity .18s ease;">
+                  <div style="min-height: 0; overflow: hidden;"><div style="padding-top: {{cf.pt}};">
+                  <label style="display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; color: #4a5360;">{{cf.label}}
+                    <input class="hv31" inputmode="decimal" value="{{cf.value}}" onChange="{{cf.set}}" style="width: 112px; height: 38px; box-sizing: border-box; padding: 0 12px; border: 1px solid #dfe3e8; border-radius: 8px; background: #fafbfc; font-family: 'IBM Plex Mono', monospace; font-size: 14px; text-align: right; outline: 0;">
+                  </label>
+                  </div></div>
+                </div>
               </sc-for>
             </div>
             <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: 16px; padding-top: 14px; border-top: 1px solid #eceff3;">
@@ -673,7 +678,42 @@ class Component extends DCLogic {
   }
   fxMount() {
     this.fxTabInd(true);
+    this.fxRows(true);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.fxTabInd(true));
+  }
+  fxAlignTabs() {
+    const root = this._root;
+    if (!root) return;
+    const tl = root.querySelector('[role="tablist"]');
+    const body = root.querySelector('[data-fx="tabbody"]');
+    if (!tl || !body) return;
+    let sc = null;
+    for (let el = tl.parentElement; el; el = el.parentElement) {
+      const oy = getComputedStyle(el).overflowY;
+      if ((oy === 'auto' || oy === 'scroll') && el.scrollHeight > el.clientHeight) { sc = el; break; }
+    }
+    const tlBottom = tl.getBoundingClientRect().bottom;
+    const bodyTop = body.getBoundingClientRect().top;
+    const d = bodyTop - tlBottom;
+    if (d >= -1) return; // содержимое и так видно с начала
+    if (sc) sc.scrollTop += d; else window.scrollBy(0, d);
+  }
+  // строки прайса: анимация появления только у действительно новых строк (раскрыли группу, «показать ещё», сменили фильтр).
+  // Не CSS-анимацией при монтировании: редактор холста пересоздаёт элементы при любом обновлении состояния, и CSS-анимация проигрывалась бы заново.
+  fxRows(initial) {
+    const root = this._root;
+    if (!root) return;
+    const prev = this._rowSeen || new Set();
+    const now = new Set();
+    const fresh = [];
+    root.querySelectorAll('[data-fx="row"]').forEach((el) => {
+      const id = el.getAttribute('data-rid');
+      now.add(id);
+      if (!prev.has(id)) fresh.push(el);
+    });
+    this._rowSeen = now;
+    if (initial || this.fxReduce()) return;
+    fresh.slice(0, 40).forEach((el, i) => { if (el.animate) el.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 220, delay: Math.min(i, 10) * 16, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'backwards' }); });
   }
   componentDidUpdate(pp, ps) {
     const st = this.state || {};
@@ -682,6 +722,9 @@ class Component extends DCLogic {
     const gsig = (s) => [s.gq, s.gt].join('|');
     // пока заявку не трогали, в ней 2 позиции по умолчанию (как в renderVals)
     const reqN = (s) => (s.req ? Object.keys(s.req).filter((k) => s.req[k]).length : 2);
+    // смена вкладки: если табы уже прилипли, новое содержимое начинается сразу под ними —
+    // иначе при переходе с длинной вкладки на короткую страница обрезает прокрутку и экран прыгает
+    if (st.tab !== ps.tab) this.fxAlignTabs();
     // смена вкладки: проявляем содержимое, но не плашку заявки — она остаётся на месте
     if (st.tab !== ps.tab && this._root && !this.fxReduce()) {
       this._root.querySelectorAll('[data-fx="tabbody"]').forEach((box) => Array.from(box.children).forEach((el) => {
@@ -694,6 +737,7 @@ class Component extends DCLogic {
     if (st.req !== ps.req && reqN(ps) === 0 && reqN(st) > 0) this.fxRun('reqbar', [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 280 });
     else if (st.req !== ps.req && reqN(st) > reqN(ps)) this.fxRun('reqcount', [{ transform: 'scale(1)' }, { transform: 'scale(1.14)' }, { transform: 'scale(1)' }], { duration: 320 });
     this.fxTabInd(false);
+    this.fxRows(false);
   }
   // Полноэкранный режим (Fill): доска растягивается по окну и прокручивается как страница.
   // Здесь меряем реальную высоту окна и прокрутку: шапка сжимается до 56px, меню и панель «Продукция» — на высоту окна.
@@ -1007,7 +1051,7 @@ class Component extends DCLogic {
         rows: shown.map((r) => {
           const inReq = !!req[r.id];
           return {
-            m: r.m, sz: r.sz, hasPrice: r.price !== null, noPrice: r.price === null,
+            rid: String(r.id), m: r.m, sz: r.sz, hasPrice: r.price !== null, noPrice: r.price === null,
             priceText: r.price !== null ? 'от ' + fmt(r.price) : '',
             inReq: inReq ? 'true' : 'false', bg: inReq ? '#FDF3E7' : 'transparent',
             btnBg: inReq ? '#EC9D47' : '#fff', btnLabel: inReq ? '✓ В заявке' : 'В заявку',
@@ -1045,9 +1089,12 @@ class Component extends DCLogic {
     const cv = Object.assign({ d: '10', L: '1000', t: '1', w: '300', l: '1000' }, st.cv || {});
     const setCv = (k) => (e) => this.setState({ cv: Object.assign({}, cv, { [k]: e.target.value }) });
     const isRound = calcType === 'round';
-    const calcFields = isRound
-      ? [{ label: 'Диаметр, мм', value: cv.d, set: setCv('d') }, { label: 'Длина, мм', value: cv.L, set: setCv('L') }]
-      : [{ label: 'Толщина, мм', value: cv.t, set: setCv('t') }, { label: 'Ширина, мм', value: cv.w, set: setCv('w') }, { label: 'Длина, мм', value: cv.l, set: setCv('l') }];
+    // поля всегда одни и те же три строки: «Ширина» у прутка схлопнута (плавно раскрывается у листа), «Длина» остаётся внизу — без скачка высоты
+    const calcFields = [
+      { label: isRound ? 'Диаметр, мм' : 'Толщина, мм', value: isRound ? cv.d : cv.t, set: setCv(isRound ? 'd' : 't'), rows: '1fr', op: 1, hidden: 'false', pt: '0px' },
+      { label: 'Ширина, мм', value: cv.w, set: setCv('w'), rows: isRound ? '0fr' : '1fr', op: isRound ? 0 : 1, hidden: isRound ? 'true' : 'false', pt: '8px' },
+      { label: 'Длина, мм', value: isRound ? cv.L : cv.l, set: setCv(isRound ? 'L' : 'l'), rows: '1fr', op: 1, hidden: 'false', pt: '8px' }
+    ];
     const vol = isRound ? Math.PI / 4 * Math.pow(num(cv.d) || 0, 2) * (num(cv.L) || 0) : (num(cv.t) || 0) * (num(cv.w) || 0) * (num(cv.l) || 0);
     const massKg = vol / 1000 * 10.2 / 1000;
     const massText = massKg.toFixed(3).replace('.', ',') + ' кг';
@@ -1247,7 +1294,7 @@ class Component extends DCLogic {
       { code: 'ГОСТ 25442-82', title: 'Полосы молибденовые отожженные для глубокой вытяжки.' }
     ];
 
-    return Object.assign(tabVals, { rootRef, phonesExp, togglePhones, phonesRot, phonesBtnBg, phFx, reqListRows, reqListExp, reqChevRot, reqToggleHint, toggleReqList, reqItems, hasMarkHits, markHitsView, markHitsMore, markMoreN, markHitsLabel, showAllMarks, onSearchKey, markOn, markCountLabel, clearMark, markF, rootMinH, hd, panelFx, bigHeader, smallHeader, navTop, panelW, facts, formTiles, prodOptions, markOptions, prodF, markF, sizeFrom, sizeTo, pricedOnly, onProd, onMark, onFrom, onTo, onPriced, onReset, groups, foundCount, nothing, hasReq, reqCountLabel, reqSummary, onClearReq, calcFields, massText, calcRound, calcSheet, isRoundS: isRound ? 'true' : 'false', isSheetS: isRound ? 'false' : 'true', roundBg: isRound ? '#3E5D88' : '#fff', roundColor: isRound ? '#fff' : '#414954', sheetBg: isRound ? '#fff' : '#3E5D88', sheetColor: isRound ? '#414954' : '#fff', siblings, gosts, featured, popularQueries, calculators, trust, articles, megaOpen, megaExpanded: megaOpen ? 'true' : 'false', prodBg: megaOpen ? '#2f4a6b' : '#3E5D88', toggleMega, openMega, q, onQuery, scrolled, full, rootH, stickyH, panelHint, searchBorder, searchGlow, groupsView, nothingFound, showPopular, catalogTitle, groupNames, popular, vh });
+    return Object.assign(tabVals, { rootRef, phonesExp, togglePhones, phonesRot, phonesBtnBg, phFx, reqListRows, reqListExp, reqChevRot, reqToggleHint, toggleReqList, reqItems, hasMarkHits, markHitsView, markHitsMore, markMoreN, markHitsLabel, showAllMarks, onSearchKey, markOn, markCountLabel, clearMark, markF, rootMinH, hd, panelFx, bigHeader, smallHeader, navTop, panelW, facts, formTiles, prodOptions, markOptions, prodF, markF, sizeFrom, sizeTo, pricedOnly, onProd, onMark, onFrom, onTo, onPriced, onReset, groups, foundCount, nothing, hasReq, reqCountLabel, reqSummary, onClearReq, calcFields, massText, calcRound, calcSheet, isRoundS: isRound ? 'true' : 'false', isSheetS: isRound ? 'false' : 'true', segX: isRound ? 'none' : 'translateX(calc(100% + 4px))', roundBg: isRound ? '#3E5D88' : '#fff', roundColor: isRound ? '#fff' : '#414954', sheetBg: isRound ? '#fff' : '#3E5D88', sheetColor: isRound ? '#414954' : '#fff', siblings, gosts, featured, popularQueries, calculators, trust, articles, megaOpen, megaExpanded: megaOpen ? 'true' : 'false', prodBg: megaOpen ? '#2f4a6b' : '#3E5D88', toggleMega, openMega, q, onQuery, scrolled, full, rootH, stickyH, panelHint, searchBorder, searchGlow, groupsView, nothingFound, showPopular, catalogTitle, groupNames, popular, vh });
   }
   // ---- v7: надстройка над логикой v6 (свернуть меню, символы элементов, появление секций) ----
   componentDidMount() { if (this.baseDidMount) this.baseDidMount(); this.v7Reveal(); }
