@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Молибден — моб. · фильтры</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#e9ebee;font-family:'IBM Plex Sans',system-ui,sans-serif;color:#232a33;}
+  a{color:inherit;text-decoration:none;}
+  button,input,select{font:inherit;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .shell{width:470px;height:970px;display:flex;align-items:center;justify-content:center;background:#e9ebee;}
+  .frame{position:relative;width:426px;height:880px;padding:18px;background:#292929;border-radius:54px;box-shadow:0 30px 70px -24px rgba(0,0,0,.45), inset 0 0 0 2px #525252;flex-shrink:0;}
+  .screen{position:relative;width:390px;height:844px;background:#fefeff;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;}
+  .notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:112px;height:30px;background:#141414;border-radius:16px;z-index:300;}
+  .safe{height:44px;flex-shrink:0;background:#fff;}
+  .homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#1d1d1f;opacity:.3;z-index:300;pointer-events:none;}
+  .scroll{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;scrollbar-width:none;}
+  .scroll::-webkit-scrollbar{display:none;}
+  .hdr{position:sticky;top:0;z-index:20;height:56px;display:flex;align-items:center;gap:2px;padding:0 6px;background:#fff;border-bottom:1px solid #e1e5ea;}
+  .ib{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:#2f4a6b;border-radius:4px;cursor:pointer;flex-shrink:0;padding:0;position:relative;}
+  .sec{padding:28px 16px;}
+  .h2{margin:0 0 14px;font-size:22px;line-height:1.25;font-weight:700;color:#232a33;}
+  .lbl{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5b6572;}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:48px;border-radius:4px;font-size:16px;font-weight:700;border:0;cursor:pointer;text-align:center;}
+  .btn-o{background:#EC9D47;color:#1f2630;}
+  .btn-b{background:#fff;color:#2f4a6b;border:1.5px solid #3E5D88;}
+  .btn-blue{background:#3E5D88;color:#fff;}
+  .hs{display:flex;gap:10px;overflow-x:auto;padding:0 16px;scrollbar-width:none;}
+  .hs::-webkit-scrollbar{display:none;}
+  .card{background:#fff;border:1px solid #e1e5ea;border-radius:6px;overflow:hidden;}
+  .row{display:flex;align-items:center;gap:12px;min-height:52px;padding:0 16px;border-top:1px solid #eceef1;font-size:16px;color:#232a33;}
+  .overlay{position:absolute;left:0;right:0;top:44px;bottom:0;z-index:50;display:flex;flex-direction:column;background:#fff;}
+  .ovh{height:56px;flex-shrink:0;display:flex;align-items:center;gap:6px;padding:0 6px 0 10px;border-bottom:1px solid #e1e5ea;background:#fff;}
+  .ovb{flex:1;overflow-y:auto;scrollbar-width:none;}
+  .ovb::-webkit-scrollbar{display:none;}
+  .backdrop{position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(15,23,42,.45);z-index:60;}
+  .sheet{position:absolute;left:0;right:0;bottom:0;z-index:61;background:#fff;border-radius:16px 16px 0 0;max-height:86%;display:flex;flex-direction:column;box-shadow:0 -12px 30px -12px rgba(15,23,42,.35);}
+  .grab{width:40px;height:5px;border-radius:3px;background:#d3d8df;margin:8px auto 4px;flex-shrink:0;}
+  .chip{display:inline-flex;align-items:center;height:40px;padding:0 14px;border-radius:4px;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap;}
+  .inp{height:48px;width:100%;padding:0 12px;border:1px solid #c7ced7;border-radius:4px;font-size:16px;color:#232a33;background:#fff;}
+  .ftr a{display:block;padding:7px 0;font-size:15px;color:#e3e8ee;}
+  /* ---- Анимации: коротко (150–300 мс), без «прыжков»; при «уменьшить движение» — выключены ---- */
+  @keyframes dcFadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes dcRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @keyframes dcFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes dcFadeOut { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes dcInRight { from { transform: translateX(100%); } to { transform: none; } }
+  @keyframes dcOutRight { from { transform: none; } to { transform: translateX(100%); } }
+  @keyframes dcInLeft { from { transform: translateX(-100%); } to { transform: none; } }
+  @keyframes dcOutLeft { from { transform: none; } to { transform: translateX(-100%); } }
+  @keyframes dcSheetIn { from { transform: translateY(100%); } to { transform: none; } }
+  @keyframes dcSheetOut { from { transform: none; } to { transform: translateY(100%); } }
+  html, .scroll { scroll-behavior: smooth; }
+  a, button, select, input, label, .popcard, .card { transition: background-color .16s ease, color .16s ease, border-color .16s ease, box-shadow .2s ease, opacity .16s ease; }
+  [data-fx="row"] { animation: dcFadeUp .22s cubic-bezier(.2,.7,.3,1) both; transition: background-color .25s ease; }
+  [data-fx="tabind"] { transition: transform .28s cubic-bezier(.2,.7,.3,1), width .28s cubic-bezier(.2,.7,.3,1); }
+  .overlay { animation: dcInRight .28s cubic-bezier(.2,.7,.3,1) both; }
+  .overlay.ov-left { animation-name: dcInLeft; }
+  .overlay.is-leaving { animation: dcOutRight .19s ease-in both; }
+  .overlay.ov-left.is-leaving { animation-name: dcOutLeft; }
+  .sheet { animation: dcSheetIn .3s cubic-bezier(.2,.7,.3,1) both; }
+  .sheet.is-leaving { animation: dcSheetOut .19s ease-in both; }
+  .backdrop { animation: dcFadeIn .24s ease both; }
+  .backdrop.is-leaving { animation: dcFadeOut .19s ease both; }
+  @media (prefers-reduced-motion: reduce) {
+    html, .scroll { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; }
+  }
+</style>
+</helmet>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <symbol id="i-burger" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.9" fill="none"/><path d="M15.5 15.5L20 20" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h2.7l1.6 4-2 1.6a11 11 0 0 0 5.1 5.1l1.6-2 4 1.6v2.7a2 2 0 0 1-2.1 2C10.8 18 6 13.2 4.5 6.6a2 2 0 0 1 2-3.1z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7.5" height="7.5" rx="1.3" stroke="currentColor" stroke-width="1.6" fill="none"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.3" stroke="currentColor" stroke-width="1.6" fill="none"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.3" stroke="currentColor" stroke-width="1.6" fill="none"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.3" stroke="currentColor" stroke-width="1.6" fill="none"/></symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M8 6.5h8" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="11" r="1" fill="currentColor"/><circle cx="12" cy="11" r="1" fill="currentColor"/><circle cx="15.5" cy="11" r="1" fill="currentColor"/><circle cx="8.5" cy="15" r="1" fill="currentColor"/><circle cx="12" cy="15" r="1" fill="currentColor"/><circle cx="15.5" cy="15" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-board" viewBox="0 0 24 24"><rect x="2.5" y="3.5" width="19" height="13" rx="1.6" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M6.5 8h11M6.5 12h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7.5 16.5l-2 4M16.5 16.5l2 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 2.5h9l4 4v15H6z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M8.8 12h6.4M8.8 15.8h6.4" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="i-gost" viewBox="0 0 24 24"><path d="M12 2.5l8 3.2v6c0 5.2-3.4 8.2-8 9.8-4.6-1.6-8-4.6-8-9.8v-6z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4 4.8-4.8" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 10.8v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7.4" r="1.1" fill="currentColor"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5s7-6 7-11.5a7 7 0 0 0-14 0c0 5.5 7 11.5 7 11.5z" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.5" fill="none"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 6h18M6.5 12h11M10 18h4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<div class="shell" ref="{{rootRef}}">
+<div class="frame">
+<div class="notch"></div>
+<div class="screen">
+<div class="safe"></div>
+<div class="scroll">
+
+  <!-- ШАПКА (мобильная v6): одна липкая строка 56px — меню / товарный знак №969349 (плашка, без изменений; временно — вырезка из logo01.jpg) / поиск (открывает экран «Продукция» — единственный поиск) / звонок -->
+  <header class="hdr">
+    <button type="button" class="ib" aria-label="Меню" onClick="{{openMenu}}"><svg width="24" height="24"><use href="#i-burger"/></svg></button>
+    <a href="#top" aria-label="«Метотехника» — на главную" style="display:flex;align-items:center;margin-left:2px;"><img src="/_blob/5a916be1eafd644ae6414495e0c6db8c" alt="«Метотехника»" style="width:189px;height:25px;display:block;"></a>
+    <span style="flex:1;"></span>
+    <button type="button" class="ib" aria-label="Поиск по каталогу" onClick="{{openProd}}"><svg width="23" height="23"><use href="#i-search"/></svg></button>
+    <button type="button" class="ib" aria-label="Позвонить — все телефоны" onClick="{{openPhones}}"><svg width="22" height="22"><use href="#i-phone"/></svg></button>
+  </header>
+
+  <!-- СТРАНИЦА МАТЕРИАЛА (моб.) · «Молибден → Стоимость». 7 вкладок = 7 адресов, как на десктопе; в конце — анонсы остальных разделов (гибрид). Данные — с molibden-cena.htm и соседних страниц. -->
+  <a href="#catalog" style="display:flex;align-items:center;gap:4px;height:44px;padding:0 10px;font-size:15px;font-weight:600;color:#2f4a6b;"><svg width="18" height="18"><use href="#i-back"/></svg>Тугоплавкие металлы</a>
+
+  <section style="padding:0 16px 22px;">
+    <img src="/_blob/8924c970e0f37dfa99b04faceba9bfe8" alt="Молибденовые прутки" style="width:100%;height:200px;object-fit:cover;border-radius:6px;border:1px solid #e1e5ea;display:block;">
+    <div class="lbl" style="color:#3E5D88;margin-top:18px;">Тугоплавкий металл · Mo</div>
+    <h1 style="margin:6px 0 8px;font-size:32px;line-height:1.1;font-weight:700;">Молибден</h1>
+    <p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#414954;">Прутки, проволока, листы, фольга, трубы, порошок и штабик марок МЧ, МЧВП, ЦМ2А и других.</p>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
+      <sc-for list="{{facts}}" as="fa" hint-placeholder-count="4">
+        <div style="padding:10px 12px;border-radius:6px;background:#f4f7fb;border:1px solid #e1e8f1;">
+          <div style="font-size:13px;color:#5b6572;">{{fa.label}}</div>
+          <div class="mono" style="font-size:16px;font-weight:700;color:#1f3a5c;margin-top:2px;">{{fa.value}}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin:14px 0 16px;font-size:15px;font-weight:600;color:#2a6b47;"><svg width="18" height="18"><use href="#i-check"/></svg>На складе, отгрузка 1–2 рабочих дня</div>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;">
+      <a href="#zayavka" class="btn btn-o">Заявка</a>
+      <a href="#calc-mo" class="btn btn-b">Рассчитать массу</a>
+    </div>
+  </section>
+
+  <!-- ТАБЫ F (моб.): липкие под шапкой (top 56), горизонтальная прокрутка, активная вкладка прокручена в видимую часть, справа — градиент-подсказка -->
+  <div style="position:sticky;top:56px;z-index:15;background:#fff;border-bottom:1px solid #e1e5ea;box-shadow:0 6px 12px -10px rgba(15,23,42,.3);">
+    <div role="tablist" aria-label="Разделы о молибдене" ref="{{tabsRef}}" class="hs" style="gap:22px;">
+      <sc-for list="{{tabs}}" as="tb" hint-placeholder-count="7">
+        <a href="#tab" role="tab" aria-selected="{{tb.selected}}" style="flex-shrink:0;display:flex;align-items:center;height:50px;border-bottom:3px solid {{tb.underline}};font-size:15.5px;font-weight:{{tb.weight}};color:{{tb.color}};white-space:nowrap;">{{tb.label}}</a>
+      </sc-for>
+    </div>
+    <div style="position:absolute;right:0;top:0;bottom:0;width:36px;background:linear-gradient(90deg, rgba(255,255,255,0), #fff);pointer-events:none;"></div>
+  </div>
+
+  <section style="padding:22px 0 0;">
+    <div style="padding:0 16px;">
+      <h2 class="h2" style="margin-bottom:6px;">Цены на молибден</h2>
+      <p style="margin:0 0 16px;font-size:15px;line-height:1.55;color:#414954;">152 позиции. Вся продукция на складе и готова к отгрузке.</p>
+    </div>
+    <!-- формы поставки — лента; касание = фильтр «Продукция» -->
+    <div class="hs">
+      <sc-for list="{{formTiles}}" as="ft" hint-placeholder-count="8">
+        <button type="button" onClick="{{ft.pick}}" aria-pressed="{{ft.pressed}}" style="flex:0 0 124px;padding:0;border:{{ft.border}};border-radius:6px;overflow:hidden;background:#fff;text-align:left;cursor:pointer;box-shadow:{{ft.shadow}};">
+          <sc-if value="{{ft.img}}" hint-placeholder-val="true"><img src="{{ft.img}}" alt="" style="width:100%;height:68px;object-fit:cover;display:block;"></sc-if>
+          <sc-if value="{{ft.noImg}}" hint-placeholder-val="false"><span style="width:100%;height:68px;background:#3E5D88;color:#fff;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24"><use href="#i-grid"/></svg></span></sc-if>
+          <span style="display:block;padding:8px 10px 10px;">
+            <span style="display:block;font-size:15px;font-weight:700;color:#232a33;">{{ft.name}}</span>
+            <span style="display:block;font-size:13px;color:#5b6572;margin-top:1px;">{{ft.count}}</span>
+            <span class="mono" style="display:block;font-size:13px;font-weight:700;color:{{ft.priceColor}};margin-top:1px;min-height:17px;">{{ft.from}}</span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+
+    <!-- фильтры A (моб.): одна кнопка → нижняя шторка с теми же полями -->
+    <div style="display:flex;align-items:center;gap:12px;margin:16px 16px 0;">
+      <button type="button" onClick="{{openFilters}}" style="display:flex;align-items:center;gap:8px;height:44px;padding:0 16px;border:1.5px solid #3E5D88;border-radius:4px;background:#fff;color:#2f4a6b;font-size:15px;font-weight:700;cursor:pointer;">
+        <svg width="18" height="18"><use href="#i-filter"/></svg>Фильтры
+        <sc-if value="{{hasActive}}" hint-placeholder-val="false"><span style="min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:#3E5D88;color:#fff;font-size:12.5px;display:flex;align-items:center;justify-content:center;">{{activeCount}}</span></sc-if>
+      </button>
+      <span style="font-size:15px;color:#5b6572;">Найдено: <b style="color:#232a33;">{{foundCount}}</b></span>
+      <sc-if value="{{hasActive}}" hint-placeholder-val="false"><button type="button" onClick="{{onReset}}" style="margin-left:auto;height:44px;padding:0;border:0;background:transparent;color:#2f4a6b;font-size:15px;font-weight:600;text-decoration:underline;cursor:pointer;">Сбросить</button></sc-if>
+    </div>
+
+    <!-- прайс C (моб.): группы-аккордеоны; строка = карточка в 2 строки -->
+    <sc-if value="{{markOn}}" hint-placeholder-val="false">
+    <div style="margin:12px 16px 0;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;background:#EAF1F8;border:1px solid #d6e2ef;border-radius:6px;font-size:15px;color:#1d2d44;">
+      <span style="flex:1;min-width:0;">Марка <b class="mono">{{markF}}</b> · {{markCountLabel}}</span>
+      <button type="button" onClick="{{clearMark}}" style="height:40px;padding:0 10px;border:0;background:transparent;font-size:15px;font-weight:700;color:#2f4a6b;text-decoration:underline;cursor:pointer;">Все марки</button>
+    </div>
+  </sc-if>
+  <div data-fx="results" id="price" style="scroll-margin-top: 70px;margin:12px 16px 0;border:1px solid #e1e5ea;border-radius:6px;overflow:hidden;">
+      <sc-for list="{{groups}}" as="gp" hint-placeholder-count="7">
+        <button type="button" onClick="{{gp.toggle}}" aria-expanded="{{gp.expanded}}" style="width:100%;display:flex;align-items:center;gap:10px;min-height:60px;padding:8px 14px;border:0;border-top:1px solid #e1e5ea;background:#f4f7fb;text-align:left;cursor:pointer;">
+          <svg width="16" height="16" style="color:#2f4a6b;flex-shrink:0;transform:rotate({{gp.rot}}); transition: transform .2s ease;"><use href="#i-chev"/></svg>
+          <span style="flex:1;min-width:0;">
+            <span style="display:block;font-size:17px;font-weight:700;color:#1d2d44;">{{gp.name}}</span>
+            <span style="display:block;font-size:13px;color:#5b6572;margin-top:1px;">{{gp.countLabel}} · {{gp.marks}}</span>
+          </span>
+          <span class="mono" style="font-size:14px;font-weight:700;color:{{gp.fromColor}};white-space:nowrap;">{{gp.from}}</span>
+        </button>
+        <sc-if value="{{gp.expandedB}}" hint-placeholder-val="false">
+          <sc-for list="{{gp.rows}}" as="pr" hint-placeholder-count="6">
+            <div data-fx="row" style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-top:1px solid #eceef1;background:{{pr.bg}};">
+              <div style="flex:1;min-width:0;">
+                <div class="mono" style="font-size:16px;font-weight:600;color:#232a33;">{{pr.sz}}</div>
+                <div style="font-size:13.5px;color:#5b6572;margin-top:2px;">{{pr.m}} · <sc-if value="{{pr.hasPrice}}" hint-placeholder-val="true"><b class="mono" style="color:#8f5316;">{{pr.priceText}} ₽/кг</b></sc-if><sc-if value="{{pr.noPrice}}" hint-placeholder-val="false">цена по запросу</sc-if></div>
+              </div>
+              <button type="button" onClick="{{pr.toggle}}" aria-pressed="{{pr.inReq}}" aria-label="{{pr.aria}}" style="flex-shrink:0;min-width:104px;height:40px;padding:0 12px;border-radius:4px;border:1.5px solid #EC9D47;background:{{pr.btnBg}};color:#1f2630;font-size:14px;font-weight:700;cursor:pointer;">{{pr.btnLabel}}</button>
+            </div>
+          </sc-for>
+          <sc-if value="{{gp.hasMore}}" hint-placeholder-val="false">
+            <button type="button" onClick="{{gp.showMore}}" style="width:100%;min-height:48px;padding:0 14px;border:0;border-top:1px solid #eceef1;background:#fff;color:#2f4a6b;font-size:15px;font-weight:600;text-align:left;cursor:pointer;">{{gp.moreLabel}}</button>
+          </sc-if>
+        </sc-if>
+      </sc-for>
+      <sc-if value="{{nothing}}" hint-placeholder-val="false">
+        <div style="padding:18px 14px;font-size:15px;line-height:1.5;color:#414954;">По этим условиям позиций нет. Сбросьте фильтр или оставьте заявку — изготовим или подберём.</div>
+      </sc-if>
+    </div>
+    <p style="margin:12px 16px 0;font-size:12.5px;line-height:1.55;color:#5b6572;">* Цены носят информационный характер и не являются офертой (ст. 435, 437 ГК РФ). Точную стоимость уточняйте у менеджеров.</p>
+  </section>
+
+  <!-- мини-калькулятор массы -->
+  <section id="calc-mo" style="margin:24px 16px 0;padding:16px;border-radius:6px;background:#fff;border:1px solid #d6e0ec;box-shadow:0 6px 16px -10px rgba(15,23,42,.25);">
+    <div style="font-size:18px;font-weight:700;">Масса изделия</div>
+    <div style="font-size:14px;color:#5b6572;margin-top:2px;">Молибден, плотность 10,2 г/см³</div>
+    <div role="group" aria-label="Профиль" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin-top:12px;border:1px solid #c7ced7;border-radius:4px;overflow:hidden;">
+      <button type="button" onClick="{{calcRound}}" aria-pressed="{{isRoundS}}" style="height:44px;border:0;background:{{roundBg}};color:{{roundColor}};font-size:15px;font-weight:600;cursor:pointer;">Пруток, проволока</button>
+      <button type="button" onClick="{{calcSheet}}" aria-pressed="{{isSheetS}}" style="height:44px;border:0;background:{{sheetBg}};color:{{sheetColor}};font-size:15px;font-weight:600;cursor:pointer;">Лист, фольга</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;">
+      <sc-for list="{{calcFields}}" as="cf" hint-placeholder-count="2">
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:15px;color:#414954;">{{cf.label}}<input inputmode="decimal" value="{{cf.value}}" onChange="{{cf.set}}" class="mono" style="width:128px;height:44px;padding:0 12px;border:1px solid #c7ced7;border-radius:4px;font-size:16px;text-align:right;"></label>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid #eceef1;"><span style="font-size:15px;color:#414954;">Масса</span><span class="mono" style="font-size:24px;font-weight:700;color:#1f3a5c;">{{massText}}</span></div>
+    <a href="#calc" style="display:flex;align-items:center;min-height:44px;margin-top:4px;font-size:15px;font-weight:600;color:#2f4a6b;">Полный калькулятор «Металлы и сплавы» →</a>
+  </section>
+
+  <!-- АНОНСЫ ДРУГИХ ВКЛАДОК (гибрид): свойства / фото / ГОСТы -->
+  <section style="padding:28px 16px 0;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;"><h2 class="h2" style="margin:0;font-size:20px;">Свойства</h2><a href="#opisanie" style="font-size:15px;font-weight:600;color:#2f4a6b;">Описание →</a></div>
+    <div style="margin-top:10px;border:1px solid #e1e5ea;border-radius:6px;overflow:hidden;">
+      <sc-for list="{{props}}" as="pz" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;padding:0 14px;border-top:1px solid #eceef1;font-size:15px;"><span style="color:#414954;">{{pz.k}}</span><span class="mono" style="font-weight:700;color:#232a33;text-align:right;">{{pz.v}}</span></div>
+      </sc-for>
+    </div>
+  </section>
+  <section style="padding:28px 0 0;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 16px;"><h2 class="h2" style="margin:0;font-size:20px;">Фото</h2><a href="#foto" style="font-size:15px;font-weight:600;color:#2f4a6b;">Все фото →</a></div>
+    <div class="hs" style="margin-top:10px;">
+      <sc-for list="{{photos}}" as="ph" hint-placeholder-count="6"><img src="{{ph}}" alt="" style="flex:0 0 150px;width:150px;height:112px;object-fit:cover;border-radius:6px;display:block;"></sc-for>
+    </div>
+  </section>
+  <section style="padding:28px 16px 0;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;"><h2 class="h2" style="margin:0;font-size:20px;">ГОСТы и ТУ</h2><a href="#gost" style="font-size:15px;font-weight:600;color:#2f4a6b;">Все →</a></div>
+    <div style="margin-top:10px;display:flex;flex-direction:column;gap:12px;">
+      <sc-for list="{{gosts}}" as="gs" hint-placeholder-count="3">
+        <a href="#gost" style="display:block;font-size:15px;line-height:1.4;color:#414954;"><b class="mono" style="font-size:14px;color:#1f3a5c;">{{gs.code}}</b><br>{{gs.title}}</a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- соседние материалы (карточка C) + связь -->
+  <section style="padding:28px 16px 32px;">
+    <h2 class="h2" style="font-size:20px;margin-bottom:10px;">Тугоплавкие металлы</h2>
+    <div style="border:1px solid #e1e5ea;border-radius:6px;overflow:hidden;">
+      <sc-for list="{{siblings}}" as="sb" hint-placeholder-count="4">
+        <a href="#material" style="display:flex;align-items:center;gap:12px;min-height:60px;padding:8px 14px;border-top:1px solid #eceef1;">
+          <img src="{{sb.img}}" alt="" style="width:56px;height:42px;object-fit:cover;border-radius:4px;display:block;flex-shrink:0;">
+          <span style="flex:1;font-size:16px;font-weight:600;">{{sb.name}}</span>
+          <svg width="16" height="16" style="color:#8b93a0;"><use href="#i-chev"/></svg>
+        </a>
+      </sc-for>
+    </div>
+    <div style="margin-top:20px;padding:16px;border-radius:6px;background:#f4f7fb;border:1px solid #e1e8f1;">
+      <div style="font-size:17px;font-weight:700;">Поможем подобрать</div>
+      <div style="font-size:15px;line-height:1.5;color:#414954;margin-top:4px;">Марку, размер или аналог — ответим на вопросы по молибдену.</div>
+      <a href="tel:+78002005275" class="mono" style="display:block;margin:10px 0 12px;font-size:19px;font-weight:700;color:#232a33;">+7 (800) 200-52-75</a>
+      <a href="#zayavka" class="btn btn-o">Задать вопрос</a>
+    </div>
+  </section>
+
+  <!-- ПАНЕЛЬ ЗАЯВКИ — липкая снизу, пока есть позиции; касание раскрывает шторку со списком -->
+  <sc-if value="{{hasReq}}" hint-placeholder-val="true">
+    <div data-fx="reqbar" style="position:sticky;bottom:0;z-index:25;padding:10px 12px 22px;background:linear-gradient(180deg, rgba(254,254,255,0), #fefeff 30%);">
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;border-radius:8px;background:#1d2d44;color:#fff;box-shadow:0 12px 24px -10px rgba(15,23,42,.6);">
+        <button type="button" onClick="{{openReq}}" aria-label="Показать позиции в заявке" style="flex:1;min-width:0;display:flex;align-items:center;gap:8px;height:44px;padding:0;border:0;background:transparent;color:#fff;text-align:left;cursor:pointer;">
+          <svg width="18" height="18" style="flex-shrink:0;"><use href="#i-up"/></svg>
+          <span data-fx="reqcount" style="display: inline-block; transform-origin: left center; font-size:15.5px;font-weight:700;">В заявке: {{reqCountLabel}}</span>
+        </button>
+        <a href="#zayavka" style="display:inline-flex;align-items:center;height:44px;padding:0 16px;border-radius:4px;background:#EC9D47;color:#1f2630;font-size:15px;font-weight:700;">Оформить</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ФУТЕР — как на десктопе v6, стопкой: каталог (группы выбранной схемы), сервисы, компания, контакты, знаки -->
+  <footer class="ftr" style="background:#232a33;color:#c9d0d9;padding:28px 16px 36px;">
+    <img src="/_blob/5a916be1eafd644ae6414495e0c6db8c" alt="«Метотехника»" style="width:189px;height:25px;display:block;margin-bottom:22px;">
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px;">
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Каталог</div>
+        <sc-for list="{{groupNames}}" as="gn" hint-placeholder-count="8"><a href="#catalog" style="font-size:14px;padding:6px 0;">{{gn}}</a></sc-for>
+      </div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">Сервисы</div>
+        <a href="#calc" style="font-size:14px;padding:6px 0;">Калькуляторы</a>
+        <a href="#board" style="font-size:14px;padding:6px 0;">Доска объявлений</a>
+        <a href="#articles" style="font-size:14px;padding:6px 0;">Статьи</a>
+        <a href="#gost" style="font-size:14px;padding:6px 0;">ГОСТы и ТУ</a>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin:14px 0 6px;">Компания</div>
+        <a href="#about" style="font-size:14px;padding:6px 0;">О компании</a>
+        <a href="#contacts" style="font-size:14px;padding:6px 0;">Контакты</a>
+      </div>
+    </div>
+    <div id="contacts" style="margin-top:22px;padding-top:20px;border-top:1px solid #3a434f;">
+      <a href="tel:+78002005275" class="mono" style="font-size:20px;font-weight:700;color:#fff;padding:0;">+7 (800) 200-52-75</a>
+      <div style="font-size:13px;color:#a3acb8;margin-top:2px;">Бесплатно по России</div>
+      <a href="tel:+74991667838" class="mono" style="font-size:15px;margin-top:10px;padding:4px 0;">+7 (499) 166-78-38</a><a href="tel:+74955049554" class="mono" style="font-size:15px;padding:4px 0;">+7 (495) 504-95-54</a><a href="tel:+74956424195" class="mono" style="font-size:15px;padding:4px 0;">+7 (495) 642-41-95</a>
+      <a href="mailto:info@metotech.ru" style="color:#F3B877;padding:4px 0;">info@metotech.ru</a>
+      <div style="font-size:14px;line-height:1.5;margin-top:6px;">105187, Москва, ул. Кирпичная, д. 32, корп. 24<br>Пн–пт 9:00–17:00</div>
+    </div>
+    <div style="margin-top:22px;padding-top:16px;border-top:1px solid #3a434f;font-size:12.5px;line-height:1.6;color:#a3acb8;">© ООО «НПК «Метотехника». Товарные знаки № 969349, № 974088.<br>СМК соответствует ГОСТ Р ИСО 9001-2015.</div>
+  </footer>
+
+</div><!-- /scroll -->
+
+<!-- МЕНЮ (бургер) — мобильный эквивалент бокового меню v6: «Продукция» + разделы сайта; внизу — то, что на десктопе в верхнем ярусе шапки (адрес, часы, почта, EN) -->
+<sc-if value="{{isMenu}}" hint-placeholder-val="false">
+  <div class="overlay ov-left{{leaveCls}}" role="dialog" aria-label="Меню">
+    <div class="ovh">
+      <img src="/_blob/5a916be1eafd644ae6414495e0c6db8c" alt="«Метотехника»" style="width:189px;height:25px;display:block;">
+      <span style="flex:1;"></span>
+      <button type="button" class="ib" aria-label="Закрыть меню" onClick="{{closeAll}}"><svg width="24" height="24"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="ovb">
+      <div style="padding:16px;">
+        <button type="button" class="btn btn-blue" onClick="{{openProd}}" style="justify-content:space-between;padding:0 16px;height:54px;font-size:17px;">
+          <span style="display:flex;align-items:center;gap:12px;"><svg width="22" height="22"><use href="#i-grid"/></svg>Продукция</span>
+          <svg width="18" height="18"><use href="#i-chev"/></svg>
+        </button>
+        <div style="font-size:13.5px;color:#5b6572;margin-top:6px;padding:0 2px;">Металлы и сплавы — весь каталог и поиск по марке</div>
+      </div>
+      <a href="#calc" class="row" style="font-weight:700;color:#1f3a5c;"><span style="display:flex;color:#3E5D88;"><svg width="22" height="22"><use href="#i-calc"/></svg></span>Калькуляторы</a>
+      <sc-for list="{{calculators}}" as="mc" hint-placeholder-count="3">
+        <a href="#calc" style="display:flex;align-items:center;min-height:44px;padding:0 16px 0 50px;font-size:15px;color:#414954;">{{mc.title}}</a>
+      </sc-for>
+      <a href="#board" class="row" style="font-weight:600;"><span style="display:flex;color:#3E5D88;"><svg width="22" height="22"><use href="#i-board"/></svg></span>Доска объявлений</a>
+      <a href="#articles" class="row" style="font-weight:600;"><span style="display:flex;color:#3E5D88;"><svg width="22" height="22"><use href="#i-doc"/></svg></span>Статьи</a>
+      <a href="#gost" class="row" style="font-weight:600;"><span style="display:flex;color:#3E5D88;"><svg width="22" height="22"><use href="#i-gost"/></svg></span>ГОСТы и ТУ</a>
+      <a href="#about" class="row" style="font-weight:600;"><span style="display:flex;color:#3E5D88;"><svg width="22" height="22"><use href="#i-info"/></svg></span>О компании</a>
+      <a href="#contacts" class="row" style="font-weight:600;border-bottom:1px solid #eceef1;"><span style="display:flex;color:#3E5D88;"><svg width="22" height="22"><use href="#i-phone"/></svg></span>Контакты</a>
+      <div style="margin:16px;padding:18px 16px;border-radius:6px;background:#f4f7fb;border:1px solid #e1e8f1;">
+        <a href="tel:+78002005275" class="mono" style="display:block;font-size:20px;font-weight:700;color:#232a33;">+7 (800) 200-52-75</a>
+        <div style="font-size:13px;color:#5b6572;margin-top:2px;">Бесплатно по России</div>
+        <a href="tel:+74991667838" class="mono" style="display:block;margin-top:10px;font-size:15px;color:#232a33;">+7 (499) 166-78-38</a><a href="tel:+74955049554" class="mono" style="display:block;font-size:15px;color:#232a33;">+7 (495) 504-95-54</a><a href="tel:+74956424195" class="mono" style="display:block;font-size:15px;color:#232a33;">+7 (495) 642-41-95</a>
+        <a href="mailto:info@metotech.ru" style="display:block;margin-top:6px;font-size:15px;color:#2f4a6b;font-weight:600;">info@metotech.ru</a>
+        <div style="display:flex;gap:8px;margin-top:10px;font-size:14px;line-height:1.45;color:#414954;"><span style="display:flex;color:#3E5D88;flex-shrink:0;"><svg width="18" height="18"><use href="#i-pin"/></svg></span><span>Москва, ул. Кирпичная, д. 32, корп. 24 · пн–пт 9:00–17:00</span></div>
+        <a href="#zayavka" onClick="{{closeAll}}" class="btn btn-o" style="margin-top:16px;">Оставить заявку</a>
+      </div>
+      <div style="display:flex;justify-content:center;padding:0 16px 28px;"><a href="#en" lang="en" style="display:inline-flex;align-items:center;height:44px;padding:0 16px;font-size:15px;font-weight:700;color:#2f4a6b;">English version · EN</a></div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ЭКРАН «ПРОДУКЦИЯ» — мобильная версия панели v5/v6: поле поиска сверху (в фокусе), фильтрует на лету по названию и марке (латиница → кириллица), «Популярные» лентой, весь каталог списком; марок в списке нет. Группировка — твик grouping (8 / 4, не согласовано). -->
+<sc-if value="{{isProd}}" hint-placeholder-val="false">
+  <div class="overlay{{leaveCls}}" role="dialog" aria-label="Продукция" style="background:#EEF4FA;">
+    <div class="ovh" style="background:#EEF4FA;border-bottom-color:#d3e0ee;padding-right:12px;">
+      <button type="button" class="ib" aria-label="Назад" onClick="{{closeAll}}"><svg width="24" height="24"><use href="#i-back"/></svg></button>
+      <label style="flex:1;display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;background:#fff;border:2px solid #3E5D88;border-radius:4px;box-shadow:0 0 0 3px #D6E5F4;">
+        <svg width="18" height="18" style="color:#3E5D88;flex-shrink:0;"><use href="#i-search"/></svg>
+        <input type="search" aria-label="Поиск материала" value="{{q}}" onChange="{{onQuery}}" onKeyDown="{{onSearchKey}}" enterkeyhint="go" placeholder="Материал или марка" style="flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:16px;color:#232a33;">
+      </label>
+    </div>
+    <div class="ovb">
+      <sc-if value="{{showPopular}}" hint-placeholder-val="true">
+        <div class="lbl" style="padding:18px 16px 10px;color:#4a5a6e;">Популярные</div>
+        <div class="hs">
+          <sc-for list="{{popular}}" as="pp" hint-placeholder-count="7">
+            <a href="#material" style="flex:0 0 112px;background:#fff;border:1px solid #d6e2ef;border-radius:6px;overflow:hidden;">
+              <img src="{{pp.img}}" alt="" style="width:112px;height:72px;object-fit:cover;display:block;">
+              <div style="padding:8px 10px 10px;font-size:15px;font-weight:700;color:#232a33;">{{pp.name}}</div>
+            </a>
+          </sc-for>
+        </div>
+      </sc-if>
+      <!-- МАРКИ — строка ведёт сразу в прайс с фильтром по марке, чипы — ещё и по форме -->
+      <sc-if value="{{hasMarkHits}}" hint-placeholder-val="false">
+        <div class="lbl" style="padding:18px 16px 6px;color:#4a5a6e;">{{markHitsLabel}}</div>
+        <sc-for list="{{markHitsView}}" as="mh" hint-placeholder-count="2">
+          <div style="margin:8px 16px 0;background:#fff;border:1px solid #d6e2ef;border-radius:6px;padding:10px 14px 12px;">
+            <a href="{{mh.href}}" onClick="{{mh.go}}" data-mark-hit="1" style="display:flex;align-items:center;gap:10px;min-height:44px;">
+              <span style="flex:1;min-width:0;">
+                <span class="mono" style="display:block;font-size:17px;font-weight:700;color:#1d2d44;">{{mh.m}}</span>
+                <span style="display:block;font-size:14px;color:#414954;margin-top:2px;">{{mh.mat}} · {{mh.nLabel}} · <b class="mono" style="color:#8f5316;">{{mh.from}}</b></span>
+              </span>
+              <svg width="16" height="16" style="color:#8b93a0;flex-shrink:0;"><use href="#i-chev"/></svg>
+            </a>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+              <sc-for list="{{mh.forms}}" as="mf" hint-placeholder-count="3">
+                <a href="{{mf.href}}" onClick="{{mf.go}}" style="display:inline-flex;align-items:center;height:36px;padding:0 12px;border:1px solid #d6e2ef;border-radius:4px;font-size:14.5px;color:#1f3a5c;">{{mf.label}}</a>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{markHitsMore}}" hint-placeholder-val="false">
+          <button type="button" onClick="{{showAllMarks}}" style="margin:6px 16px 0;height:44px;padding:0;border:0;background:transparent;font-size:15px;font-weight:700;color:#1f3a5c;cursor:pointer;">Ещё марок: {{markMoreN}}</button>
+        </sc-if>
+      </sc-if>
+      <div class="lbl" style="padding:22px 16px 6px;color:#4a5a6e;">{{catalogTitle}}</div>
+      <sc-for list="{{groupsView}}" as="gv" hint-placeholder-count="8">
+        <div style="margin:8px 16px 0;background:#fff;border:1px solid #d6e2ef;border-radius:6px;overflow:hidden;">
+          <div style="padding:12px 14px 8px;font-size:15px;font-weight:700;color:#1f3a5c;">{{gv.name}}</div>
+          <sc-for list="{{gv.items}}" as="gi" hint-placeholder-count="4">
+            <a href="#material" style="display:flex;align-items:center;justify-content:space-between;min-height:48px;padding:0 14px;border-top:1px solid #eef1f5;font-size:16px;color:#232a33;">{{gi.label}}<svg width="16" height="16" style="color:#8b93a0;"><use href="#i-chev"/></svg></a>
+          </sc-for>
+        </div>
+      </sc-for>
+      <sc-if value="{{nothingFound}}" hint-placeholder-val="false">
+        <div style="margin:8px 16px 0;padding:18px 16px;background:#fff;border:1px solid #d6e2ef;border-radius:6px;font-size:16px;line-height:1.5;color:#414954;">По запросу «{{q}}» в каталоге ничего нет. Оставьте заявку — подберём материал или аналог.</div>
+      </sc-if>
+      <div style="padding:22px 16px 32px;">
+        <div style="font-size:15px;color:#414954;margin-bottom:10px;">Не нашли нужное? Подберём.</div>
+        <a href="#zayavka" onClick="{{closeAll}}" class="btn btn-o">Оставить заявку</a>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ШТОРКА ФИЛЬТРОВ (фильтры A на телефоне): продукция и марка — чипами, размер — полями, «только с ценой» -->
+<sc-if value="{{isFilters}}" hint-placeholder-val="false">
+  <div class="backdrop{{leaveCls}}" onClick="{{closeAll}}"></div>
+  <div class="sheet{{leaveCls}}" role="dialog" aria-label="Фильтры">
+    <div class="grab"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 8px 16px;">
+      <div style="font-size:19px;font-weight:700;">Фильтры</div>
+      <button type="button" class="ib" aria-label="Закрыть" onClick="{{closeAll}}"><svg width="22" height="22"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="ovb" style="padding:0 16px 8px;">
+      <div class="lbl" style="margin:6px 0 10px;">Продукция</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <sc-for list="{{prodChips}}" as="pc" hint-placeholder-count="8"><button type="button" class="chip" onClick="{{pc.pick}}" aria-pressed="{{pc.pressed}}" style="border:{{pc.border}};background:{{pc.bg}};color:{{pc.color}};">{{pc.label}}</button></sc-for>
+      </div>
+      <div class="lbl" style="margin:20px 0 10px;">Марка</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <sc-for list="{{markChips}}" as="mk" hint-placeholder-count="6"><button type="button" class="chip mono" onClick="{{mk.pick}}" aria-pressed="{{mk.pressed}}" style="border:{{mk.border}};background:{{mk.bg}};color:{{mk.color}};">{{mk.label}}</button></sc-for>
+      </div>
+      <div class="lbl" style="margin:20px 0 10px;">Ø / толщина, мм</div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;">
+        <input aria-label="Размер от, мм" inputmode="decimal" class="inp mono" value="{{sizeFrom}}" onChange="{{onFrom}}" placeholder="от">
+        <input aria-label="Размер до, мм" inputmode="decimal" class="inp mono" value="{{sizeTo}}" onChange="{{onTo}}" placeholder="до">
+      </div>
+      <label style="display:flex;align-items:center;gap:12px;min-height:52px;margin-top:12px;font-size:16px;color:#232a33;cursor:pointer;"><input type="checkbox" checked="{{pricedOnly}}" onChange="{{onPriced}}" style="width:22px;height:22px;accent-color:#3E5D88;">Только позиции с ценой</label>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;padding:12px 16px 30px;border-top:1px solid #eceef1;">
+      <button type="button" class="btn btn-b" onClick="{{onReset}}">Сбросить</button>
+      <button type="button" class="btn btn-blue" onClick="{{closeAll}}">Показать {{foundCount}}</button>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ШТОРКА ЗАЯВКИ — список выбранных позиций, удаление, оформление -->
+<sc-if value="{{isReq}}" hint-placeholder-val="false">
+  <div class="backdrop{{leaveCls}}" onClick="{{closeAll}}"></div>
+  <div class="sheet{{leaveCls}}" role="dialog" aria-label="Заявка">
+    <div class="grab"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 8px 16px;">
+      <div data-fx="reqcount" style="display: inline-block; transform-origin: left center; font-size:19px;font-weight:700;">В заявке: {{reqCountLabel}}</div>
+      <button type="button" class="ib" aria-label="Закрыть" onClick="{{closeAll}}"><svg width="22" height="22"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="ovb">
+      <sc-for list="{{reqItems}}" as="ri" hint-placeholder-count="2">
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 8px 10px 16px;border-top:1px solid #eceef1;">
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:16px;font-weight:600;">{{ri.title}}</div>
+            <div style="font-size:14px;color:#5b6572;margin-top:2px;"><span class="mono">{{ri.sz}}</span> · <span class="mono" style="color:{{ri.priceColor}};font-weight:700;">{{ri.price}}</span></div>
+          </div>
+          <button type="button" class="ib" aria-label="{{ri.aria}}" onClick="{{ri.remove}}" style="color:#5b6572;"><svg width="20" height="20"><use href="#i-close"/></svg></button>
+        </div>
+      </sc-for>
+      <sc-if value="{{noReq}}" hint-placeholder-val="false"><div style="padding:18px 16px;font-size:15px;color:#5b6572;">Заявка пуста — добавьте позиции из прайса.</div></sc-if>
+    </div>
+    <div style="padding:12px 16px 30px;border-top:1px solid #eceef1;display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;line-height:1.45;color:#5b6572;">Менеджер уточнит наличие, количество и итоговую цену и перезвонит в рабочее время.</div>
+      <a href="#zayavka" class="btn btn-o">Оформить заявку</a>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ШТОРКА «ПОЗВОНИТЬ» — иконка трубки в шапке открывает все номера (с contact.htm), почту и часы -->
+<sc-if value="{{isPhones}}" hint-placeholder-val="false">
+  <div class="backdrop{{leaveCls}}" onClick="{{closeAll}}"></div>
+  <div class="sheet{{leaveCls}}" role="dialog" aria-label="Позвонить">
+    <div class="grab"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 8px 4px 16px;">
+      <div style="font-size:19px;font-weight:700;">Позвонить</div>
+      <button type="button" class="ib" aria-label="Закрыть" onClick="{{closeAll}}"><svg width="22" height="22"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="ovb">
+      <a href="tel:+78002005275" class="row" style="justify-content:space-between;min-height:56px;"><span class="mono" style="font-size:18px;font-weight:700;color:#232a33;">+7 (800) 200-52-75</span><span style="font-size:14px;color:#5b6572;">бесплатно по России</span></a>
+      <a href="tel:+74991667838" class="row" style="justify-content:space-between;min-height:56px;"><span class="mono" style="font-size:18px;font-weight:700;color:#232a33;">+7 (499) 166-78-38</span><span style="font-size:14px;color:#5b6572;">Москва</span></a>
+      <a href="tel:+74955049554" class="row" style="justify-content:space-between;min-height:56px;"><span class="mono" style="font-size:18px;font-weight:700;color:#232a33;">+7 (495) 504-95-54</span><span style="font-size:14px;color:#5b6572;">Москва</span></a>
+      <a href="tel:+74956424195" class="row" style="justify-content:space-between;min-height:56px;"><span class="mono" style="font-size:18px;font-weight:700;color:#232a33;">+7 (495) 642-41-95</span><span style="font-size:14px;color:#5b6572;">Москва</span></a>
+      <a href="mailto:info@metotech.ru" class="row" style="color:#2f4a6b;font-weight:600;">info@metotech.ru</a>
+      <div style="padding:12px 16px 30px;border-top:1px solid #eceef1;font-size:14px;line-height:1.5;color:#5b6572;">Пн–пт 9:00–17:00 · Москва, ул. Кирпичная, д. 32, корп. 24</div>
+    </div>
+  </div>
+</sc-if>
+</div><!-- /screen -->
+<div class="homebar"></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"screen":{"editor":"enum","options":["Страница","Фильтры","Заявка","Меню","Продукция"],"default":"Фильтры"},"grouping":{"editor":"enum","options":["8 мелких групп","4 крупные группы"],"default":"8 мелких групп"},"$preview":{"width":470,"height":970}}'>
+class Component extends DCLogic {
+  // ---- Анимации (WAAPI): смена вкладки, фильтров, фото, добавление в заявку; полоска активной вкладки ----
+  fxReduce() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  fxRun(name, frames, opts) {
+    const root = this._root;
+    if (!root || this.fxReduce()) return;
+    root.querySelectorAll('[data-fx="' + name + '"]').forEach((el) => { if (el.animate) el.animate(frames, Object.assign({ duration: 220, easing: 'cubic-bezier(.2,.7,.3,1)' }, opts || {})); });
+  }
+  fxTabInd(instant) {
+    const root = this._root;
+    if (!root) return;
+    const ind = root.querySelector('[data-fx="tabind"]');
+    const t = root.querySelector('[role="tab"][aria-selected="true"]');
+    if (!ind || !t) return;
+    if (instant || this.fxReduce()) ind.style.transition = 'none';
+    ind.style.width = t.offsetWidth + 'px';
+    ind.style.transform = 'translateX(' + t.offsetLeft + 'px)';
+    ind.style.opacity = '1';
+    if (instant) { void ind.offsetWidth; ind.style.transition = ''; }
+  }
+  fxMount() {
+    this.fxTabInd(true);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.fxTabInd(true));
+  }
+  componentDidUpdate(pp, ps) {
+    const st = this.state || {};
+    ps = ps || {};
+    const sig = (s) => [s.prod, s.mark, s.from, s.to, s.priced].join('|');
+    const gsig = (s) => [s.gq, s.gt].join('|');
+    // пока заявку не трогали, в ней 2 позиции по умолчанию (как в renderVals)
+    const reqN = (s) => (s.req ? Object.keys(s.req).filter((k) => s.req[k]).length : 2);
+    // смена вкладки: проявляем содержимое, но не плашку заявки — она остаётся на месте
+    if (st.tab !== ps.tab && this._root && !this.fxReduce()) {
+      this._root.querySelectorAll('[data-fx="tabbody"]').forEach((box) => Array.from(box.children).forEach((el) => {
+        if (el.getAttribute('data-fx') !== 'reqbar' && el.animate) el.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.2,.7,.3,1)' });
+      }));
+    }
+    if (sig(st) !== sig(ps)) this.fxRun('results', [{ opacity: 0.35, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }]);
+    if (gsig(st) !== gsig(ps)) this.fxRun('gostlist', [{ opacity: 0.35 }, { opacity: 1 }], { duration: 180 });
+    if (st.photo !== ps.photo && st.tab === ps.tab) this.fxRun('photo', [{ opacity: 0 }, { opacity: 1 }], { duration: 240 });
+    if (st.req !== ps.req && reqN(ps) === 0 && reqN(st) > 0) this.fxRun('reqbar', [{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 280 });
+    else if (st.req !== ps.req && reqN(st) > reqN(ps)) this.fxRun('reqcount', [{ transform: 'scale(1)' }, { transform: 'scale(1.14)' }, { transform: 'scale(1)' }], { duration: 320 });
+    this.fxTabInd(false);
+  }
+  componentDidMount() { this.fxMount(); }
+  renderVals() {
+    const st = this.state || {};
+    // экран: страница или открытое состояние (твик screen задаёт стартовое; в Play переключается касаниями)
+    const screen = st.screen ?? (this.props.screen ?? 'Фильтры');
+    const go = (s) => () => this.setState({ screen: s });
+    const openMenu = go('Меню');
+    const openProd = go('Продукция');
+    // закрытие оверлея/шторки: сначала анимация ухода (190 мс), потом смена экрана
+    const closeAll = () => {
+      if (this._leaving) return;
+      if (this.fxReduce()) { this.setState({ screen: 'Страница' }); return; }
+      this._leaving = true;
+      this.setState({ leaving: true });
+      setTimeout(() => { this._leaving = false; this.setState({ screen: 'Страница', leaving: false }); }, 190);
+    };
+    const leaveCls = st.leaving ? ' is-leaving' : '';
+    const openPhones = go('Телефоны');
+    const isPhones = screen === 'Телефоны';
+    const rootRef = this._rootRef || (this._rootRef = (el) => { this._root = el; });
+    const isMenu = screen === 'Меню';
+    const isProd = screen === 'Продукция';
+
+    const calculators = [
+      { title: 'Металлы и сплавы', desc: 'Масса по длине и длина по массе — для любого профиля и сплава', top: true },
+      { title: 'Спирали', desc: 'Мощность и длина спиралей из жаростойких сплавов', top: false },
+      { title: 'Нагреватели', desc: 'Размеры и масса нагревателей печей по мощности', top: false }
+    ];
+
+    // каталог: все 26 позиций меню сайта; две схемы группировки (обе не согласованы) — твик grouping
+    const grades = { 'Нихром': 'Х20Н80', 'Фехраль': 'Х23Ю5Т', 'Титан': 'ВТ1-0', 'Вольфрам': 'ВА', 'Молибден': 'МЧ', 'Никель': 'НП2' };
+    const schemes = {
+      '8 мелких групп': [
+        { name: 'Нагревательные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции'] },
+        { name: 'Термопары и прецизионные сплавы', items: ['Термопары', 'Термопары нагревостойкие', 'Константан', 'Прецизионные сплавы'] },
+        { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений'] },
+        { name: 'Титан и цирконий', items: ['Титан', 'Цирконий'] },
+        { name: 'Никель и медно-никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор'] },
+        { name: 'Стали и жаропрочные сплавы', items: ['Нержавеющая сталь', 'Жаропрочные сплавы'] },
+        { name: 'Другие металлы', items: ['Кобальт', 'Хром', 'Ванадий', 'Олово'] },
+        { name: 'Порошки, твёрдые сплавы, ферросплавы', items: ['Порошки металлов', 'Твёрдые сплавы', 'Ферросплавы'] }
+      ],
+      '4 крупные группы': [
+        { name: 'Прецизионные сплавы', items: ['Нихром', 'Фехраль', 'Нихром в изоляции', 'Константан', 'Термопары', 'Термопары нагревостойкие'] },
+        { name: 'Тугоплавкие металлы', items: ['Вольфрам', 'Молибден', 'Тантал', 'Ниобий', 'Рений', 'Хром'] },
+        { name: 'Никелевые сплавы', items: ['Никель', 'Монель', 'Мельхиор', 'Кобальт', 'Жаропрочные сплавы'] },
+        { name: 'Прочие материалы', items: ['Титан', 'Цирконий', 'Олово', 'Ванадий', 'Нержавеющая сталь', 'Твёрдые сплавы', 'Порошки металлов', 'Ферросплавы'] }
+      ]
+    };
+    const scheme = schemes[this.props.grouping] || schemes['8 мелких групп'];
+    const groupNames = scheme.map((g) => g.name);
+
+    const q = st.q ?? '';
+    const onQuery = (e) => this.setState({ q: e.target.value });
+    const lat = { a: 'а', b: 'в', c: 'с', e: 'е', h: 'н', k: 'к', m: 'м', o: 'о', p: 'р', t: 'т', x: 'х', y: 'у' };
+    const norm = (t) => t.toLowerCase().replace(/[a-z]/g, (ch) => lat[ch] || ch).replace(/ё/g, 'е');
+    const nq = norm(q.trim());
+    // ПОИСК ПО МАРКЕ. Индекс — реальный прайс (Django-импорт; молибден — строки этой доски): [марка, материал, позиций, цена «от», формы].
+    // Нормализация: регистр, латиница → кириллица, пробелы/дефисы/точки не важны («x20 h80» = Х20Н80). Порядок: точное совпадение → начало марки → вхождение.
+    const MARKS = [["Х20Н80","Нихром",135,"от 4 950 ₽/кг",["Лента","Проволока","Пруток","Спираль"]],["ТВЧ","Тантал",128,"от 70 200 ₽/кг",["Лист","Труба","Проволока","Пруток","Лента","Фольга"]],["Х23Ю5Т","Фехраль",102,"от 1 600 ₽/кг",["Лента","Проволока","Спираль","Пруток"]],["НП2","Никель",100,"цена по запросу",["Лента","Проволока","Труба","Пруток","Лист","Полоса"]],["МЧ","Молибден",94,"от 17 500 ₽/кг",["Пруток","Проволока","Лист","Труба","Фольга"]],["ВТ1-0","Титан",73,"от 1 880 ₽/кг",["Пруток","Плита","Лист","Труба","Фольга"]],["29НК-ВИ","Прецизионные сплавы",72,"цена по запросу",["Труба","Лента","Пруток","Проволока","Лист","Фольга"]],["Нб","Ниобий",66,"от 31 800 ₽/кг",["Лист","Проволока","Пруток","Лента","Труба","Фольга"]],["КЭНВЛ НХ 300","Нихром в изоляции",44,"от 607 ₽/м",["Лента"]],["ВА","Вольфрам",42,"от 15 300 ₽/кг",["Проволока","Пруток"]],["КЭНВ НХ 300","Нихром в изоляции",42,"от 475 ₽/м",["Проволока","Лента"]],["МЧВП","Молибден",37,"от 17 700 ₽/кг",["Пруток"]],["Х15Н60","Нихром",32,"от 4 700 ₽/кг",["Проволока","Лента"]],["МНМц 40-1,5","Константан",29,"от 7 500 ₽/кг",["Проволока","Лента"]],["36НХТЮ","Прецизионные сплавы",25,"цена по запросу",["Лента","Труба","Пруток","Проволока","Лист"]],["НМЖМц 28-2,5-1,5","Монель",24,"от 5 900 ₽/кг",["Пруток","Проволока","Лента"]],["КЭНВЛ НХ 600","Нихром в изоляции",22,"от 1 175 ₽/м",["Лента"]],["КЭНВЛ НХ 1000","Нихром в изоляции",22,"от 1 275 ₽/м",["Лента"]],["ВТ3-1","Титан",22,"от 2 150 ₽/кг",["Пруток"]],["В-МП","Вольфрам",21,"цена по запросу",["Лист"]],["КЭНВ НХ 600","Нихром в изоляции",21,"от 925 ₽/м",["Проволока","Лента"]],["КЭНВ НХ 1000","Нихром в изоляции",21,"от 990 ₽/м",["Проволока","Лента"]],["ВТ9","Титан",21,"от 2 150 ₽/кг",["Пруток"]],["Монель 400","Монель",19,"от 5 900 ₽/кг",["Лист","Пруток","Труба"]],["Э110","Цирконий",19,"от 14 900 ₽/кг",["Лист","Пруток","Труба"]],["ВнПл-1","Ванадий",17,"от 48 000 ₽/кг",["Лист"]],["ВЛ","Вольфрам",16,"от 15 800 ₽/кг",["Пруток","Проволока"]],["О1","Олово",16,"от 3 800 ₽/кг",["Пруток","Проволока","Анод","Слиток"]],["ЦМ2А","Молибден",16,"от 19 500 ₽/кг",["Лист"]],["79НМ","Прецизионные сплавы",15,"цена по запросу",["Лента","Фольга","Шайба","Пруток"]],["ВТ1-00св","Титан",15,"от 4 200 ₽/кг",["Проволока"]],["ОТ4","Титан",15,"от 2 150 ₽/кг",["Пруток","Лист"]],["ХН78Т (ЭИ 435)","Жаропрочные сплавы",14,"от 9 500 ₽/кг",["Труба","Лента","Лист","Проволока","Пруток"]],["Э100","Цирконий",13,"от 12 800 ₽/кг",["Лента","Лист","Пруток","Плита","Фольга"]],["Э125","Цирконий",13,"от 12 800 ₽/кг",["Пруток","Труба","Плита"]],["ВТ16","Титан",10,"от 3 150 ₽/кг",["Винт","Пруток"]],["ВТ20","Титан",10,"от 2 150 ₽/кг",["Пруток","Лист"]],["AISI 304 (08Х18Н9)","Нержавеющая сталь",9,"от 360 ₽/шт",["Труба","Отвод","Лента"]],["ВТ5","Титан",9,"от 2 150 ₽/кг",["Пруток"]],["ХН32Т (ЭП 670)","Жаропрочные сплавы",8,"цена по запросу",["Труба","Пруток"]],["МНЖМц 30-1-1","Мельхиор",8,"от 1 500 ₽/кг",["Труба","Пруток"]],["12Х18Н10Т","Нержавеющая сталь",8,"цена по запросу",["Проволока","Пруток"]],["НПА1 (анод)","Никель",8,"цена по запросу",["Лист"]],["Х20Н80-ВИ","Нихром",8,"цена по запросу",["Нить"]],["80НХС","Прецизионные сплавы",8,"цена по запросу",["Лента","Фольга","Пруток"]],["НМцАК 2-2-1","Термопары",8,"от 7 880 ₽/кг",["Проволока","Пруток"]],["НХ 9,5","Термопары",8,"от 7 880 ₽/кг",["Проволока","Пруток"]],["ВТ6","Титан",8,"от 2 200 ₽/кг",["Пруток"]],["ЦН25","Цирконий",8,"от 32 500 ₽/кг",["Лист","Пруток"]],["К1","Кобальт",7,"от 25 000 ₽/кг",["Проволока","Пруток"]],["МНМц 43-0,5","Термопары",7,"от 6 800 ₽/кг",["Проволока"]],["ОТ4-1","Титан",7,"от 2 200 ₽/кг",["Лист","Пруток"]],["ВнП-1","Ванадий",6,"от 36 000 ₽/кг",["Пруток"]],["29НК","Прецизионные сплавы",6,"цена по запросу",["Проволока","Лента"]],["32НКД","Прецизионные сплавы",6,"от 4 000 ₽/кг",["Пруток"]],["50Н","Прецизионные сплавы",6,"цена по запросу",["Лента"]],["ПТН-1100 ХА","Термопары нагревостойкие",6,"от 873 ₽/м",["Провод"]],["ПТН-800 ХК","Термопары нагревостойкие",6,"от 874 ₽/м",["Провод"]],["ПТН-1100 ОХ","Термопары нагревостойкие",6,"от 315 ₽/м",["Провод"]],["ПТН-1100 ОА","Термопары нагревостойкие",6,"от 315 ₽/м",["Провод"]],["ПТН-800 ОК","Термопары нагревостойкие",6,"от 315 ₽/м",["Провод"]],["ВР5/ВР20","Вольфрам",5,"от 2 350 ₽/м",["Проволока","Термопара"]],["ВР5/20","Вольфрам",5,"от 2 350 ₽/м",["Проволока","Термопара"]],["ХН60ВТ (ЭИ 868)","Жаропрочные сплавы",5,"цена по запросу",["Труба","Лист"]],["ПК-1у","Кобальт",5,"от 13 500 ₽/кг",["Порошок"]],["Монель К500","Монель",5,"цена по запросу",["Пруток"]],["ВР-27ВП","Вольфрам",4,"от 238 000 ₽/кг",["Пруток"]],["СВИ","Вольфрам",4,"от 17 900 ₽/кг",["Пруток"]],["ХН65МВ (ЭП 567)","Жаропрочные сплавы",4,"цена по запросу",["Проволока","Пруток","Труба"]],["ХН35ВТ (ЭИ 612)","Жаропрочные сплавы",4,"цена по запросу",["Пруток"]],["ХН65МВУ (ЭП 760)","Жаропрочные сплавы",4,"от 7 500 ₽/кг",["Пруток","Труба"]],["МН19","Мельхиор",4,"от 5 400 ₽/кг",["Лист","Лента"]],["Х23Ю5Т","Прецизионные сплавы",4,"от 1 500 ₽/кг",["Проволока"]],["Х27Ю5Т","Прецизионные сплавы",4,"от 1 500 ₽/кг",["Проволока"]],["ВТ8","Титан",4,"от 2 150 ₽/кг",["Пруток"]],["ВТ22","Титан",4,"от 2 150 ₽/кг",["Пруток"]],["ВнПр-1","Ванадий",3,"от 54 000 ₽/кг",["Проволока"]],["ВнМ-1","Ванадий",3,"от 15 600 ₽/кг",["Слиток"]],["ВР-27ЗВП","Вольфрам",3,"от 314 500 ₽/кг",["Проволока"]],["ЭВЛ","Вольфрам",3,"от 16 800 ₽/кг",["Пруток"]],["К1АУ","Кобальт",3,"от 6 200 ₽/кг",["Слиток"]],["НП0эви","Никель",3,"цена по запросу",["Лента"]],["40КХНМ","Прецизионные сплавы",3,"цена по запросу",["Проволока","Лента"]],["49К2ФА-ВИ","Прецизионные сплавы",3,"цена по запросу",["Пруток","Лента","Полоса"]],["50НП","Прецизионные сплавы",3,"цена по запросу",["Фольга"]],["ВТ14","Титан",3,"от 2 150 ₽/кг",["Пруток"]],["ПТ3В","Титан",3,"от 2 100 ₽/кг",["Пруток","Лист"]],["ПВТ","Вольфрам",2,"от 8 700 ₽/кг",["Порошок"]],["W 99,95%","Вольфрам",2,"от 8 700 ₽/кг",["Порошок"]],["06Х15Н60М15 (ЭП 367)","Жаропрочные сплавы",2,"цена по запросу",["Проволока"]],["ХН60ВТ (ЭИ868)","Жаропрочные сплавы",2,"цена по запросу",["Проволока"]],["36НХТЮ (ЭИ 702)","Жаропрочные сплавы",2,"цена по запросу",["Пруток","Труба"]],["ХН45Ю (ЭП 747)","Жаропрочные сплавы",2,"цена по запросу",["Лист"]],["ЭП718ИД","Жаропрочные сплавы",2,"цена по запросу",["Лист"]],["29НК","Жаропрочные сплавы",2,"цена по запросу",["Труба"]],["ХН60Ю (Инконель 601)","Жаропрочные сплавы",2,"цена по запросу",["Труба"]],["МН19-ВИ","Мельхиор",2,"от 5 800 ₽/кг",["Пруток"]],["МН19ВИ","Мельхиор",2,"от 3 050 ₽/кг",["Пруток"]],["04Х18Н11М3","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["ЭП333-ВГ","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["09Х18Н10Т","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["07Х19Н9Б","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["08Х18Н9 (AISI 304)","Нержавеющая сталь",2,"цена по запросу",["Проволока"]],["НМц2,5","Никель",2,"цена по запросу",["Проволока"]],["НП2 (мягк.)","Никель",2,"цена по запросу",["Проволока"]],["НП2 (тверд.)","Никель",2,"цена по запросу",["Проволока"]],["НП2Э","Никель",2,"цена по запросу",["Лента"]],["Н1У (катод)","Никель",2,"цена по запросу",["Лист"]],["ПНЭ-2","Никель",2,"цена по запросу",["Порошок"]],["ПНК-УТ3","Никель",2,"цена по запросу",["Порошок"]],["ХН70Ю","Прецизионные сплавы",2,"от 7 500 ₽/кг",["Проволока","Пруток"]],["45Н","Прецизионные сплавы",2,"цена по запросу",["Пруток","Лента"]],["44НХТЮ","Прецизионные сплавы",2,"цена по запросу",["Пруток"]],["50НХС","Прецизионные сплавы",2,"цена по запросу",["Лента"]],["34НКМП-ВИ","Прецизионные сплавы",2,"цена по запросу",["Фольга"]],["КВ","Твёрдые сплавы",2,"цена по запросу",["Проволока"]],["ВК8","Твёрдые сплавы",2,"от 7 500 ₽/кг",["Порошок"]],["ВТ5-1","Титан",2,"от 2 250 ₽/кг",["Лист"]],["ПТ7М","Титан",2,"цена по запросу",["Труба"]],["ЦГ20","Цирконий",2,"цена по запросу",["Пруток"]],["МПЧ","Молибден",2,"от 8 980 ₽/кг",["Порошок"]],["МШ-2","Молибден",2,"от 9 500 ₽/кг",["Штабик"]],["ВВ-8","Ванадий",1,"от 60 000 ₽/кг",["Пруток"]],["ВЭЛ-1","Ванадий",1,"от 36 000 ₽/кг",["Слиток"]],["ШВЧ","Вольфрам",1,"цена по запросу",["Штабик"]],["ХН77ТЮ (ЭИ 437А)","Жаропрочные сплавы",1,"от 5 600 ₽/кг",["Проволока"]],["ХН38ВТ (ЭИ 703)","Жаропрочные сплавы",1,"цена по запросу",["Пруток"]],["ХН70Ю (ЭИ 652)","Жаропрочные сплавы",1,"цена по запросу",["Пруток"]],["ХН73МБТЮ-ВД (ЭИ 698-ВД)","Жаропрочные сплавы",1,"цена по запросу",["Пруток"]],["ХН65ВМТЮ (ЭИ 893)","Жаропрочные сплавы",1,"цена по запросу",["Лента"]],["49к2ф","Жаропрочные сплавы",1,"цена по запросу",["Лента"]],["10Х11Н20Т3Р (ЭИ 696)","Жаропрочные сплавы",1,"цена по запросу",["Шестигранник"]],["К0","Кобальт",1,"от 6 900 ₽/кг",["Лист"]],["ПАНЧ 11","Никель",1,"цена по запросу",["Проволока"]],["29НКви","Никель",1,"цена по запросу",["Пруток"]],["НП1","Никель",1,"цена по запросу",["Лист"]],["НбП","Ниобий",1,"цена по запросу",["Порошок"]],["65БТ","Прецизионные сплавы",1,"цена по запросу",["Проволока"]],["40Н","Прецизионные сплавы",1,"цена по запросу",["Проволока"]],["38НКД","Прецизионные сплавы",1,"цена по запросу",["Проволока"]],["29НК-1","Прецизионные сплавы",1,"цена по запросу",["Проволока"]],["52КФТМ","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Пруток"]],["47НД-ВИ","Прецизионные сплавы",1,"цена по запросу",["Пруток"]],["49КФ","Прецизионные сплавы",1,"цена по запросу",["Пруток"]],["36КНМ","Прецизионные сплавы",1,"цена по запросу",["Пруток"]],["52К12Ф","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Лента"]],["52К10Ф","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Лента"]],["52К9Ф","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Лента"]],["47НХР","Прецизионные сплавы",1,"цена по запросу",["Лента"]],["40НКМП","Прецизионные сплавы",1,"цена по запросу",["Лента"]],["47НД","Прецизионные сплавы",1,"цена по запросу",["Лист"]],["36Н","Прецизионные сплавы",1,"цена по запросу",["Плита"]],["Н50К10","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Фольга"]],["52К11Ф","Прецизионные сплавы",1,"от 12 000 ₽/кг",["Полоса"]],["Р-0","Рений",1,"от 170 000 ₽/кг",["Порошок"]],["Р-1","Рений",1,"от 136 000 ₽/кг",["Порошок"]],["ТаПМ","Тантал",1,"цена по запросу",["Порошок"]],["ВК6","Твёрдые сплавы",1,"от 7 200 ₽/кг",["Порошок"]],["ВТ25","Титан",1,"от 2 150 ₽/кг",["Пруток"]],["ПТ3ВМ","Титан",1,"от 2 400 ₽/кг",["Пруток"]],["ТПП-3","Титан",1,"от 4 500 ₽/кг",["Порошок"]],["ФМо60","Ферросплавы",1,"от 3 280 ₽/кг",["Куски"]],["ФВ70","Ферросплавы",1,"от 3 280 ₽/кг",["Куски"]],["ФНб65","Ферросплавы",1,"от 4 220 ₽/кг",["Куски"]],["ФВд80","Ферросплавы",1,"от 4 070 ₽/кг",["Куски"]],["NiNb80","Ферросплавы",1,"от 4 840 ₽/кг",["Куски"]],["AlNb90","Ферросплавы",1,"от 5 150 ₽/кг",["Куски"]],["Х99Н1","Хром",1,"от 2 604 ₽/кг",["Куски"]],["БДХ 2","Хром",1,"от 4 680 ₽/кг",["Слиток"]],["ЭРХ-1","Хром",1,"от 9 960 ₽/кг",["Чешуйки"]],["ЭРХ-2","Хром",1,"от 9 720 ₽/кг",["Чешуйки"]],["ЦГ-20","Цирконий",1,"цена по запросу",["Лента"]],["МЧ-К","Молибден",1,"цена по запросу",["Пруток"]]];
+    const nk = (t) => norm(t).replace(/[\s\-–.,\/()]/g, '');
+    const nqk = nk(q.trim());
+    const pluralPos = (n) => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'позиция' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'позиции' : 'позиций');
+    const hitsAll = nqk.length < 2 ? [] : MARKS.map((x) => {
+      const k = nk(x[0]);
+      const r = k === nqk ? 0 : k.indexOf(nqk) === 0 ? 1 : k.indexOf(nqk) !== -1 ? 2 : -1;
+      return { x, r };
+    }).filter((h) => h.r >= 0).sort((a, b) => a.r - b.r || b.x[2] - a.x[2]);
+    const marksAll = !!(this.state && this.state.marksAll);
+    const goMark = (m, form, forms) => (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      const expNext = {};
+      (form ? [form] : forms).forEach((f) => { expNext[f] = true; });
+      this.setState({ mark: m, prod: form || 'Все', exp: expNext, mega: false, q: '', screen: 'Страница', tab: 'Стоимость', marksAll: false, more: {} });
+      setTimeout(() => {
+        const el = this._root && this._root.querySelector('[data-fx="results"]');
+        if (el && el.scrollIntoView) el.scrollIntoView({ behavior: this.fxReduce() ? 'auto' : 'smooth', block: 'start' });
+      }, 90);
+    };
+    const markHref = (mat) => mat === 'Молибден' ? '#price' : '#material';
+    const markHitsView = (marksAll ? hitsAll : hitsAll.slice(0, 4)).map(({ x }) => {
+      const local = true && x[1] === 'Молибден';
+      const noop = () => {};
+      return {
+        m: x[0], mat: x[1], nLabel: pluralPos(x[2]), from: x[3], href: local ? '#price' : markHref(x[1]), go: local ? goMark(x[0], null, x[4]) : noop,
+        forms: x[4].slice(0, 4).map((f) => ({ label: f, href: local ? '#price' : markHref(x[1]), go: local ? goMark(x[0], f, x[4]) : noop }))
+      };
+    });
+    const hasMarkHits = markHitsView.length > 0;
+    const markMoreN = hitsAll.length - markHitsView.length;
+    const markHitsMore = markMoreN > 0;
+    const markHitsLabel = hitsAll.length === 1 ? 'Марка' : 'Марки · ' + hitsAll.length;
+    const showAllMarks = () => this.setState({ marksAll: true });
+    const exact = hitsAll.filter((h) => h.r === 0);
+    const onSearchKey = (e) => {
+      if (e.key !== 'Enter' || !exact.length) return;
+      e.preventDefault();
+      if (exact.length === 1 && true && exact[0].x[1] === 'Молибден') { goMark(exact[0].x[0], null, exact[0].x[4])(); return; }
+      const first = this._root && this._root.querySelector('[data-mark-hit]');
+      if (first) first.focus();
+    };
+    const match = (label) => !nq || norm(label).indexOf(nq) !== -1 || (nqk.length >= 2 && MARKS.some((x) => x[1] === label && nk(x[0]).indexOf(nqk) !== -1));
+    const groupsView = scheme.map((g) => ({ name: g.name, items: g.items.filter(match).map((label) => ({ label })) })).filter((g) => g.items.length > 0);
+    const nothingFound = !!nq && groupsView.length === 0;
+    const showPopular = !nq;
+    const catalogTitle = nq ? 'Найдено' : 'Весь каталог';
+
+    // популярные — порядок по Метрике, реальные фото
+    const featured = [
+      { name: 'Титан', desc: 'ВТ1-0, ОТ4 — лёгкий и прочный', img: '/_blob/f4f70cdc5a350b1e307f21545b4c91ae', price: 'от 4200 ₽/кг' },
+      { name: 'Вольфрам', desc: 'ВА, ВЛ, СВИ — тугоплавкий металл', img: '/_blob/18004f41f537b19714551c56f5642daf', price: '' },
+      { name: 'Нихром', desc: 'Х20Н80, Х15Н60 — для нагревателей печей', img: '/_blob/64d182656ae5ad8c8f7835a93e958612', price: 'от 8000 ₽/кг' },
+      { name: 'Никель', desc: 'НП2, Н-1у — коррозионностойкий', img: '/_blob/7ae7ba8401389a3782f708fabcf27bd9', price: 'от 6100 ₽/кг' },
+      { name: 'Молибден', desc: 'МЧ, ЦМ2А — тугоплавкий металл', img: '/_blob/eb3c7a53e21557ea47dacf034ec814fa', price: '' },
+      { name: 'Фехраль', desc: 'Х23Ю5Т, Х27Ю5Т — до 1400 °С', img: '/_blob/e2e59819cc336eeeb15d4956f55eada5', price: 'от 3500 ₽/кг' },
+      { name: 'Тантал', desc: 'Т, ТВЧ — тугоплавкий', img: '/_blob/677fc23f55598318570f19069c1d0bae', price: '' }
+    ].map((m) => Object.assign({}, m, { hasPrice: !!m.price, onRequest: !m.price }));
+    const popular = featured.map((m) => ({ name: m.name, img: m.img }));
+
+    const isFilters = screen === 'Фильтры';
+    const isReq = screen === 'Заявка';
+    const openFilters = go('Фильтры');
+    const openReq = go('Заявка');
+
+    const facts = [
+      { label: 'Плотность', value: '10,2 г/см³' },
+      { label: 'Т плавления', value: '2620 °С' },
+      { label: 'Марок в наличии', value: '6' },
+      { label: 'Позиций в прайсе', value: '152' }
+    ];
+    const tabs = ['Ассортимент', 'Описание', 'Изготовление', 'Стоимость', 'ГОСТы, ТУ', 'Фото', 'Публикации'].map((label) => {
+      const on = label === 'Стоимость';
+      return { label, selected: on ? 'true' : 'false', underline: on ? '#3E5D88' : 'transparent', color: on ? '#1f3a5c' : '#414954', weight: on ? 700 : 500 };
+    });
+    // активная вкладка «Стоимость» — 4-я; прокручиваем ленту так, чтобы она была видна
+    const tabsRef = this._tabsRef || (this._tabsRef = (el) => { if (el && !this._tabsScrolled) { this._tabsScrolled = true; el.scrollLeft = 170; } });
+
+    // прайс — все 152 строки molibden-cena.htm
+    const RAW = [["Порошок", "МПЧ", "ТУ 48-19-316-92 пластиковые барабаны 10-15 кг.", 8980, null], ["Порошок", "МПЧ", "ТУ 48-19-69-80 пластиковые барабаны 10-15 кг.", null, null], ["Проволока", "МЧ", "Ø 0,03", null, 0.03], ["Проволока", "МЧ", "Ø 0,04", null, 0.04], ["Проволока", "МЧ", "Ø 0,05", null, 0.05], ["Проволока", "МЧ", "Ø 0,06", null, 0.06], ["Проволока", "МЧ", "Ø 0,065", null, 0.065], ["Проволока", "МЧ", "Ø 0,07", null, 0.07], ["Проволока", "МЧ", "Ø 0,08", null, 0.08], ["Проволока", "МЧ", "Ø 0,12", null, 0.12], ["Проволока", "МЧ", "Ø 0,15", null, 0.15], ["Проволока", "МЧ", "Ø 0,18", null, 0.18], ["Проволока", "МЧ", "Ø 0,3", 19800, 0.3], ["Проволока", "МЧ", "Ø 0,5", 18500, 0.5], ["Проволока", "МЧ", "Ø 0,6", 18500, 0.6], ["Проволока", "МЧ", "Ø 0,8", 18500, 0.8], ["Проволока", "МЧ", "Ø 0,9", 18500, 0.9], ["Проволока", "МЧ", "Ø 1,0", 18500, 1.0], ["Проволока", "МЧ", "Ø 1,35", 18500, 1.35], ["Проволока", "МЧ", "Ø 1,5", 18500, 1.5], ["Проволока", "МЧ", "Ø 2,0", 18500, 2.0], ["Проволока", "МЧ", "Ø 3,0", 18500, 3.0], ["Проволока", "МЧ", "Ø 3,17", 18300, 3.17], ["Пруток", "МЧ", "Ø 2,0", 21000, 2.0], ["Пруток", "МЧ", "Ø 2,5", 21000, 2.5], ["Пруток", "МЧ", "Ø 3,0", 21000, 3.0], ["Пруток", "МЧ", "Ø 4,0", 21000, 4.0], ["Пруток", "МЧ", "Ø 5,0", 21000, 5.0], ["Пруток", "МЧ", "Ø 6,0", 19500, 6.0], ["Пруток", "МЧ", "Ø 6,5", 19500, 6.5], ["Пруток", "МЧ", "Ø 7,0", 19500, 7.0], ["Пруток", "МЧ", "Ø 8,0", 19500, 8.0], ["Пруток", "МЧ", "Ø 9,0", 19500, 9.0], ["Пруток", "МЧ", "Ø 10,0", 19500, 10.0], ["Пруток", "МЧ", "Ø 11,0", 18500, 11.0], ["Пруток", "МЧ", "Ø 12,0", 18000, 12.0], ["Пруток", "МЧ", "Ø 13,0", 18000, 13.0], ["Пруток", "МЧ", "Ø 14,0", 18000, 14.0], ["Пруток", "МЧ", "Ø 15,0", 18000, 15.0], ["Пруток", "МЧ", "Ø 16,0", 18000, 16.0], ["Пруток", "МЧ", "Ø 18,0", 18000, 18.0], ["Пруток", "МЧ", "Ø 20,0", 17500, 20.0], ["Пруток", "МЧ", "Ø 21,0", 17500, 21.0], ["Пруток", "МЧ", "Ø 22,0", 17500, 22.0], ["Пруток", "МЧ", "Ø 26,0", 17500, 26.0], ["Пруток", "МЧ", "Ø 30,0", 17500, 30.0], ["Пруток", "МЧ", "Ø 31,0", 17500, 31.0], ["Пруток", "МЧ", "Ø 34,0", 17500, 34.0], ["Пруток", "МЧ", "Ø 35,0", 17500, 35.0], ["Пруток", "МЧ", "Ø 36,0", 17500, 36.0], ["Пруток", "МЧ", "Ø 38,0", 17500, 38.0], ["Пруток", "МЧ", "Ø 38,0, l=500 (шлифованный)", 17900, 38.0], ["Пруток", "МЧ", "Ø 40,0", 17500, 40.0], ["Пруток", "МЧ", "Ø 70,0", 17500, 70.0], ["Пруток", "МЧ", "Ø 80,0", 17500, 80.0], ["Пруток", "МЧ", "Ø 90,0", 17500, 90.0], ["Пруток", "МЧ", "Ø 100,0", 17500, 100.0], ["Пруток", "МЧ", "Ø 105,0", 17500, 105.0], ["Пруток", "МЧ", "Ø 120,0", 17500, 120.0], ["Пруток", "МЧ", "Ø 180,0", 17500, 180.0], ["Пруток", "МЧ", "Ø 300,0", 17500, 300.0], ["Пруток", "МЧ-К", "Ø 10,0", null, 10.0], ["Пруток", "МЧВП", "Ø 2,0", 21200, 2.0], ["Пруток", "МЧВП", "Ø 2,5", 21200, 2.5], ["Пруток", "МЧВП", "Ø 3,0", 21200, 3.0], ["Пруток", "МЧВП", "Ø 4,0", 21200, 4.0], ["Пруток", "МЧВП", "Ø 5,0", 21200, 5.0], ["Пруток", "МЧВП", "Ø 6,0", 19700, 6.0], ["Пруток", "МЧВП", "Ø 6,5", 19700, 6.5], ["Пруток", "МЧВП", "Ø 7,0", 19700, 7.0], ["Пруток", "МЧВП", "Ø 8,0", 19700, 8.0], ["Пруток", "МЧВП", "Ø 9,0", 19700, 9.0], ["Пруток", "МЧВП", "Ø 10,0", 19700, 10.0], ["Пруток", "МЧВП", "Ø 11,0", 18700, 11.0], ["Пруток", "МЧВП", "Ø 12,0", 18200, 12.0], ["Пруток", "МЧВП", "Ø 13,0", 18200, 13.0], ["Пруток", "МЧВП", "Ø 14,0", 18200, 14.0], ["Пруток", "МЧВП", "Ø 15,0", 18200, 15.0], ["Пруток", "МЧВП", "Ø 16,0", 18200, 16.0], ["Пруток", "МЧВП", "Ø 18,0", 18200, 18.0], ["Пруток", "МЧВП", "Ø 20,0", 17700, 20.0], ["Пруток", "МЧВП", "Ø 21,0", 17700, 21.0], ["Пруток", "МЧВП", "Ø 22,0", 17700, 22.0], ["Пруток", "МЧВП", "Ø 26,0", 17700, 26.0], ["Пруток", "МЧВП", "Ø 30,0", 17700, 30.0], ["Пруток", "МЧВП", "Ø 31,0", 17700, 31.0], ["Пруток", "МЧВП", "Ø 34,0", 17700, 34.0], ["Пруток", "МЧВП", "Ø 35,0", 17700, 35.0], ["Пруток", "МЧВП", "Ø 36,0", 17700, 36.0], ["Пруток", "МЧВП", "Ø 38,0", 17700, 38.0], ["Пруток", "МЧВП", "Ø 40,0", 17700, 40.0], ["Пруток", "МЧВП", "Ø 70,0", 17700, 70.0], ["Пруток", "МЧВП", "Ø 80,0", 17700, 80.0], ["Пруток", "МЧВП", "Ø 90,0", 17700, 90.0], ["Пруток", "МЧВП", "Ø 100,0", 17700, 100.0], ["Пруток", "МЧВП", "Ø 105,0", 17700, 105.0], ["Пруток", "МЧВП", "Ø 120,0", 17700, 120.0], ["Пруток", "МЧВП", "Ø 180,0", 17700, 180.0], ["Пруток", "МЧВП", "Ø 300,0", 17700, 300.0], ["Фольга", "МЧ", "0,02х30-70", null, 0.02], ["Фольга", "МЧ", "0,03х60-70", null, 0.03], ["Фольга", "МЧ", "0,05х30-140", null, 0.05], ["Фольга", "МЧ", "0,04х70", null, 0.04], ["Фольга", "МЧ", "0,07х70", null, 0.07], ["Лист", "МЧ", "0,1х250х600", 25000, 0.1], ["Лист", "МЧ", "0,2х250х600", 24000, 0.2], ["Лист", "МЧ", "0,2х200х200-600", 24000, 0.2], ["Лист", "МЧ", "0,3x200x1000", 19800, 0.3], ["Лист", "МЧ", "0,3x300x1000", 19800, 0.3], ["Лист", "МЧ", "0,5x215x800", 19000, 0.5], ["Лист", "МЧ", "0,5x300x1000", 19000, 0.5], ["Лист", "МЧ", "0,5x250x1000", 19000, 0.5], ["Лист", "МЧ", "0,8x250x1000", 18500, 0.8], ["Лист", "МЧ", "1,0x300x1000", 18500, 1.0], ["Лист", "МЧ", "2,0x310x940", 18500, 2.0], ["Лист", "МЧ", "3,0x102x505", 18500, 3.0], ["Лист", "МЧ", "3,0x105x510", 18500, 3.0], ["Лист", "МЧ", "3,0x540x540", 18500, 3.0], ["Лист", "МЧ", "4,0х203x210", 18500, 4.0], ["Лист", "ЦМ2А", "1,0x360x880", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x360x860", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x360x840", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x360x725", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x360x700", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x360x675", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x355x905", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x355x800", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x350x870", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x350x795", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x340x880", 19500, 1.0], ["Лист", "ЦМ2А", "1,0x340x865", 19500, 1.0], ["Лист", "ЦМ2А", "2,0x350x1000", 19500, 2.0], ["Лист", "ЦМ2А", "2,0x400x900", 19500, 2.0], ["Лист", "ЦМ2А", "2,0x580x400", 19500, 2.0], ["Лист", "ЦМ2А", "2,0x550x400", 19500, 2.0], ["Труба", "МЧ", "Ø 10х1,0х415", null, 10.0], ["Труба", "МЧ", "Ø 11х1,0х415", null, 11.0], ["Труба", "МЧ", "Ø 12х1,0х510", null, 12.0], ["Труба", "МЧ", "Ø 12х1,0х360", null, 12.0], ["Труба", "МЧ", "Ø 17х2,0х420", null, 17.0], ["Труба", "МЧ", "Ø 20х1,0х470-650", null, 20.0], ["Труба", "МЧ", "Ø 22х1,0х890", null, 22.0], ["Труба", "МЧ", "Ø 24х1,0х370-690", null, 24.0], ["Труба", "МЧ", "Ø 24х2,0х470", null, 24.0], ["Труба", "МЧ", "Ø 30х1,0х295", null, 30.0], ["Труба", "МЧ", "Ø 31х2,0х360-410", null, 31.0], ["Труба", "МЧ", "Ø 32х1,0х275-405", null, 32.0], ["Труба", "МЧ", "Ø 32х1,5х425", null, 32.0], ["Труба", "МЧ", "Ø 32х2,0х280-300", null, 32.0], ["Труба", "МЧ", "Ø 41х5,0х310", null, 41.0], ["Штабик", "МШ-2", "15х15х510", 9500, 15.0], ["Штабик", "МШ-2", "16х16х540", 9500, 16.0]];
+    const rowsAll = RAW.map((r, i) => ({ id: i, p: r[0], m: r[1], sz: r[2], price: r[3], n: r[4] }));
+    const FORMS = [
+      { name: 'Пруток', img: '/_blob/8924c970e0f37dfa99b04faceba9bfe8' },
+      { name: 'Проволока', img: '/_blob/c50ea9356cc1bcf5aaed6c7080772063' },
+      { name: 'Лист', img: '/_blob/0d370188c2d4dc6b7fefc4613171f4af' },
+      { name: 'Фольга', img: '/_blob/9f52a5465e1d91959c4d2a67b9cfa367' },
+      { name: 'Труба', img: '/_blob/2e4108ca774e8a541c410e496580311b' },
+      { name: 'Порошок', img: '/_blob/982e4ad7ac0bd7182f9e6e7f1edcba52' },
+      { name: 'Штабик', img: '/_blob/2078e370150f3b722ae21567045f3a34' }
+    ];
+    const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    const plural = (n) => n % 10 === 1 && n % 100 !== 11 ? 'позиция' : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'позиции' : 'позиций');
+    const minPrice = (list) => { const ps = list.filter((r) => r.price !== null).map((r) => r.price); return ps.length ? Math.min.apply(null, ps) : null; };
+
+    const prodF = st.prod ?? 'Все';
+    const markF = st.mark ?? 'Все';
+    const sizeFrom = st.from ?? '';
+    const sizeTo = st.to ?? '';
+    const pricedOnly = st.priced ?? false;
+    const exp = st.exp ?? { 'Пруток': true };
+    const more = st.more ?? {};
+    const req = st.req ?? { 27: true, 29: true };
+    const num = (v) => { const x = parseFloat(String(v).replace(',', '.')); return isNaN(x) ? null : x; };
+    const f1 = num(sizeFrom), f2 = num(sizeTo);
+    const pass = (r) => (prodF === 'Все' || r.p === prodF) && (markF === 'Все' || r.m === markF) && (!pricedOnly || r.price !== null)
+      && (f1 === null || (r.n !== null && r.n >= f1)) && (f2 === null || (r.n !== null && r.n <= f2));
+    const filtered = rowsAll.filter(pass);
+    const activeCount = (prodF !== 'Все' ? 1 : 0) + (markF !== 'Все' ? 1 : 0) + (f1 !== null || f2 !== null ? 1 : 0) + (pricedOnly ? 1 : 0);
+    const hasActive = activeCount > 0;
+
+    const pickProd = (name) => () => this.setState({ prod: name, mark: 'Все', exp: name === 'Все' ? exp : Object.assign({}, exp, { [name]: true }) });
+    const formTiles = FORMS.map((f) => {
+      const all = rowsAll.filter((r) => r.p === f.name);
+      const mp = minPrice(all);
+      const on = prodF === f.name;
+      return {
+        name: f.name, img: f.img, noImg: false, count: all.length + ' ' + plural(all.length),
+        from: mp !== null ? 'от ' + fmt(mp) + ' ₽' : 'по запросу', priceColor: mp !== null ? '#8f5316' : '#5b6572',
+        border: on ? '2px solid #3E5D88' : '1px solid #dde3ea', shadow: on ? '0 0 0 3px #D6E5F4' : 'none', pressed: on ? 'true' : 'false',
+        pick: pickProd(on ? 'Все' : f.name)
+      };
+    });
+    const allOn = prodF === 'Все';
+    formTiles.unshift({ name: 'Все формы', img: '', noImg: true, count: rowsAll.length + ' позиции', from: '', priceColor: '#5b6572',
+      border: allOn ? '2px solid #3E5D88' : '1px solid #dde3ea', shadow: allOn ? '0 0 0 3px #D6E5F4' : 'none', pressed: allOn ? 'true' : 'false', pick: pickProd('Все') });
+
+    const chipStyle = (on) => ({ border: on ? '2px solid #3E5D88' : '1px solid #c7ced7', bg: on ? '#EAF1F8' : '#fff', color: on ? '#1f3a5c' : '#232a33', pressed: on ? 'true' : 'false' });
+    const prodChips = ['Все'].concat(FORMS.map((f) => f.name)).map((label) => Object.assign({ label, pick: pickProd(label) }, chipStyle(prodF === label)));
+    const markList = ['Все'].concat(Array.from(new Set(rowsAll.filter((r) => prodF === 'Все' || r.p === prodF).map((r) => r.m))));
+    const markChips = markList.map((label) => Object.assign({ label, pick: () => this.setState({ mark: label }) }, chipStyle(markF === label)));
+    const onFrom = (e) => this.setState({ from: e.target.value });
+    const onTo = (e) => this.setState({ to: e.target.value });
+    const onPriced = () => this.setState({ priced: !pricedOnly });
+    const onReset = () => this.setState({ prod: 'Все', mark: 'Все', from: '', to: '', priced: false });
+
+    const LIMIT = 8;
+    const groups = FORMS.map((f) => {
+      const list = filtered.filter((r) => r.p === f.name);
+      if (!list.length) return null;
+      const open = !!exp[f.name];
+      const shownAll = !!more[f.name];
+      const shown = shownAll ? list : list.slice(0, LIMIT);
+      const mp = minPrice(list);
+      return {
+        name: f.name, countLabel: list.length + ' ' + plural(list.length), marks: Array.from(new Set(list.map((r) => r.m))).join(', '),
+        from: mp !== null ? 'от ' + fmt(mp) : 'по запросу', fromColor: mp !== null ? '#8f5316' : '#5b6572',
+        expanded: open ? 'true' : 'false', expandedB: open, rot: open ? '90deg' : '0deg',
+        toggle: () => this.setState({ exp: Object.assign({}, exp, { [f.name]: !open }) }),
+        hasMore: open && !shownAll && list.length > LIMIT,
+        moreLabel: 'Показать ещё ' + (list.length - LIMIT) + ' ' + plural(list.length - LIMIT),
+        showMore: () => this.setState({ more: Object.assign({}, more, { [f.name]: true }) }),
+        rows: shown.map((r) => {
+          const inReq = !!req[r.id];
+          return {
+            m: r.m, sz: r.sz, hasPrice: r.price !== null, noPrice: r.price === null, priceText: r.price !== null ? 'от ' + fmt(r.price) : '',
+            inReq: inReq ? 'true' : 'false', bg: inReq ? '#FDF3E7' : '#fff', btnBg: inReq ? '#EC9D47' : '#fff', btnLabel: inReq ? '✓ В заявке' : 'В заявку',
+            aria: (inReq ? 'Убрать из заявки: ' : 'Добавить в заявку: ') + r.p + ' ' + r.m + ' ' + r.sz,
+            toggle: () => this.setState({ req: Object.assign({}, req, { [r.id]: !inReq }) })
+          };
+        })
+      };
+    }).filter(Boolean);
+    const foundCount = filtered.length;
+    const markOn = markF !== 'Все';
+    const markCountLabel = pluralPos(foundCount);
+    const clearMark = () => this.setState({ mark: 'Все' });
+    const nothing = foundCount === 0;
+
+    const reqRows = rowsAll.filter((r) => req[r.id]);
+    const hasReq = reqRows.length > 0;
+    const noReq = !hasReq;
+    const reqCountLabel = reqRows.length + ' ' + plural(reqRows.length);
+    const reqItems = reqRows.map((r) => ({
+      title: r.p + ' ' + r.m, sz: r.sz, price: r.price !== null ? 'от ' + fmt(r.price) + ' ₽/кг' : 'цена по запросу', priceColor: r.price !== null ? '#8f5316' : '#5b6572',
+      aria: 'Убрать из заявки: ' + r.p + ' ' + r.m + ' ' + r.sz,
+      remove: () => this.setState({ req: Object.assign({}, req, { [r.id]: false }) })
+    }));
+
+    const calcType = st.ct ?? 'round';
+    const cv = Object.assign({ d: '10', L: '1000', t: '1', w: '300', l: '1000' }, st.cv || {});
+    const setCv = (k) => (e) => this.setState({ cv: Object.assign({}, cv, { [k]: e.target.value }) });
+    const isRound = calcType === 'round';
+    const calcFields = isRound
+      ? [{ label: 'Диаметр, мм', value: cv.d, set: setCv('d') }, { label: 'Длина, мм', value: cv.L, set: setCv('L') }]
+      : [{ label: 'Толщина, мм', value: cv.t, set: setCv('t') }, { label: 'Ширина, мм', value: cv.w, set: setCv('w') }, { label: 'Длина, мм', value: cv.l, set: setCv('l') }];
+    const vol = isRound ? Math.PI / 4 * Math.pow(num(cv.d) || 0, 2) * (num(cv.L) || 0) : (num(cv.t) || 0) * (num(cv.w) || 0) * (num(cv.l) || 0);
+    const massText = (vol / 1000 * 10.2 / 1000).toFixed(3).replace('.', ',') + ' кг';
+    const calcRound = () => this.setState({ ct: 'round' });
+    const calcSheet = () => this.setState({ ct: 'sheet' });
+
+    // анонсы других вкладок — цифры с molibden-opisanie.htm (таблица свойств)
+    const props = [
+      { k: 'Плотность при 20 °С', v: '10,2 г/см³' },
+      { k: 'Теплопроводность', v: '142 Вт/(м·К)' },
+      { k: 'Коэф. линейного расширения', v: '4,9·10⁻⁶ К⁻¹' },
+      { k: 'Модуль Юнга', v: '336,3 ГПа' }
+    ];
+    const photos = FORMS.map((f) => f.img);
+    const gosts = [
+      { code: 'ГОСТ 18905-73', title: 'Проволока молибденовая. Сортамент.' },
+      { code: 'ТУ 48-19-247-87', title: 'Прутки молибденовые диаметром от 16 до 125 мм.' },
+      { code: 'ГОСТ 25442-82', title: 'Полосы молибденовые отожженные для глубокой вытяжки.' }
+    ];
+    const siblings = [
+      { name: 'Вольфрам', img: '/_blob/18004f41f537b19714551c56f5642daf' },
+      { name: 'Тантал', img: '/_blob/677fc23f55598318570f19069c1d0bae' },
+      { name: 'Ниобий', img: '/_blob/ca366a1535597b02315fc492ed8997d0' },
+      { name: 'Рений', img: '/_blob/fc2e95a3aa0ab0491bee7fba1595d09f' }
+    ];
+    return { rootRef, openPhones, isPhones, hasMarkHits, markHitsView, markHitsMore, markMoreN, markHitsLabel, showAllMarks, onSearchKey, markOn, markCountLabel, clearMark, markF, leaveCls, openMenu, openProd, closeAll, isMenu, isProd, isFilters, isReq, openFilters, openReq, calculators, groupNames, q, onQuery, groupsView, nothingFound, showPopular, catalogTitle, popular,
+      facts, tabs, tabsRef, formTiles, prodChips, markChips, sizeFrom, sizeTo, pricedOnly, onFrom, onTo, onPriced, onReset, activeCount, hasActive, groups, foundCount, nothing,
+      hasReq, noReq, reqCountLabel, reqItems, calcFields, massText, calcRound, calcSheet, isRoundS: isRound ? 'true' : 'false', isSheetS: isRound ? 'false' : 'true',
+      roundBg: isRound ? '#3E5D88' : '#fff', roundColor: isRound ? '#fff' : '#414954', sheetBg: isRound ? '#fff' : '#3E5D88', sheetColor: isRound ? '#414954' : '#fff',
+      props, photos, gosts, siblings };
+
+  }
+}
+</script>
+</body>
+</html>
